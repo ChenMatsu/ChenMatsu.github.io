@@ -103,6 +103,7 @@ theme: next
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
+  # https://hiiragimatu.github.io/
   repo: https://github.com/HiiragiMatu/HiiragiMatu.github.io
   branch: main
 
