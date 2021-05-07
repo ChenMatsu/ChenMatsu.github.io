@@ -1,5 +1,5 @@
 ---
-title: JS系列筆記 - ES6快速入門
+title: JS系列 - ES6快速入門
 date: 2021-05-05 14:40:50
 tags: [javascript, es6, arrow-function]
 categories: 
