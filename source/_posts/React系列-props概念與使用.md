@@ -53,13 +53,13 @@ banner:
 
 ![appcal](https://i.imgur.com/IMl9SyZ.jpg)
 
-首先我們匯入Calculate組件後，再將組件用HTML的形式包覆在App根組件當中，切換到瀏覽器後會發現多了一個12的數字。
+我們匯入Calculate組件後，再將組件用HTML的形式包覆在App根組件當中，切換到瀏覽器後會發現多了一個12的數字。
 
 ![num](https://i.imgur.com/QdR9Ck3.jpg)
 
 我們現在已經完成最最最基礎的組件使用方式。可以看到我們最後順利地使用Calculate這個組件。可是等等...，說了這麼多，到底跟props有什麼關係? 對，到目前為止都還沒有關係，因為必須先把組件嵌在一起的方式解說後才能理解使用props。總得先學會發動車子，才能開始練習開車對吧?
 
-首先我們在App裡面輸入一組物件，這很Hard Core，不過沒關係，我們只是為了示範這個過程。請注意到return前的程式碼是寫JS，return後的程式碼則是寫JSX。接著我們把propme這個物件傳入給Calculate這個子組件。
+我們在App裡面輸入一組物件，這很Hard Core，不過沒關係，我們只是為了示範這個過程。請注意到return前的程式碼是寫JS，return後的程式碼則是寫JSX。接著我們把propme這個物件傳入給Calculate這個子組件。
 
 ![propass](https://i.imgur.com/D3K0ooW.jpg)
 

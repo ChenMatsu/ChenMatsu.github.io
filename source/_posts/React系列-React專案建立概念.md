@@ -8,6 +8,8 @@ thumbnail:
 banner:
 ---
 ### 建立屬於你/妳自己的React專案!
+> *Yesterday is history, tomorrow is a mystery, today is a gift of God, which is why we call it the present.*
+> *― Bill Keane*
 今天要講解的東西很輕鬆，就是用指令去建立一個React的專案。
 --預備知識--
 - 知道命令列介面(Command Line Interface)
