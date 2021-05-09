@@ -28,7 +28,7 @@
 <meta property="og:description" content="JS - ES6快速入門 The only true wisdom is in knowing you know nothing.- Socrates  JS語法釐清今天重溫JS的基礎，徹底了解ES5與ES6間的差異，那麼廢話不多說，趕緊來看!  變數命名 let &amp; const 箭頭函數 ES6 ES5函數 ES6函數   觀念釐清 Export &amp; Import 類別與繼承 C">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2021-05-05T06:40:50.000Z">
-<meta property="article:modified_time" content="2021-05-07T04:46:15.906Z">
+<meta property="article:modified_time" content="2021-05-09T08:53:43.381Z">
 <meta property="article:author" content="Matsu Chen">
 <meta property="article:tag" content="javascript">
 <meta property="article:tag" content="es6">
@@ -194,7 +194,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2021-05-07 12:46:15" itemprop="dateModified" datetime="2021-05-07T12:46:15+08:00">2021-05-07</time>
+                <time title="修改時間：2021-05-09 16:53:43" itemprop="dateModified" datetime="2021-05-09T16:53:43+08:00">2021-05-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -284,7 +284,7 @@
 <hr>
 <h4 id="拆解-Destructuring"><a href="#拆解-Destructuring" class="headerlink" title="拆解 Destructuring"></a>拆解 Destructuring</h4><p>藉由拆解我們可以很容易的去存取陣列或物件裡面的元素或屬性，我們實際來看點例子。<br>首先是陣列:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const breakMeUp &#x3D; [2, 0, 2, 1, &quot;is&quot;, &quot;cool&quot;];</span><br><span class="line">const [a, b, , d, e] &#x3D; breakMeUp;</span><br><span class="line">console.log(a);</span><br><span class="line">console.log(b);</span><br><span class="line">console.log(d);</span><br><span class="line">console.log(e);</span><br></pre></td></tr></table></figure>
-<p>可以看到透過直接拆解陣列可以對應到breakMeUp陣列裡面的元素，而不需要透過其他方式去索引。<br>實際執行後顯示<br>接著是物件:</p>
+<p>透過直接拆解陣列可以對應到breakMeUp陣列裡面的元素，而不需要透過其他方式去索引。<br>實際執行後顯示<br>接著是物件:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const Shark &#x3D; &#123;</span><br><span class="line">  species: &#39;fish&#39;,</span><br><span class="line">  name: &#39;shark&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const &#123;species&#125; &#x3D; Shark;</span><br><span class="line">console.log(species);</span><br><span class="line">console.log(name);</span><br></pre></td></tr></table></figure>
 <p>物件的拆解就像是一對一的對應，中括號{}內寫的變數能夠對應到物件的屬性，就能夠讀取，如果沒有對應的屬性則會回傳undefined.<br>實際結果:<code>&quot;fish&quot;和&quot;Undefined&quot;</code></p>
 <hr>
@@ -398,7 +398,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -411,7 +411,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
