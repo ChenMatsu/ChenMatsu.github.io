@@ -1,5 +1,5 @@
 ---
-title: Hexo系列 - 開啟旅途
+title: Hexo系列-開啟旅途
 date: 2021-05-02 16:17:35
 tags: [hexo]
 categories: [Hexo]

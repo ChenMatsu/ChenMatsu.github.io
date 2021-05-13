@@ -1,5 +1,5 @@
 ---
-title: React系列 - React介紹與基本概念淺談
+title: React系列-React介紹與基本概念淺談
 date: 2021-05-06 11:27:46
 tags: [react, javascript, component]
 categories:

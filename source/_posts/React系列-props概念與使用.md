@@ -1,5 +1,5 @@
 ---
-title: React系列 - props概念與使用
+title: React系列-props概念與使用
 date: 2021-05-08 07:50:27
 tags: [react, javascript, component, props, children]
 categories:
