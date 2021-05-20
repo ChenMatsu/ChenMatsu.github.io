@@ -163,6 +163,121 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/20/React%E7%B3%BB%E5%88%97-useCallback%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/20/React%E7%B3%BB%E5%88%97-useCallback%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">React系列-useCallback概念與使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2021-05-20 16:37:59 / 修改時間：17:56:44" itemprop="dateCreated datePublished" datetime="2021-05-20T16:37:59+08:00">2021-05-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Hooks家族-useCallback"><a href="#Hooks家族-useCallback" class="headerlink" title="Hooks家族 - useCallback"></a>Hooks家族 - useCallback</h3><blockquote>
+<p><em>Beware of the man who works hard to learn something, learns it, and finds himself no wiser than before.</em><br><em>― Kurt Vonnegut, Cat’s Cradle</em></p>
+</blockquote>
+<p>來到第六篇關於Hooks的文章，不能說自己真的很懂Hooks，但多多少少，不再對Hooks感到陌生。今天要來聊聊關於useCallback這個Hooks，光是在JS就可以常常看見回呼函數的使用，那麼這個useCallback又與平常我們認知的有什麼不同? 趕緊來看看。</p>
+<ul>
+<li>useCallback<ul>
+<li>useCallback使用方法</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="useCallback"><a href="#useCallback" class="headerlink" title="useCallback"></a>useCallback</h4><p>官方精闢解析<br><strong>useCallback: Returns a memoized callback.</strong><br>useCallback會回傳記憶化的回乎函數，這邊要注意<strong>Memoization</strong>不等同於<strong>Memorization</strong>。有機會我們再來詳細探討這兩者間的區別。</p>
+<p>所謂的記憶化(Memoization)是一種用於提升電腦程式速度的<strong>優化技巧</strong>，主要的概念是<strong>儲存複雜函數結果</strong>並且當相同結果出現時透過<strong>快取</strong>(Cache)存取。講白就是犧牲儲存空間，去提升電腦性能。</p>
+<p>我們實際來看如何使用useCallback於React中。</p>
+<h5 id="useCallback使用方式"><a href="#useCallback使用方式" class="headerlink" title="useCallback使用方式"></a>useCallback使用方式</h5><p>useCallback定義如下:<br><code>const memoizedCallback = useCallback(() =&gt; &#123; memoizedFn(a, b)&#125;,  [a, b])</code><br>透過useCallback這一個Hook，可以直接將要記憶化結果的函數存取在memoizedCallback中，並且只有在a, b會影響memoizedFn函數的時候才會重新執行。</p>
+<p>我們實際看看例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import &#123;useState, useEffect, useCallback&#125; from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  const [isLoading, setIsLoading] &#x3D; useState(false);</span><br><span class="line"></span><br><span class="line">  const fetchHandler &#x3D; useCallback(() &#x3D;&gt; &#123;</span><br><span class="line">    setIsLoading(true);</span><br><span class="line">    fetch(&#39;http:&#x2F;&#x2F;dabaseFetch&#39;).then(res &#x3D;&gt; console.log(res));</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    fetchHandler();</span><br><span class="line">  &#125;, [fetchHandler]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default App;</span><br></pre></td></tr></table></figure>
+<p>首先看到App中的程式碼，我們總共引入三個Hooks，其中兩個先前都是有討論過的Hooks。在這一段程式碼當中，我主要想要去抓到某些<strong>資料</strong>，可以看到fetchHandler函數裡面有個JS內建的<strong>fetch</strong>方法(API)，fetch就是拿來操作HTTP的各種請求，<strong>預設</strong>的情況下會是HTTP請求的<strong>GET</strong>。因此當fetchHandler執行時就會發送一個GET請求給伺服器，伺服器則會回傳某特定格式，而fetch這個API回傳的一定是Promise。</p>
+<p>回到主題上，我們透過useEffect去更新fetchHandler，每當App渲染時，useEffect就會執行一次，接著再根據fetchHandler去執行，但是這邊就有一個很大的問題點是源自於React本身。</p>
+<p>對於React來說，每當<strong>重新渲染</strong>時，所有的組件<strong>都會是全新的組件</strong>，不一樣的組件。什麼意思? 當我們實際執行React專案時，在我們重新載入的那一剎那，所有的組件都是新的組件，不同於先前所渲染的組件。換句話說，以我們fetchHandler來說，即便執行的名稱與內容都完全相同，React也會視這兩個fetchHandler為不一樣的函數，這一切都是源自於JS物件Call by Reference的本質而延伸出來。</p>
+<p>因此當我們沒有透過useCallback去記憶化fetchHandler這個函數，就會發生不斷發出GET請求的慘劇。假如我們將程式碼改成如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import &#123;useState, useEffect, useCallback&#125; from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  const [isLoading, setIsLoading] &#x3D; useState(false);</span><br><span class="line"></span><br><span class="line">  const fetchHandler &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    setIsLoading(true);</span><br><span class="line">    fetch(&#39;http:&#x2F;&#x2F;dabaseFetch&#39;).then(res &#x3D;&gt; console.log(res));</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    fetchHandler();</span><br><span class="line">  &#125;, [fetchHandler]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default App;</span><br></pre></td></tr></table></figure>
+<p>也就是將fetchHandler的useCallback刪去後，實際執行相似的程式碼就會得到類似於下方的結果:</p>
+<p><img src="https://i.imgur.com/1ey45Lq.jpg" alt="infi"></p>
+<p>可以在開發者工具發現fetch會不斷的發送請求到伺服器，這是非常嚴重的問題。但這個嚴重的問題，可以簡單地透過useCallback去解決。我們再度回到fetchHandler這個函數。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const fetchHandler &#x3D; useCallback(() &#x3D;&gt; &#123;</span><br><span class="line">  setIsLoading(true);</span><br><span class="line">  fetch(&#39;http:&#x2F;&#x2F;dabaseFetch&#39;).then(res &#x3D;&gt; console.log(res));</span><br><span class="line">&#125;, []);</span><br></pre></td></tr></table></figure>
+<p>概念和useEffect一樣，[]代表組件渲染完成後會執行一次。useCallback則會將箭頭函數後的所有函數都記下來指派給fetchHandler。這時候，每當有任何組件重新渲染，fetchHandler不會重新被渲染一次，因為已經透過Hooks將fetchHandler記憶化，因此不會出現fetchHandler不斷重新執行的問題，因為對於React來說，現在的fetchHandler都是同一個函數。</p>
+<p>最後我們只需要確保useEffect在處理fetchHandler時所產生的副作用，而副作用就是當資料更新時，必須重新將資料庫添加進去的資料再度透過GET方法去獲得資料就結束這一連串的動作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">  fetchHandler();</span><br><span class="line">&#125;, [fetchHandler]);</span><br></pre></td></tr></table></figure>
+<p>特別注意到useEffect的依賴只需要指向fetchHandler函數而不需要()，如果加上()代表要立刻在這一行執行，這又是另外一齣慘劇了…</p>
+<hr>
+<p>-重點回顧-</p>
+<ul>
+<li>React每次渲染都會是不一樣的程式碼，即便長得一模一樣</li>
+<li>useCallback用於記憶化函數</li>
+</ul>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天簡單說一下useCallback，我想概念上還算挺好理解。不過如何正確使用就又是另外一門學問，不過先搞清楚它們各自的目的才不會摔的滿頭包。</p>
+<p>這幾天心情一直很糟，不論是學習上還是生活上，真的可以說諸事不順，也不清楚要怎麼說出來比較好，只好像現在一樣打成文章，或是寫在日記上。但即便如此，好像還是悶在心裡一樣，可能是因為自己能力太差吧，覺得自己什麼都做不好，而現在又因為急於能夠找到一個落腳處，而更加心急如焚。現在都會回想大學不好好學習才會落的這個下場也算是自作自受，也有可能只是我一直往死裡鑽吧。</p>
+<p>其實我還是不清楚程式是不是自己想走的一條路，我覺得我自己沒有天分，可是仔細一想，自己到目前為止，也不過一個月不中斷地在練習Coding，但是昨晚看完龍櫻2，卻又覺得自己都沒有好好思考<strong>ものごと</strong>的本質，慚愧不已。說真的，別人都在進步，為什麼我好像一直在原地踏步。心好累。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
     <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/20/%E5%90%A6%E5%AE%9A/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -569,141 +684,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/13/React%E7%B3%BB%E5%88%97-useContext%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/matsu.jpg">
-      <meta itemprop="name" content="Matsu Chen">
-      <meta itemprop="description" content="消逝在平凡的日子中">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Matsu Chen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/13/React%E7%B3%BB%E5%88%97-useContext%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">React系列-useContext概念與使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-
-              <time title="創建時間：2021-05-13 13:45:45" itemprop="dateCreated datePublished" datetime="2021-05-13T13:45:45+08:00">2021-05-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2021-05-20 12:26:41" itemprop="dateModified" datetime="2021-05-20T12:26:41+08:00">2021-05-20</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="Hooks家族-useContext"><a href="#Hooks家族-useContext" class="headerlink" title="Hooks家族 - useContext"></a>Hooks家族 - useContext</h3><blockquote>
-<p><em>Believe in yourself. You are braver than you think, more talented than you know, and capable of more than you imagine.</em><br><em>-Roy T. Bennett</em></p>
-</blockquote>
-<p>昨晚聊聊關於useEffect的使用方式，今天要來介紹管理變數的問題。React發展得相當迅速，常常會看到不同的寫法，卻能達到一樣的結果。對於初學者的我來說，其實會常常搞混，反倒有點困擾，但是一想到當自己完全釐清各種不同寫法，能夠在適當的時機，選擇最適當的方式去處理同樣的問題就覺得很有意思，就好像身懷各種武藝。那，我們開始吧!</p>
-<ul>
-<li>useContext<ul>
-<li>useContext使用方式</li>
-</ul>
-</li>
-<li>結語</li>
-</ul>
-<hr>
-<h4 id="useContext"><a href="#useContext" class="headerlink" title="useContext"></a>useContext</h4><p>我們都對於React的運作方式有一定程度的理解，對於props的傳遞，我們更是了解。我們不僅可以將props往子組件傳遞，甚至能夠從子組件傳遞到父組件當中。什麼意思? 請看下圖:<br><img src="https://i.imgur.com/AaPZaie.jpg" alt="app"></p>
-<p>假設一個購物網站，App分別有兩個子組件，一個是Login，另外一個則是Cart。當我們想要將使用者的購物資訊與清單分別傳遞到Cart，再由Cart將資料傳遞給Cartlist，最簡單的作法就是將User的資料一步步往上prop到App，再由App一步步往下Prop到Cartlist，如下圖所示:<br><img src="https://i.imgur.com/gFoP6zy.jpg" alt="app2"></p>
-<p>沒錯，這是最有React風範的方式，也是官方文件最先告訴我們的實作方式。甚至我們可以利用<strong>提升狀態</strong>(Lifting the state up)的方式去將我們想要傳遞的資料，放置在子組件共有的父組件上，在範例中，就是放置在App身上。</p>
-<p>乍看下，這的確是解決方式其二，但是仔細想想，有可能我們的App不會用到User的任何資料，甚至若是我們的組件變得更多，中間有其餘的組件是不需要使用到User的資料，那這樣不是很難管理資料嗎? 我們現在希望的是有個方式可以直接將User的資料指向Cart，如同下圖的概念:<br><img src="https://i.imgur.com/x6Dm2gV.jpg" alt="app3"></p>
-<p>這個時候useContext就會跳出來說: 選我!選我!選我! 我們先來看看useContext的定義與概念。</p>
-<h5 id="useContext使用方式"><a href="#useContext使用方式" class="headerlink" title="useContext使用方式"></a>useContext使用方式</h5><p>useContext的定義大致上官方定義是: 接收一個Context Object(React.createContext回傳的值)並回傳。是不是有點難懂? 我也這麼認為，對於直接下手Hooks來說，其實不太好理解，因為底層包覆的東西有點多，但我們還是試著努力看看!</p>
-<p>useContext的長相大概如下所示:<br><code>const context = useContext(AuthUser)</code><br>我們設立一個context的變數用於儲存useContext回傳的值，在useContext裡面則寫入一個<strong>內文物件</strong>(context object)。<br>這個內文物件在我們的範例包含AuthUser的值，換句話說，我們會透過React.createContext建立AuthUser這個內文物件，看看下方:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- In AuthContext.js --&gt;</span><br><span class="line">import React from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">const AuthUser &#x3D; React.createContext(&#123;</span><br><span class="line">  isLoggedIn: false,</span><br><span class="line">  onLogin: (email, password) &#x3D;&gt; &#123;&#125;,</span><br><span class="line">  onLogout: () &#x3D;&gt; &#123;&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>要使用createContext函數必須匯入React，這邊應該沒有太大問題。我們可以看到說AuthUser是一個內文物件，一般來說，我們會在source的資料夾下建立一個store的資料夾負責統一管理資料，盡量讓資料和組件邏輯隔離開來，但當然，我們也可以直接在AuthContext檔案裡面直接更改Provider寫入共用的方法，讓AuthUser變得更完整:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- In AuthContext.js --&gt;</span><br><span class="line">...上方的程式碼...</span><br><span class="line"></span><br><span class="line">export const AuthContextProvider &#x3D; props &#x3D;&gt; &#123;</span><br><span class="line">  const [isLogged, setIsLogged] &#x3D; useState(false);</span><br><span class="line"></span><br><span class="line">  const loginHandler &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    setIsLogged(true);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  const logoutHandler &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    setIsLogged(false);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return </span><br><span class="line">    &lt;AuthContext.Provider </span><br><span class="line">      value&#x3D;</span><br><span class="line">      &#123;&#123;</span><br><span class="line">        isLogged, </span><br><span class="line">        onLogin: loginHandler, </span><br><span class="line">        onLogout: logoutHandler</span><br><span class="line">      &#125;&#125;&gt;</span><br><span class="line">        &#123;props.children&#125;</span><br><span class="line">    &lt;&#x2F;AuthContext.Provider&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default AuthUser;</span><br></pre></td></tr></table></figure>
-
-<p>在AuthUser內文物件中，改寫加入是否登入的狀態。<br>我們要注意到createContext本身會有兩個子組件分別是</p>
-<ul>
-<li>Provider組件: 傳遞內文物件的資料</li>
-<li>Consumer組件: 接收內文物件的資料</li>
-</ul>
-<p>這也是為何我們會看到在AuthUser出現Provider，因為在這邊我透過props一次傳入內文物件的物件，物件包含isLogged的狀態以及登入登出的方法。可以注意到Provider中間有props.children，還記得我們提到children的那篇文章嗎? 透過這一點，我們可以知道Provider包覆的組件都可以接收剛才透過props的資料。</p>
-<p>回到圖表，我們要在User和Cart使用到關於User的資訊和方法，現在我們可以統一在App處理，如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- In App.js --&gt;</span><br><span class="line">import &#123;useContext&#125; from &#39;react&#39;;</span><br><span class="line">import AuthContext from &#39;.&#x2F;components&#x2F;store&#x2F;AuthContext&#39;;</span><br><span class="line">import Login from &#39;.&#x2F;components&#x2F;User&#x2F;Login&#39;;</span><br><span class="line">import Cart from &#39;.&#x2F;components&#x2F;Cart&#x2F;Cart&#39;;</span><br><span class="line"></span><br><span class="line">const App &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  const ctx &#x3D; useContext(AuthUser);</span><br><span class="line">  </span><br><span class="line">  return (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &#123;!ctx &amp;&amp; &lt;Login &#x2F;&gt;&#125;</span><br><span class="line">      &#123;ctx &amp;&amp;＜Cart &#x2F;&gt;&#125;</span><br><span class="line">    &lt;&#x2F;&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default App;</span><br></pre></td></tr></table></figure>
-<p>因為User是在Login下方，所以我們此處匯入Login，接著再透過Login傳遞到User。這邊在顯示組件會先檢驗是否已經登入，如果已經登入就會顯示Cart的組件，若沒有登入則會顯示Login的組件。透過這樣的方法，我們同時有把<strong>提升狀態</strong>也有將<strong>資料隔離</strong>開來的感覺，而不需要一層一層傳遞，像洋蔥一樣撥開我們的組件。</p>
-<p>我們到目前為止，檢視如何使用useContext的方法。我們在使用useContext先前必須建立內文物件才能夠使用這個Hook，目前還沒能直接看到Cart使用User的感覺，但其實我們已經朝向這一步邁進。</p>
-<p>在以往沒有useContext這個Hook的情況下，我們在建立React.createContext後，必須在每一個需要使用到某個內文物件的組件裡面，去接收(Consumer)這些資料，換句話說，我們沒辦法直接透過指令變數去將資料傳遞到組件，程式碼大概會像下方這樣:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- In Cart.js --&gt;</span><br><span class="line">import AuthContext from &#39;..&#x2F;..&#x2F;store&#x2F;AuthContext&#39;;</span><br><span class="line">import CardList from &#39;.&#x2F;CardList&#39;;</span><br><span class="line"></span><br><span class="line">const Cart &#x3D; props &#x3D;&gt; &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;AuthContext.Consumer&gt;</span><br><span class="line">      &#123;(context) &#x3D;&gt; &#123;</span><br><span class="line">        &lt;CardList &#x2F;&gt;</span><br><span class="line">        &lt;Button onLogout&#x3D;&#123;onLogout&#125;&gt;</span><br><span class="line">      &#125;&#125;</span><br><span class="line">    &lt;&#x2F;AuthContext.Consumer&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Cart;</span><br></pre></td></tr></table></figure>
-<p>大致上會像上方這樣的寫法，需要多寫Consumer這一段語法糖，去將組件包裹起來。在沒有Hook的出現確實是一件再正常不過的事情，但是現在有了useContext，實在是沒有理由將程式碼寫的過於繁瑣，畢竟React是屬於宣告式，若能減輕開發網站的負擔，沒有理由堅持使用上方的寫法。但，寫程式沒有對錯，這些都是非常棒的方法!</p>
-<p>-重點整理-</p>
-<ul>
-<li>useContext接收內文物件<ul>
-<li>React.createContext建立內文物件<ul>
-<li>Provider子組件傳遞資料</li>
-<li>Consumer子組件接收資料</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天主要講述useContext的使用方式，算是非常粗淺的概念。要在這裡像各位讀者說一聲抱歉，希望未來我能夠對React更加熟稔，蠻擔心自己寫的不夠清楚或者是寫錯，但即便如此還是想要挑戰自己試試看，以教學的角度，來檢視自己學習的成效。若有誤，請不吝於糾正。</p>
-<p>最後，謝謝看到結束的各位。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一頁"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一頁"></i></a>
   </nav>
 
 
@@ -771,7 +755,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -784,7 +768,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">22</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
