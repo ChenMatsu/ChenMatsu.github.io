@@ -20,27 +20,23 @@
     var CONFIG = {"hostname":"hiiragimatu.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="建立屬於你&#x2F;妳自己的React專案! Yesterday is history, tomorrow is a mystery, today is a gift of God, which is why we call it the present.― Bill Keane今天要講解的東西很輕鬆，就是用指令去建立一個React的專案。–預備知識–   知道命令列介面(Command Line Int">
+  <meta name="description" content="最有生產力的一年(The Productivity Project) - Chris Bailey約莫一周過去，偶爾翻開小讀一番，不知不覺在今天讀完整本。 我想，這本書會吸引一個人，最根本的原因是不滿足於現狀的生活和自己。在有數十本的購買清單中，挑選這本書作為自己最優先閱讀的一本書，是因為我想知道自己和他人究竟有什麼區別。我曾經想過他人花的時間比我多，固然能夠成就比我更多，但在我約莫數個月的密集學">
 <meta property="og:type" content="article">
-<meta property="og:title" content="React系列-開始打造React專案">
-<meta property="og:url" content="https://hiiragimatu.github.io/2021/05/06/React%E7%B3%BB%E5%88%97-React%E5%B0%88%E6%A1%88%E5%BB%BA%E7%AB%8B%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:title" content="閱讀-最有生產力的一年">
+<meta property="og:url" content="https://hiiragimatu.github.io/2021/05/21/%E9%96%B1%E8%AE%80-%E6%9C%80%E6%9C%89%E7%94%9F%E7%94%A2%E5%8A%9B%E7%9A%84%E4%B8%80%E5%B9%B4/index.html">
 <meta property="og:site_name" content="Matsu Chen">
-<meta property="og:description" content="建立屬於你&#x2F;妳自己的React專案! Yesterday is history, tomorrow is a mystery, today is a gift of God, which is why we call it the present.― Bill Keane今天要講解的東西很輕鬆，就是用指令去建立一個React的專案。–預備知識–   知道命令列介面(Command Line Int">
+<meta property="og:description" content="最有生產力的一年(The Productivity Project) - Chris Bailey約莫一周過去，偶爾翻開小讀一番，不知不覺在今天讀完整本。 我想，這本書會吸引一個人，最根本的原因是不滿足於現狀的生活和自己。在有數十本的購買清單中，挑選這本書作為自己最優先閱讀的一本書，是因為我想知道自己和他人究竟有什麼區別。我曾經想過他人花的時間比我多，固然能夠成就比我更多，但在我約莫數個月的密集學">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://i.imgur.com/w0EDv6j.jpg">
-<meta property="og:image" content="https://i.imgur.com/OzGORev.jpg">
-<meta property="og:image" content="https://i.imgur.com/baMBc6M.jpg">
-<meta property="og:image" content="https://i.imgur.com/4ujriXZ.jpg">
-<meta property="article:published_time" content="2021-05-06T04:26:24.000Z">
-<meta property="article:modified_time" content="2021-05-13T05:45:13.682Z">
+<meta property="article:published_time" content="2021-05-21T09:33:36.000Z">
+<meta property="article:modified_time" content="2021-05-21T10:33:49.801Z">
 <meta property="article:author" content="Matsu Chen">
-<meta property="article:tag" content="javascript">
-<meta property="article:tag" content="react">
-<meta property="article:tag" content="component">
+<meta property="article:tag" content="book">
+<meta property="article:tag" content="read">
+<meta property="article:tag" content="mental">
+<meta property="article:tag" content="productivity">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/w0EDv6j.jpg">
 
-<link rel="canonical" href="https://hiiragimatu.github.io/2021/05/06/React%E7%B3%BB%E5%88%97-React%E5%B0%88%E6%A1%88%E5%BB%BA%E7%AB%8B%E6%A6%82%E5%BF%B5/">
+<link rel="canonical" href="https://hiiragimatu.github.io/2021/05/21/%E9%96%B1%E8%AE%80-%E6%9C%80%E6%9C%89%E7%94%9F%E7%94%A2%E5%8A%9B%E7%9A%84%E4%B8%80%E5%B9%B4/">
 
 
 <script id="page-configurations">
@@ -53,7 +49,7 @@
   };
 </script>
 
-  <title>React系列-開始打造React專案 | Matsu Chen</title>
+  <title>閱讀-最有生產力的一年 | Matsu Chen</title>
   
 
 
@@ -174,7 +170,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/06/React%E7%B3%BB%E5%88%97-React%E5%B0%88%E6%A1%88%E5%BB%BA%E7%AB%8B%E6%A6%82%E5%BF%B5/">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/21/%E9%96%B1%E8%AE%80-%E6%9C%80%E6%9C%89%E7%94%9F%E7%94%A2%E5%8A%9B%E7%9A%84%E4%B8%80%E5%B9%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/matsu.jpg">
@@ -187,7 +183,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          React系列-開始打造React專案
+          閱讀-最有生產力的一年
         </h1>
 
         <div class="post-meta">
@@ -196,31 +192,21 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">發表於</span>
+              
 
-              <time title="創建時間：2021-05-06 12:26:24" itemprop="dateCreated datePublished" datetime="2021-05-06T12:26:24+08:00">2021-05-06</time>
+              <time title="創建時間：2021-05-21 17:33:36 / 修改時間：18:33:49" itemprop="dateCreated datePublished" datetime="2021-05-21T17:33:36+08:00">2021-05-21</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新於</span>
-                <time title="修改時間：2021-05-13 13:45:13" itemprop="dateModified" datetime="2021-05-13T13:45:13+08:00">2021-05-13</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分類於</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                  <a href="/categories/Book/" itemprop="url" rel="index"><span itemprop="name">Book</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                  <a href="/categories/Book/Business-Finance/" itemprop="url" rel="index"><span itemprop="name">Business Finance</span></a>
                 </span>
             </span>
 
@@ -235,37 +221,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="建立屬於你-妳自己的React專案"><a href="#建立屬於你-妳自己的React專案" class="headerlink" title="建立屬於你/妳自己的React專案!"></a>建立屬於你/妳自己的React專案!</h3><blockquote>
-<p><em>Yesterday is history, tomorrow is a mystery, today is a gift of God, which is why we call it the present.</em><br><em>― Bill Keane</em><br>今天要講解的東西很輕鬆，就是用指令去建立一個React的專案。<br>–預備知識–</p>
-</blockquote>
+        <h3 id="最有生產力的一年-The-Productivity-Project-Chris-Bailey"><a href="#最有生產力的一年-The-Productivity-Project-Chris-Bailey" class="headerlink" title="最有生產力的一年(The Productivity Project) - Chris Bailey"></a>最有生產力的一年(The Productivity Project) - Chris Bailey</h3><p>約莫一周過去，偶爾翻開小讀一番，不知不覺在今天讀完整本。</p>
+<p>我想，這本書會吸引一個人，最根本的原因是<strong>不滿足於現狀</strong>的生活和自己。在有數十本的購買清單中，挑選這本書作為自己最優先閱讀的一本書，是因為我想知道自己和他人究竟有什麼區別。我曾經想過他人花的時間比我多，固然能夠成就比我更多，但在我約莫數個月的密集學習後，我發現自己的學習成果相當差。或許這樣的想法過於主觀，但我還是認為自己付出的時間，卻沒有得到我認為應該要有的成效，不免有點失望。當然，這本書還沒有完全解決我的問題，但卻是一本認清自己的最佳書籍。</p>
 <ul>
-<li>知道命令列介面(Command Line Interface)<ul>
-<li>Windows -&gt; cmd</li>
-<li>Mac -&gt; terminal</li>
-</ul>
-</li>
-</ul>
-<p>–講解流程–</p>
-<ul>
-<li>安裝Node.js</li>
-<li>建立React專案</li>
+<li>本書觀點</li>
+<li>我的看法</li>
 <li>結語</li>
 </ul>
-<h4 id="安裝Node-js"><a href="#安裝Node-js" class="headerlink" title="安裝Node.js"></a>安裝Node.js</h4><p>在透過指令安裝React專案前，我們必須先下載Node.js，如果已經安裝好可以直接跳到下一個步驟。</p>
-<ul>
-<li>Node.js: <a target="_blank" rel="noopener" href="https://nodejs.org/en/">https://nodejs.org/en/</a></li>
-</ul>
-<p><img src="https://i.imgur.com/w0EDv6j.jpg" alt="node"></p>
-<p>直接安裝16.1.0Current版本也可以，接著就照著安裝指示安裝即可。</p>
-<h4 id="建立React專案"><a href="#建立React專案" class="headerlink" title="建立React專案"></a>建立React專案</h4><p>安裝完成後打開命令列介面，切換到自己想要建立專案文件夾的路徑後，輸入以下指令建立React的專案。</p>
-<p><img src="https://i.imgur.com/OzGORev.jpg" alt="react"></p>
-<p>可能會有提示需要安裝create-react-app套件的指示出現，就輸入Y就可以安裝了!<br>接著就會看到專案成功建立完成!把路徑切換到資料夾裡面後，輸入<strong>npm start</strong>就可以成功在本地端(自己的電腦)運行。</p>
-<p><img src="https://i.imgur.com/baMBc6M.jpg" alt="react-run"></p>
-<p>接著打開瀏覽器就可以看到React專案預設好的畫面!<br><img src="https://i.imgur.com/4ujriXZ.jpg" alt="react-home"></p>
-<p>這就是用React開始撰寫網站的第一個步驟!</p>
-<p>所謂的套件，在這裡指的是由其他人統整好的函式庫，整個套件含有許多我們在開發React專案的時候需要引入的函式庫等等。因此我們可以知道<strong>create-react-app</strong>就是負責幫我們把需要的工具都整理好，畢竟工欲善其事，必先利其器，就是這個道理。</p>
 <hr>
-<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>其實這個部分只是想要對開發環境重新做一個認識，順便記錄下來心想或許會有剛接觸到React的程式設計師可以快速閱覽一下。我其實還有遇到webpack版本問題，因為之前在開發的時候把webpack安裝到全域裡，導致建立好的React專案的webpack套件版本被覆蓋過去而跳出警示訊息，所以還是應該好好的把全域弄得乾乾淨淨是最好的選擇。畢竟一天到晚都在搞開發環境，而沒有任何心力專注在開發的話，大概會發瘋吧?</p>
+<h4 id="本書觀點"><a href="#本書觀點" class="headerlink" title="本書觀點"></a>本書觀點</h4><p>斷斷續續地讀這本書，說真的有些內容我早已是拋諸腦後，一方面是因為自己記憶力不好，另外一方面則是因為沒有照著書本去實際改善，而只是一昧地閱讀。不過，趁著這篇文章，可以好好溫習一些不錯的想法，因為在閱讀時，我有習慣在不錯的觀點上貼上色紙的習慣。</p>
+<p>若有一句話可以歸納「最有生產力的一年」這本書，我想可以用下面這句話試著詮釋:<br><strong>邊緣系統與前額葉皮層間的愛恨情仇</strong></p>
+<p>我不確定這兩個專有名詞究竟出現多少次，但至少就我個人看完這本書，就算不特別去記，也已經深植我的腦內海馬迴。喔!就連這個掌管長期記憶的腦內單元都跑出來，想必是Chris Bailey惹的禍。</p>
+<p>用簡單的方式理解這兩個專有名詞，我想前者可以聯想至「衝動」，後者可以聯想至「理性」，但我認為這兩個詞彙沒有正負的區分，並不是衝動就不好，也不是理性就好，這全仰賴於生活所遭遇到的情境。</p>
+<p>克里斯在開頭不久說: 「生產力與你做多少無關，只與你成就多少有關。」這是一句相當發人省思的一句話，因為在當今社會體制下，許多人依舊活在時間經濟時代，而不是知識經濟時代。在約莫1960s，投入的時間夠多，就會有相對應的報酬，但是在現今的社會下，投入的時間愈多，依舊只會獲得一樣的報酬，而這報酬卻不足以支付快速動盪的世界格局。</p>
+<p>影響一個人的生產力主要由「專注力」、「精力」、「時間」三者構成，其中作者闡述時間是最為有限的。透過研究精力、專注力，作者提供我們許多方法去提升自己的生產力，甚至避免在提升生產力過程中的陷阱，赫赫有名的規劃謬誤同樣也出現在本書當中。</p>
+<p>作者歸納並且提供給讀者的方法，我認為都有他的用意所在，不管是冥想、重點清單、熱點或白日夢，都是不錯的嘗試方式，在平常鮮少有機會去認識自己的過程當中，實踐某幾項會是不錯的嘗試。</p>
+<hr>
+<h4 id="我的看法"><a href="#我的看法" class="headerlink" title="我的看法"></a>我的看法</h4><p>作者說時間是最為有限的，其實我並不完全認同，因為我個人認為專注力和精力的時間都不會超過24H，甚至是遠小於24H。</p>
+<p>對於我個人而言最大的收穫是<strong>自我對話</strong>，當然多喝水、運動和冥想我認為也都是非常不錯且看來相當理所當然的概念，不過自我對話卻是一件很值得去思考的事情。作者認為當一個人生產力愈高，自我對話的頻率也會愈高。</p>
+<p>很慶幸的是，自我對話中的自我否定的言語居然會高達7成，發現這件事情不是因為悲觀的心情而是人的根性是最大的收穫，頓時這周以來的烏煙瘴氣瞬間少掉一半。</p>
+<p><strong>規劃謬誤</strong>也是一個我很喜歡的論點，它雖然看起來有害，但我卻認為它與待辦清單(Todolist)息息相關，因為代辦清單不就是一種規劃嗎? 只不過這樣的規劃通常比較短期，但這又因人而異，因為代辦清單完全可以分長中短去撰寫，但確實認知自己掉落這樣的陷阱是必要的。我就是身受其害的一名，往往都把要讀的書本規劃好，卻根本沒有實踐，而掉落自我安慰的陷阱當中，以為一切都會照著規畫走。</p>
+<p>很多情況下，我也經常強迫自己一定要完成才能夠去處理其他的事情，但卻沒有仔細去思考需要令自己適當的放鬆。愈想提高生產力，愈該學習時常的放鬆，而不是強逼迫自己去做該做的事情。以自己在學程式過程，剛開始的時候都會覺得信心滿滿，但一遇到問題就會累積焦燥的心情，甚至看著時間一點一點流逝，就會開始思考自己現在所做的是否有任何意義，也許只是自己的自我滿足，這也是作者認為理解提高生產力背後的意義至關重要的一點。</p>
+<p>微小改變往往可以成就更大的目標，但在這其中不可或缺的是將「<strong>未來</strong>」的自己和「<strong>現在</strong>」的自己<strong>連結</strong>在一起，唯有將未來和現在的自己連結，才有可能真正理解自己的所作所為，這是本書我最喜歡的一個觀點。</p>
 
     </div>
 
@@ -275,9 +252,10 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/javascript/" rel="tag"># javascript</a>
-              <a href="/tags/react/" rel="tag"># react</a>
-              <a href="/tags/component/" rel="tag"># component</a>
+              <a href="/tags/book/" rel="tag"># book</a>
+              <a href="/tags/read/" rel="tag"># read</a>
+              <a href="/tags/mental/" rel="tag"># mental</a>
+              <a href="/tags/productivity/" rel="tag"># productivity</a>
           </div>
 
         
@@ -286,13 +264,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/05/06/React%E7%B3%BB%E5%88%97-React%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" rel="prev" title="React系列-React介紹與基本概念淺談">
-      <i class="fa fa-chevron-left"></i> React系列-React介紹與基本概念淺談
+    <a href="/2021/05/21/Leetcode-20-Valid-Parentheses-C/" rel="prev" title="Leetcode-20.Valid Parentheses(C)">
+      <i class="fa fa-chevron-left"></i> Leetcode-20.Valid Parentheses(C)
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/05/07/%E7%A8%8B%E5%BC%8F%E6%97%A5%E5%B8%B8%E7%B3%BB%E5%88%97-%E5%AE%A3%E5%91%8A%E5%BC%8F%E8%88%87%E6%8C%87%E4%BB%A4%E5%BC%8F%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80%E7%9A%84%E5%B7%AE%E7%95%B0/" rel="next" title="程式日常-指令式與宣告式程式語言的差異">
-      程式日常-指令式與宣告式程式語言的差異 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -351,7 +326,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E5%B1%AC%E6%96%BC%E4%BD%A0-%E5%A6%B3%E8%87%AA%E5%B7%B1%E7%9A%84React%E5%B0%88%E6%A1%88"><span class="nav-number">1.</span> <span class="nav-text">建立屬於你&#x2F;妳自己的React專案!</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%9DNode-js"><span class="nav-number">1.1.</span> <span class="nav-text">安裝Node.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8BReact%E5%B0%88%E6%A1%88"><span class="nav-number">1.2.</span> <span class="nav-text">建立React專案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.3.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E6%9C%89%E7%94%9F%E7%94%A2%E5%8A%9B%E7%9A%84%E4%B8%80%E5%B9%B4-The-Productivity-Project-Chris-Bailey"><span class="nav-number">1.</span> <span class="nav-text">最有生產力的一年(The Productivity Project) - Chris Bailey</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E6%9B%B8%E8%A7%80%E9%BB%9E"><span class="nav-number">1.1.</span> <span class="nav-text">本書觀點</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%88%91%E7%9A%84%E7%9C%8B%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">我的看法</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
