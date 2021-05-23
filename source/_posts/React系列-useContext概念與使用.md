@@ -99,7 +99,7 @@ import Login from './components/User/Login';
 import Cart from './components/Cart/Cart';
 
 const App = () => {
-  const context = useContext(AuthUser);
+  const ctx = useContext(AuthUser);
   
   return (
     <>

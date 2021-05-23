@@ -10,6 +10,7 @@ keywords:
 author: Matsu Chen
 language: zh-TW
 timezone: ''
+encoding: UTF-8
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
