@@ -163,7 +163,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/26/React%E7%B3%BB%E5%88%97-Jest%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/28/React%E7%B3%BB%E5%88%97-JEST%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8-%E7%BA%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/matsu.jpg">
@@ -177,7 +177,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/05/26/React%E7%B3%BB%E5%88%97-Jest%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">React系列-JEST測試概念與使用</a>
+            <a href="/2021/05/28/React%E7%B3%BB%E5%88%97-JEST%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8-%E7%BA%8C/" class="post-title-link" itemprop="url">React系列-JEST測試概念與使用(續)</a>
         </h2>
 
         <div class="post-meta">
@@ -188,8 +188,141 @@
               <span class="post-meta-item-text">發表於</span>
               
 
-              <time title="創建時間：2021-05-26 14:49:58 / 修改時間：16:15:02" itemprop="dateCreated datePublished" datetime="2021-05-26T14:49:58+08:00">2021-05-26</time>
+              <time title="創建時間：2021-05-28 16:26:56 / 修改時間：17:48:23" itemprop="dateCreated datePublished" datetime="2021-05-28T16:26:56+08:00">2021-05-28</time>
             </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Test/" itemprop="url" rel="index"><span itemprop="name">Test</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="React-with-JEST"><a href="#React-with-JEST" class="headerlink" title="React with JEST"></a>React with JEST</h3><blockquote>
+<p><em>You cannot change what you are, only what you do.</em><br><em>― Philip Pullman, The Golden Compass</em></p>
+</blockquote>
+<ul>
+<li>實際測試</li>
+<li>結語</li>
+</ul>
+<p>今天延續上篇JEST測驗概念與使用的內容，若還沒看的朋友們，可以點開下方連結讀過再來看本篇。</p>
+<p><strong>React系列-JEST測試概念與使用: <a target="_blank" rel="noopener" href="https://tinyurl.com/yh5puf3t">https://tinyurl.com/yh5puf3t</a></strong></p>
+<p>前幾天稍微聊過關於測試的類別與JEST的使用，最後展示基本範例的測試過程。在本篇我們將來討論其他方面的測試。話不多說，現在就來進入正題。</p>
+<hr>
+<h4 id="實際測試"><a href="#實際測試" class="headerlink" title="實際測試"></a>實際測試</h4><p>首先建立新的檔案叫做<strong>GoodBye.js</strong>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In GoodBye.js</span><br><span class="line">const GoodBye &#x3D; props &#x3D;&gt; &#123;</span><br><span class="line">  return &lt;p&gt;&#123;props.children&#125;&lt;&#x2F;p&gt;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default GoodBye;</span><br></pre></td></tr></table></figure>
+<p>建立這個檔案用途是能夠在<strong>Greeting.test.js</strong>當中，一同測試GoodBye組件，去試著了解整合測試的概念。同時，我們在Greeting組件匯入GoodBye並且將檔案修改一下，相信大家對於props.children不會太陌生，用一句話來說的話，就是打包內容。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;Greeting.js&quot;</span><br><span class="line">import GoodBye from &#39;.&#x2F;GoodBye&#39;;</span><br><span class="line"></span><br><span class="line">const Greeting &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;Hello World!&lt;&#x2F;h2&gt;</span><br><span class="line">      &lt;GoodBye&gt;It is good to see you.&lt;&#x2F;GoodBye&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Greeting;</span><br></pre></td></tr></table></figure>
+<p>接著修改測試檔案的內容:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;Greeting.test.js&quot;</span><br><span class="line">describe(&#39;&lt;Greeting &#x2F;&gt;&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">  test(&#39;Render Hello World as a text&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">    render(&lt;Greeting &#x2F;&gt;);</span><br><span class="line"></span><br><span class="line">    const findText &#x3D; screen.getByText(&#39;Hello World&#39;, &#123; exact: false &#125;);</span><br><span class="line">    expect(findText).toBeInTheDocument();</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  test(&#39;GoodBye in Greeting&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">    render(&lt;Greeting &#x2F;&gt;);</span><br><span class="line">    </span><br><span class="line">    const findGoodBye &#x3D; screen.getByText(&#39;It is good to see you.&#39;, &#123; exact: true&#125;);</span><br><span class="line">    expect(findGoodBye).toBeInTheDocument();</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>特別的是<strong>describe</strong>函數主要用來告知Test要測試的是一個組合(Suite)，每一個describe可以有數個test，使用方式和test函數相似。延續上篇文章的測試後，出現下方結果。</p>
+<p><img src="https://i.imgur.com/07nGgkM.jpg" alt="test"></p>
+<p>緊接著來討論關於事件的測試方式，將Greeting組件修改，增加一個狀態管理文字是否顯示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import &#123; useState &#125; from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">import GoodBye from &#39;.&#x2F;GoodBye&#39;;</span><br><span class="line"></span><br><span class="line">const Greeting &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  const [text, setText] &#x3D; useState(false);</span><br><span class="line"></span><br><span class="line">  const changeText &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">      setText(true);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;Hello World!&lt;&#x2F;h2&gt;</span><br><span class="line">      &#123;!text &amp;&amp; &lt;GoodBye&gt;It is good to see you.&lt;&#x2F;GoodBye&gt;&#125;</span><br><span class="line">      &#123;text &amp;&amp; &lt;GoodBye&gt;Not good to see you.&lt;&#x2F;GoodBye&gt;&#125;</span><br><span class="line">      &lt;button onClick&#x3D;&#123;changeText&#125;&gt;Change Text!&lt;&#x2F;button&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Greeting;</span><br></pre></td></tr></table></figure>
+<p>因為測試事件需要模擬使用者點擊的行為，必須先引入<strong>userEvent</strong>物件進行模擬。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;Greeting.test.js&quot;</span><br><span class="line">import userEvent from &#39;@test-library&#x2F;user-event</span><br><span class="line"></span><br><span class="line">describe(&#39;&lt;Greeting &#x2F;&gt;&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">  ...同上述測試碼...</span><br><span class="line"></span><br><span class="line">  test(&#39;Check original text is invisible&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">      render(&lt;Greeting &#x2F;&gt;);</span><br><span class="line"></span><br><span class="line">      const button &#x3D; screen.getByRole(&#39;button&#39;);</span><br><span class="line">      userEvent.click(button);</span><br><span class="line"></span><br><span class="line">      const originalText &#x3D; screen.queryByText(&#39;It is good to see you.&#39;);</span><br><span class="line">      expect(originalText).toBeNull();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);     </span><br></pre></td></tr></table></figure>
+<p>新增模擬按鈕的測試後，此處只有一個按鈕，直接透過getByRole去找到唯一的一個按鈕。實際上選擇方式和JS處理DOM的概念一樣，接著透過userEvent物件的方式click去模擬按鈕的行為，最後搜尋是否有原先的文字。注意到queryByText作用和getByText一樣，差別在於<strong>query若找到目標會回傳相符的節點，若沒有找到目標則會回傳null</strong>。現在執行測試就會看到三個測試通過囉!</p>
+<p><img src="https://i.imgur.com/CdV1WJR.jpg" alt="test2"></p>
+<p>最後我們來看看本日的最後一個測試，主要針對fetch API和資料庫互動的測試。我們來仔細思考一下若測試時也真的與資料庫互動，會產生哪些問題? 以下是可能發生的問題:</p>
+<ul>
+<li>資料庫流量擁擠</li>
+<li>影響資料庫資料</li>
+<li>測試成本暴增</li>
+</ul>
+<p>當我們主要想測試是否可以連線成功時，其實是完全不需要真的跟資料庫有後續的互動，即便是真的需要驗證資料庫是否可以成功運作，我想也會有一個模擬的資料庫，而不是與實際使用的資料庫溝通。我們先新增一個新的組件Async。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;Async.js&quot;</span><br><span class="line">import &#123; useEffect, useState &#125; from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">const Async &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  const [posts, setPosts] &#x3D; useState([]);</span><br><span class="line"></span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    &#x2F;&#x2F; 網路上公開測試用API</span><br><span class="line">    fetch(&#39;https:&#x2F;&#x2F;jsonplaceholder.typicode.com&#x2F;posts&#39;)</span><br><span class="line">      .then((response) &#x3D;&gt; response.json())</span><br><span class="line">      .then((data) &#x3D;&gt; &#123;</span><br><span class="line">        setPosts(data);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &#123;posts.map((post) &#x3D;&gt; (</span><br><span class="line">          &lt;li key&#x3D;&#123;post.id&#125;&gt;&#123;post.title&#125;&lt;&#x2F;li&gt;</span><br><span class="line">        ))&#125;</span><br><span class="line">      &lt;&#x2F;ul&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Async;</span><br></pre></td></tr></table></figure>
+<p>使用fetch API需要處理非同步的問題，因為從資料庫傳來的資料需要時間傳遞。在Async組件當中使用到useEffect和useState兩個Hooks，用途可以參見先前的文章。另外建立Async.test.js的檔案。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import &#123; render, screen &#125; from &#39;@testing-library&#x2F;react&#39;;</span><br><span class="line"></span><br><span class="line">import Asnyc from &#39;.&#x2F;Async&#39;;</span><br><span class="line"></span><br><span class="line">describe(&#39;Asynchronous API Testing&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">  test(&#39;Check request successes or not&#39;, async () &#x3D;&gt; &#123;</span><br><span class="line">    &#x2F;&#x2F; 建立Mock(Spy)</span><br><span class="line">    window.fetch &#x3D; jest.fn();</span><br><span class="line">    &#x2F;&#x2F; 覆寫fecth API的動作，連線後回傳資料</span><br><span class="line">    window.fetch.mockResolvedValueOnce(&#123;</span><br><span class="line">      json: async () &#x3D;&gt; [&#123; id: &#39;p1&#39;, title: &#39;First Post&#39; &#125;],</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    render(&lt;Asnyc &#x2F;&gt;);</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 等待fetch動作完成後檢查是否有listitem陣列</span><br><span class="line">    const listItem &#x3D; await screen.findAllByRole(&#39;listitem&#39;);</span><br><span class="line">    expect(listItem).not.toHaveLength(0);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>處理非同步的問題需要覆寫fetch API的方法，這裡必須呼叫<strong>window.fetch</strong>才能夠正確覆寫，單純只呼叫fetch API會直接使用這個函數而無法覆寫。接著透過<strong>jest.fn</strong>函數去模擬回傳資料，jest.fn會建立所謂的<strong>Mock</strong>，Mock常常又稱作間諜，因為它可以模仿函數的行為，最後則是透過<strong>mockResolvedValueOnce</strong>去模擬資料的運作。一連串過程中，可以測試是否連線成功，唯一的差別在於資料是由測試人員自行建立。最後確認回傳的list長度是否為0，就能確認模擬狀況。這裡特別要注意到find的方法和get與query都一樣，差別在於它會回傳Promise，因此會等到模擬fetch完成後才執行。</p>
+<p>最後我們執行測試，出現下方的結果。</p>
+<p><img src="https://i.imgur.com/XmcR3lu.jpg" alt="test3"></p>
+<p>Test Suites共用兩個，因為我們分別有Async和Greeting兩個測試，此外內部分別有1和3個測試，總共有四個測試項目。</p>
+<p>-重點回顧-</p>
+<ul>
+<li>Query回傳DOM節點或Null</li>
+<li>Find回傳Promise</li>
+<li>Mock透過jest.fn建立</li>
+</ul>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天把上一篇文章後續的內容討論一下，順便在腦中重新複習一下JEST測試的過程，不過如何針對props去測試還沒有仔細想過，或許會是未來一個有趣的內容。最近花兩天時間讓大腦好好放鬆，看完Netflix上的救命倒數這部美劇，第一季挺不錯的，但第二季就好冗長，跳過的內容相當多。另外艾莉西亞才真的值得珍惜，茱莉亞趕快下去…看的有夠討厭，連恩頭殼壞去，編劇要不要這麼搞?</p>
+<p>最後謝謝看到這裡的妳/你們。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/26/React%E7%B3%BB%E5%88%97-JEST%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/26/React%E7%B3%BB%E5%88%97-JEST%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">React系列-JEST測試概念與使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+
+              <time title="創建時間：2021-05-26 14:49:58" itemprop="dateCreated datePublished" datetime="2021-05-26T14:49:58+08:00">2021-05-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新於</span>
+                <time title="修改時間：2021-05-28 16:50:36" itemprop="dateModified" datetime="2021-05-28T16:50:36+08:00">2021-05-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -263,10 +396,10 @@
 <p>但是要如何在專案中直接執行測試? 這就需要仰賴 JEST 去執行我們的測試碼，除此之外，我們還需要模擬 React App 的工具，也就是 React Testing 函式庫，上述兩個工具都已經在先前提到過。我們實際來測試看看。</p>
 <hr>
 <h5 id="實際測試"><a href="#實際測試" class="headerlink" title="實際測試"></a>實際測試</h5><p>首先我們在專案當中建立 components 的資料夾，接著在資料夾中建立 Greeting.js 這個組件，如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Greeting.js</span><br><span class="line">const Greeting &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;Hello World!&lt;&#x2F;h2&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Greeting;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;Greeting.js&quot;</span><br><span class="line">const Greeting &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;Hello World!&lt;&#x2F;h2&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Greeting;</span><br></pre></td></tr></table></figure>
 
 <p>現在我們已經有 Greeting 組件可以測試，但是現在要如何撰寫測試檔案? 一般來說，我們會在同一個資料夾直接建立同樣檔名的測試檔案，這裡我們在 components 建立 Greeting.test.js 測試檔。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Greeting.test.js</span><br><span class="line">import &#123; render, screen &#125; from &#39;@testing-library&#x2F;react&#39;;</span><br><span class="line">import Greeting from &#39;.&#x2F;Greeting&#39;;</span><br><span class="line"></span><br><span class="line">test(&#39;Render Hello World as a text&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">    render(&lt;Greeting &#x2F;&gt;);</span><br><span class="line"></span><br><span class="line">    const findText &#x3D; screen.getByText(&#39;Hello World&#39;, &#123; exact: false &#125;);</span><br><span class="line">    expect(findText).toBeInTheDocument();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;Greeting.test.js&quot;</span><br><span class="line">import &#123; render, screen &#125; from &#39;@testing-library&#x2F;react&#39;;</span><br><span class="line">import Greeting from &#39;.&#x2F;Greeting&#39;;</span><br><span class="line"></span><br><span class="line">test(&#39;Render Hello World as a text&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">    render(&lt;Greeting &#x2F;&gt;);</span><br><span class="line"></span><br><span class="line">    const findText &#x3D; screen.getByText(&#39;Hello World&#39;, &#123; exact: false &#125;);</span><br><span class="line">    expect(findText).toBeInTheDocument();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>測試Greeting組件要將它匯入測試檔中，此外還必須匯入兩個函數，分別為<strong>render</strong>和<strong>screen</strong>:<br>render: 模擬React渲染<br>screen: 模擬DOM的選取</p>
 <p>接著透過JEST的test函數，告訴React這裡是要進行測試的檔案。<code>test(&#39;&#39;, &#123;&#125;)</code>，參數一描述測試用途，參數二則是用來撰寫測試的程式碼，可以注意到我們在這裡透過render(<Greeting />)去模擬React渲染，接著透過screen去尋找是否有<strong>Hello World</strong>的文字，exact代表是否需要完全相符，預設情況下是false。最後透過expect函數去回傳測試結果。</p>
 <p>實際跑過<code>npm test</code>就會出現下方測試通過的結果:<br><img src="https://i.imgur.com/9WtRQL7.jpg" alt="test1"></p>
@@ -602,125 +735,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/20/React%E7%B3%BB%E5%88%97-useCallback%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/matsu.jpg">
-      <meta itemprop="name" content="Matsu Chen">
-      <meta itemprop="description" content="消逝在平凡的日子中">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Matsu Chen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/20/React%E7%B3%BB%E5%88%97-useCallback%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">React系列-useCallback概念與使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-              
-
-              <time title="創建時間：2021-05-20 16:37:59 / 修改時間：17:56:44" itemprop="dateCreated datePublished" datetime="2021-05-20T16:37:59+08:00">2021-05-20</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="Hooks家族-useCallback"><a href="#Hooks家族-useCallback" class="headerlink" title="Hooks家族 - useCallback"></a>Hooks家族 - useCallback</h3><blockquote>
-<p><em>Beware of the man who works hard to learn something, learns it, and finds himself no wiser than before.</em><br><em>― Kurt Vonnegut, Cat’s Cradle</em></p>
-</blockquote>
-<p>來到第六篇關於Hooks的文章，不能說自己真的很懂Hooks，但多多少少，不再對Hooks感到陌生。今天要來聊聊關於useCallback這個Hooks，光是在JS就可以常常看見回呼函數的使用，那麼這個useCallback又與平常我們認知的有什麼不同? 趕緊來看看。</p>
-<ul>
-<li>useCallback<ul>
-<li>useCallback使用方法</li>
-</ul>
-</li>
-<li>結語</li>
-</ul>
-<hr>
-<h4 id="useCallback"><a href="#useCallback" class="headerlink" title="useCallback"></a>useCallback</h4><p>官方精闢解析<br><strong>useCallback: Returns a memoized callback.</strong><br>useCallback會回傳記憶化的回乎函數，這邊要注意<strong>Memoization</strong>不等同於<strong>Memorization</strong>。有機會我們再來詳細探討這兩者間的區別。</p>
-<p>所謂的記憶化(Memoization)是一種用於提升電腦程式速度的<strong>優化技巧</strong>，主要的概念是<strong>儲存複雜函數結果</strong>並且當相同結果出現時透過<strong>快取</strong>(Cache)存取。講白就是犧牲儲存空間，去提升電腦性能。</p>
-<p>我們實際來看如何使用useCallback於React中。</p>
-<h5 id="useCallback使用方式"><a href="#useCallback使用方式" class="headerlink" title="useCallback使用方式"></a>useCallback使用方式</h5><p>useCallback定義如下:<br><code>const memoizedCallback = useCallback(() =&gt; &#123; memoizedFn(a, b)&#125;,  [a, b])</code><br>透過useCallback這一個Hook，可以直接將要記憶化結果的函數存取在memoizedCallback中，並且只有在a, b會影響memoizedFn函數的時候才會重新執行。</p>
-<p>我們實際看看例子:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import &#123;useState, useEffect, useCallback&#125; from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  const [isLoading, setIsLoading] &#x3D; useState(false);</span><br><span class="line"></span><br><span class="line">  const fetchHandler &#x3D; useCallback(() &#x3D;&gt; &#123;</span><br><span class="line">    setIsLoading(true);</span><br><span class="line">    fetch(&#39;http:&#x2F;&#x2F;dabaseFetch&#39;).then(res &#x3D;&gt; console.log(res));</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    fetchHandler();</span><br><span class="line">  &#125;, [fetchHandler]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default App;</span><br></pre></td></tr></table></figure>
-<p>首先看到App中的程式碼，我們總共引入三個Hooks，其中兩個先前都是有討論過的Hooks。在這一段程式碼當中，我主要想要去抓到某些<strong>資料</strong>，可以看到fetchHandler函數裡面有個JS內建的<strong>fetch</strong>方法(API)，fetch就是拿來操作HTTP的各種請求，<strong>預設</strong>的情況下會是HTTP請求的<strong>GET</strong>。因此當fetchHandler執行時就會發送一個GET請求給伺服器，伺服器則會回傳某特定格式，而fetch這個API回傳的一定是Promise。</p>
-<p>回到主題上，我們透過useEffect去更新fetchHandler，每當App渲染時，useEffect就會執行一次，接著再根據fetchHandler去執行，但是這邊就有一個很大的問題點是源自於React本身。</p>
-<p>對於React來說，每當<strong>重新渲染</strong>時，所有的組件<strong>都會是全新的組件</strong>，不一樣的組件。什麼意思? 當我們實際執行React專案時，在我們重新載入的那一剎那，所有的組件都是新的組件，不同於先前所渲染的組件。換句話說，以我們fetchHandler來說，即便執行的名稱與內容都完全相同，React也會視這兩個fetchHandler為不一樣的函數，這一切都是源自於JS物件Call by Reference的本質而延伸出來。</p>
-<p>因此當我們沒有透過useCallback去記憶化fetchHandler這個函數，就會發生不斷發出GET請求的慘劇。假如我們將程式碼改成如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import &#123;useState, useEffect, useCallback&#125; from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  const [isLoading, setIsLoading] &#x3D; useState(false);</span><br><span class="line"></span><br><span class="line">  const fetchHandler &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    setIsLoading(true);</span><br><span class="line">    fetch(&#39;http:&#x2F;&#x2F;dabaseFetch&#39;).then(res &#x3D;&gt; console.log(res));</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    fetchHandler();</span><br><span class="line">  &#125;, [fetchHandler]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default App;</span><br></pre></td></tr></table></figure>
-<p>也就是將fetchHandler的useCallback刪去後，實際執行相似的程式碼就會得到類似於下方的結果:</p>
-<p><img src="https://i.imgur.com/1ey45Lq.jpg" alt="infi"></p>
-<p>可以在開發者工具發現fetch會不斷的發送請求到伺服器，這是非常嚴重的問題。但這個嚴重的問題，可以簡單地透過useCallback去解決。我們再度回到fetchHandler這個函數。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const fetchHandler &#x3D; useCallback(() &#x3D;&gt; &#123;</span><br><span class="line">  setIsLoading(true);</span><br><span class="line">  fetch(&#39;http:&#x2F;&#x2F;dabaseFetch&#39;).then(res &#x3D;&gt; console.log(res));</span><br><span class="line">&#125;, []);</span><br></pre></td></tr></table></figure>
-<p>概念和useEffect一樣，[]代表組件渲染完成後會執行一次。useCallback則會將箭頭函數後的所有函數都記下來指派給fetchHandler。這時候，每當有任何組件重新渲染，fetchHandler不會重新被渲染一次，因為已經透過Hooks將fetchHandler記憶化，因此不會出現fetchHandler不斷重新執行的問題，因為對於React來說，現在的fetchHandler都是同一個函數。</p>
-<p>最後我們只需要確保useEffect在處理fetchHandler時所產生的副作用，而副作用就是當資料更新時，必須重新將資料庫添加進去的資料再度透過GET方法去獲得資料就結束這一連串的動作。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">  fetchHandler();</span><br><span class="line">&#125;, [fetchHandler]);</span><br></pre></td></tr></table></figure>
-<p>特別注意到useEffect的依賴只需要指向fetchHandler函數而不需要()，如果加上()代表要立刻在這一行執行，這又是另外一齣慘劇了…</p>
-<hr>
-<p>-重點回顧-</p>
-<ul>
-<li>React每次渲染都會是不一樣的程式碼，即便長得一模一樣</li>
-<li>useCallback用於記憶化函數</li>
-</ul>
-<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天簡單說一下useCallback，我想概念上還算挺好理解。不過如何正確使用就又是另外一門學問，不過先搞清楚它們各自的目的才不會摔的滿頭包。</p>
-<p>這幾天心情一直很糟，不論是學習上還是生活上，真的可以說諸事不順，也不清楚要怎麼說出來比較好，只好像現在一樣打成文章，或是寫在日記上。但即便如此，好像還是悶在心裡一樣，可能是因為自己能力太差吧，覺得自己什麼都做不好，而現在又因為急於能夠找到一個落腳處，而更加心急如焚。現在都會回想大學不好好學習才會落的這個下場也算是自作自受，也有可能只是我一直往死裡鑽吧。</p>
-<p>其實我還是不清楚程式是不是自己想走的一條路，我覺得我自己沒有天分，可是仔細一想，自己到目前為止，也不過一個月不中斷地在練習Coding，但是昨晚看完龍櫻2，卻又覺得自己都沒有好好思考<strong>ものごと</strong>的本質，慚愧不已。說真的，別人都在進步，為什麼我好像一直在原地踏步。心好累。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一頁"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一頁"></i></a>
   </nav>
 
 
@@ -788,7 +806,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
