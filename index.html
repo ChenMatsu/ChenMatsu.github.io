@@ -163,6 +163,111 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/31/React%E7%B3%BB%E5%88%97-%E7%8E%A9%E8%BD%89Typescript%E5%BE%85%E8%BE%A6%E6%B8%85%E5%96%AE-%E4%B8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/31/React%E7%B3%BB%E5%88%97-%E7%8E%A9%E8%BD%89Typescript%E5%BE%85%E8%BE%A6%E6%B8%85%E5%96%AE-%E4%B8%8B/" class="post-title-link" itemprop="url">React系列-玩轉Typescript待辦清單(下)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2021-05-31 17:37:33 / 修改時間：20:51:27" itemprop="dateCreated datePublished" datetime="2021-05-31T17:37:33+08:00">2021-05-31</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Typescript/" itemprop="url" rel="index"><span itemprop="name">Typescript</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="玩轉Typescript"><a href="#玩轉Typescript" class="headerlink" title="玩轉Typescript"></a>玩轉Typescript</h3><blockquote>
+<p><em>Work without love is slavery.</em><br><em>― Mother Teresa</em></p>
+</blockquote>
+<p>沒有愛的工作是奴役，但要怎麼去確認自己的工作是不是有愛?</p>
+<p>本篇內容主要源自於上一篇React系列-玩轉Typescript待辦清單(上)。</p>
+<p>本來打算將內容都寫在同一篇文章，但還是有點勉強，因此才分為上、下篇，在上一篇文章我們定義完類別和ContextAPI後，這裡我們只需要將它們運用在組件上就大功告成了!</p>
+<ul>
+<li>實作Todolist</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="實作Todolist"><a href="#實作Todolist" class="headerlink" title="實作Todolist"></a>實作Todolist</h4><p>首先處理第一個組件<strong>Todos.tsx</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;Todos.tsx&quot;</span><br><span class="line">import &#123; useContext &#125; from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">import &#123; TodosContext &#125; from &#39;..&#x2F;store&#x2F;todos-context&#39;;</span><br><span class="line">import TodoItem from &#39;.&#x2F;TodoItem&#39;;</span><br><span class="line"></span><br><span class="line">const Todos: React.FC &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; 使用ContextAPI</span><br><span class="line">  const todosCtx &#x3D; useContext(TodosContext);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &#123;todosCtx.todos.map((todo) &#x3D;&gt; (</span><br><span class="line">          &lt;TodoItem</span><br><span class="line">            key&#x3D;&#123;todo.id&#125;</span><br><span class="line">            name&#x3D;&#123;todo.name&#125;</span><br><span class="line">            &#x2F;&#x2F; null告知this不需要參照，todo.id則為第一個參數傳入</span><br><span class="line">            onDeleteTodo&#x3D;&#123;todosCtx.deleteTodo.bind(null, todo.id)&#125;</span><br><span class="line">          &#x2F;&gt;</span><br><span class="line">        ))&#125;</span><br><span class="line">      &lt;&#x2F;ul&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Todos;</span><br></pre></td></tr></table></figure>
+
+<p>在<strong>Todos</strong>當中使用到<strong>TodoItem</strong>組件，當然就需要再為它建一個組件囉! </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;TodoItem.tsx&quot;</span><br><span class="line">import React from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">const TodoItem: React.FC&lt;&#123;name: string; onDeleteTodo: () &#x3D;&gt; void&#125;&gt; &#x3D; (props) &#x3D;&gt; &#123;</span><br><span class="line">    return (</span><br><span class="line">        &lt;li onClick&#x3D;&#123;props.onDeleteTodo&#125;&gt;&#123;props.name&#125;&lt;&#x2F;li&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default TodoItem;</span><br></pre></td></tr></table></figure>
+<p>注意到在React.FC後方透過使用Generic去明確定義變數name和函數onDeleteTodo，因為對於TodoItem組件來說，這兩者都是陌生人。最後，因為我們需要新增項目，自然也就需要新增清單的組件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;NewTodo.tsx&quot;</span><br><span class="line">import React from &#39;react&#39;;</span><br><span class="line">import &#123; useRef, useContext &#125; from &#39;react&#39;;</span><br><span class="line">import &#123; TodosContext &#125; from &#39;..&#x2F;store&#x2F;todos-context&#39;;</span><br><span class="line"></span><br><span class="line">const NewTodo: React.FC &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  const todosCtx &#x3D; useContext(TodosContext);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; HTMLInputElement代表DOM的元素類別</span><br><span class="line">  const inputRef &#x3D; useRef&lt;HTMLInputElement&gt;(null);</span><br><span class="line"></span><br><span class="line">  const submitHandler &#x3D; (event: React.FormEvent) &#x3D;&gt; &#123;</span><br><span class="line">    event.preventDefault();</span><br><span class="line"></span><br><span class="line">    const todoName &#x3D; inputRef.current!.value;</span><br><span class="line"></span><br><span class="line">    if (todoName.trim().length &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">      return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    todosCtx.addTodo(todoName);</span><br><span class="line">  &#125;;</span><br><span class="line">  return (</span><br><span class="line">    &lt;form onSubmit&#x3D;&#123;submitHandler&#125;&gt;</span><br><span class="line">      &lt;label htmlFor&#x3D;&#39;name&#39;&gt;Todo Name&lt;&#x2F;label&gt;</span><br><span class="line">      &lt;input type&#x3D;&#39;text&#39; id&#x3D;&#39;name&#39; ref&#x3D;&#123;inputRef&#125; &#x2F;&gt;</span><br><span class="line">      &lt;button&gt;Add Todo&lt;&#x2F;button&gt;</span><br><span class="line">    &lt;&#x2F;form&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default NewTodo;</span><br></pre></td></tr></table></figure>
+<p>透過使用useRef Hook，可以簡單存取特定欄位的值。唯一需要注意的是HTMLInputElement，在使用Hooks也必須告訴TS相關的型別定義。其餘的都在React系列-useRef概念篇當中有詳細的了解，對於useRef使用有疑問可以參考那篇文章。</p>
+<p>最後僅需要將App.tsx做點小修改，就可以成功執行我們的代辦清單囉!</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import NewTodo from &#39;.&#x2F;components&#x2F;NewTodo&#39;;</span><br><span class="line">import Todos from &#39;.&#x2F;components&#x2F;Todos&#39;;</span><br><span class="line">import TodosContextProvider from &#39;.&#x2F;store&#x2F;todos-context&#39;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const App &#x3D; () &#x3D;&gt;  &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;TodosContextProvider &gt;</span><br><span class="line">      &lt;NewTodo&#x2F;&gt;</span><br><span class="line">      &lt;Todos&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;TodosContextProvider&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default App;</span><br></pre></td></tr></table></figure>
+<p>稍微添加CSS樣式在其中後，實際執行程式後，大致上會如下圖一樣:<br><img src="https://i.imgur.com/TtSomMd.jpg" alt="pic"></p>
+<p>給自己拍拍手! 我想是因為對於TS理解的不夠深，個人覺得在使用起來沒有太大的差別，但確實對於明確的去定義每一個細節要如何使用都非常的清楚明瞭，這應該是最能體會TS的威力的一點! 當然還有很多值得我們去探討的，就交給明天的自己吧!(飄~)</p>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>結束五月，不知不覺在這一個月當中有很多成長，不管是學習還是找工作，可以說壓力不少，但卻覺得意外的有趣，看著自己一篇又一篇的文章。有時候都會想為什麼要這麼麻煩，但卻又因為學習的空虛而感到不安，對於我自己來說，忘記以前讀過的書、學會的曲子、寫過的字才是最可怕的，因為那似乎代表自己白活那麼一段時光，一想到此，身體自己就動了起來。</p>
+<p>很多時候想的太多，真正需要的只是放手一搏而已，這段路途定然不容易，卻會是朝著理想的路上。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
     <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/31/React%E7%B3%BB%E5%88%97-%E7%8E%A9%E8%BD%89Typescript%E5%BE%85%E8%BE%A6%E6%B8%85%E5%96%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -188,7 +293,7 @@
               <span class="post-meta-item-text">發表於</span>
               
 
-              <time title="創建時間：2021-05-31 10:54:34 / 修改時間：17:36:53" itemprop="dateCreated datePublished" datetime="2021-05-31T10:54:34+08:00">2021-05-31</time>
+              <time title="創建時間：2021-05-31 10:54:34 / 修改時間：20:37:44" itemprop="dateCreated datePublished" datetime="2021-05-31T10:54:34+08:00">2021-05-31</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -267,6 +372,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;todos-context.tsx&quot;</span><br><span class="line">import React, &#123; useState &#125; from &#39;react&#39;;</span><br><span class="line">import Todo from &#39;..&#x2F;models&#x2F;todo.ts&#39;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 定義通用類型 </span><br><span class="line">type TodoContextObj &#123;</span><br><span class="line">  todos: Todo[];</span><br><span class="line">  addTodo: (name: string) &#x3D;&gt; void;</span><br><span class="line">  deleteTodo: (id: string) &#x3D;&gt; void;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 建立Context API</span><br><span class="line">export const TodoContext &#x3D; React.createContext&lt;TodoContextObj&gt;(&#123;</span><br><span class="line">  todos: [],</span><br><span class="line">  addTodo: () &#x3D;&gt; &#123;&#125;,</span><br><span class="line">  deleteTodo: (id: string) &#x3D;&gt; &#123;&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; React.FC告訴TS這是一個React函數組件，需要有props可以傳遞</span><br><span class="line">const TodoContextProvider: React.FC &#x3D; (props) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; 剛開始初始化時為空陣列，後續更新過後則為Todo類別</span><br><span class="line">  const [todos, setTodos] &#x3D; useState&lt;Todo[]&gt;([]);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; 新增項目</span><br><span class="line">  const addTodoHandler &#x3D; (todoName: string) &#x3D;&gt; &#123;</span><br><span class="line">    const newTodo &#x3D; new Todo(todoName);</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 透過先前的陣列狀況去更新陣列</span><br><span class="line">    setTodos((prevTodos) &#x3D;&gt; &#123;</span><br><span class="line">      return prevTodos.concat(newTodo);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; 刪除項目</span><br><span class="line">  const deleteTodoHandler &#x3D; (todoId: string) &#x3D;&gt; &#123;</span><br><span class="line"></span><br><span class="line">    setTodos((prevTodos) &#x3D;&gt; &#123;</span><br><span class="line">      &#x2F;&#x2F; 透過Array內建函數filter過濾掉id相符的項目</span><br><span class="line">      return prevTodos.filter( todo &#x3D;&gt; todo.id !&#x3D;&#x3D; todoId);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  const todoContextValue: TodosContextObj &#x3D; &#123;</span><br><span class="line">    todos: todos,</span><br><span class="line">    addtodo: addTodoHandler,</span><br><span class="line">    deleteTodo: deleteTodoHandler</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; 傳遞狀態</span><br><span class="line">  return (</span><br><span class="line">    &lt;TodoContext.Provider value&#x3D;&#123;todoContextValue&#125;&gt;</span><br><span class="line">      &#123;props.children&#125;</span><br><span class="line">    &lt;&#x2F;TodoContext.Prodiver&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default TodoContextProvider;</span><br></pre></td></tr></table></figure>
 <p>使用TS最大優點在於嚴謹明確，但相對的也必須負擔較多的責任，透過使用Generic的方式，將自定義類別<strong>TodosContextObj</strong>分別傳入contextAPI與todosContextObj也是為了解決這部份的問題。相對於為各自的props重複撰寫，我想透過contextAPI去處理已經省略相當多重複的程式區塊。</p>
 <p>到目前為止，我們已經完成最重要的兩步驟，定義類別與ContextAPI，處理完這兩個檔案後，最後僅需要將資料運用在組件上就算正式完成。</p>
+<p><img src="https://i.imgur.com/9iAiaPc.jpg" alt="pic"></p>
 <hr>
 <h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>這篇文章主要講解Typescript的基礎及結合React使用的方式，透過搭配React Hooks展現出更強大的應用能力。希望能夠將內容講解得更詳盡，因此會分上下兩篇文章，若有任何問題歡迎私訊。 </p>
 <p>我個人挺喜歡Typescript給我的感覺，使用上雖然有比較多地方需要注意，卻給我一種不一樣的美，程式碼變得更加純淨的感覺。我想這就是學習的路上有趣的地方，Typescript明明要求得更多卻更簡潔有力，這不是一件很厲害的事情嗎? 看起來限制更多卻更能夠發揮自己的想法，雖然我理解的還很少，但我覺得Typescript很值得去學習。</p>
@@ -674,99 +780,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/21/%E9%96%B1%E8%AE%80-%E6%9C%80%E6%9C%89%E7%94%9F%E7%94%A2%E5%8A%9B%E7%9A%84%E4%B8%80%E5%B9%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/matsu.jpg">
-      <meta itemprop="name" content="Matsu Chen">
-      <meta itemprop="description" content="消逝在平凡的日子中">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Matsu Chen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/21/%E9%96%B1%E8%AE%80-%E6%9C%80%E6%9C%89%E7%94%9F%E7%94%A2%E5%8A%9B%E7%9A%84%E4%B8%80%E5%B9%B4/" class="post-title-link" itemprop="url">閱讀-最有生產力的一年</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-              
-
-              <time title="創建時間：2021-05-21 17:33:36 / 修改時間：18:33:49" itemprop="dateCreated datePublished" datetime="2021-05-21T17:33:36+08:00">2021-05-21</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Book/" itemprop="url" rel="index"><span itemprop="name">Book</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Book/Business-Finance/" itemprop="url" rel="index"><span itemprop="name">Business Finance</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="最有生產力的一年-The-Productivity-Project-Chris-Bailey"><a href="#最有生產力的一年-The-Productivity-Project-Chris-Bailey" class="headerlink" title="最有生產力的一年(The Productivity Project) - Chris Bailey"></a>最有生產力的一年(The Productivity Project) - Chris Bailey</h3><p>約莫一周過去，偶爾翻開小讀一番，不知不覺在今天讀完整本。</p>
-<p>我想，這本書會吸引一個人，最根本的原因是<strong>不滿足於現狀</strong>的生活和自己。在有數十本的購買清單中，挑選這本書作為自己最優先閱讀的一本書，是因為我想知道自己和他人究竟有什麼區別。我曾經想過他人花的時間比我多，固然能夠成就比我更多，但在我約莫數個月的密集學習後，我發現自己的學習成果相當差。或許這樣的想法過於主觀，但我還是認為自己付出的時間，卻沒有得到我認為應該要有的成效，不免有點失望。當然，這本書還沒有完全解決我的問題，但卻是一本認清自己的最佳書籍。</p>
-<ul>
-<li>本書觀點</li>
-<li>我的看法</li>
-<li>結語</li>
-</ul>
-<hr>
-<h4 id="本書觀點"><a href="#本書觀點" class="headerlink" title="本書觀點"></a>本書觀點</h4><p>斷斷續續地讀這本書，說真的有些內容我早已是拋諸腦後，一方面是因為自己記憶力不好，另外一方面則是因為沒有照著書本去實際改善，而只是一昧地閱讀。不過，趁著這篇文章，可以好好溫習一些不錯的想法，因為在閱讀時，我有習慣在不錯的觀點上貼上色紙的習慣。</p>
-<p>若有一句話可以歸納「最有生產力的一年」這本書，我想可以用下面這句話試著詮釋:<br><strong>邊緣系統與前額葉皮層間的愛恨情仇</strong></p>
-<p>我不確定這兩個專有名詞究竟出現多少次，但至少就我個人看完這本書，就算不特別去記，也已經深植我的腦內海馬迴。喔!就連這個掌管長期記憶的腦內單元都跑出來，想必是Chris Bailey惹的禍。</p>
-<p>用簡單的方式理解這兩個專有名詞，我想前者可以聯想至「衝動」，後者可以聯想至「理性」，但我認為這兩個詞彙沒有正負的區分，並不是衝動就不好，也不是理性就好，這全仰賴於生活所遭遇到的情境。</p>
-<p>克里斯在開頭不久說: 「生產力與你做多少無關，只與你成就多少有關。」這是一句相當發人省思的一句話，因為在當今社會體制下，許多人依舊活在時間經濟時代，而不是知識經濟時代。在約莫1960s，投入的時間夠多，就會有相對應的報酬，但是在現今的社會下，投入的時間愈多，依舊只會獲得一樣的報酬，而這報酬卻不足以支付快速動盪的世界格局。</p>
-<p>影響一個人的生產力主要由「專注力」、「精力」、「時間」三者構成，其中作者闡述時間是最為有限的。透過研究精力、專注力，作者提供我們許多方法去提升自己的生產力，甚至避免在提升生產力過程中的陷阱，赫赫有名的規劃謬誤同樣也出現在本書當中。</p>
-<p>作者歸納並且提供給讀者的方法，我認為都有他的用意所在，不管是冥想、重點清單、熱點或白日夢，都是不錯的嘗試方式，在平常鮮少有機會去認識自己的過程當中，實踐某幾項會是不錯的嘗試。</p>
-<hr>
-<h4 id="我的看法"><a href="#我的看法" class="headerlink" title="我的看法"></a>我的看法</h4><p>作者說時間是最為有限的，其實我並不完全認同，因為我個人認為專注力和精力的時間都不會超過24H，甚至是遠小於24H。</p>
-<p>對於我個人而言最大的收穫是<strong>自我對話</strong>，當然多喝水、運動和冥想我認為也都是非常不錯且看來相當理所當然的概念，不過自我對話卻是一件很值得去思考的事情。作者認為當一個人生產力愈高，自我對話的頻率也會愈高。</p>
-<p>很慶幸的是，自我對話中的自我否定的言語居然會高達7成，發現這件事情不是因為悲觀的心情而是人的根性是最大的收穫，頓時這周以來的烏煙瘴氣瞬間少掉一半。</p>
-<p><strong>規劃謬誤</strong>也是一個我很喜歡的論點，它雖然看起來有害，但我卻認為它與待辦清單(Todolist)息息相關，因為代辦清單不就是一種規劃嗎? 只不過這樣的規劃通常比較短期，但這又因人而異，因為代辦清單完全可以分長中短去撰寫，但確實認知自己掉落這樣的陷阱是必要的。我就是身受其害的一名，往往都把要讀的書本規劃好，卻根本沒有實踐，而掉落自我安慰的陷阱當中，以為一切都會照著規畫走。</p>
-<p>很多情況下，我也經常強迫自己一定要完成才能夠去處理其他的事情，但卻沒有仔細去思考需要令自己適當的放鬆。愈想提高生產力，愈該學習時常的放鬆，而不是強逼迫自己去做該做的事情。以自己在學程式過程，剛開始的時候都會覺得信心滿滿，但一遇到問題就會累積焦燥的心情，甚至看著時間一點一點流逝，就會開始思考自己現在所做的是否有任何意義，也許只是自己的自我滿足，這也是作者認為理解提高生產力背後的意義至關重要的一點。</p>
-<p>微小改變往往可以成就更大的目標，但在這其中不可或缺的是將「<strong>未來</strong>」的自己和「<strong>現在</strong>」的自己<strong>連結</strong>在一起，唯有將未來和現在的自己連結，才有可能真正理解自己的所作所為，這是本書我最喜歡的一個觀點。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -838,7 +851,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>

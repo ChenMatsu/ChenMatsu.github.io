@@ -27,13 +27,15 @@
 <meta property="og:site_name" content="Matsu Chen">
 <meta property="og:description" content="玩轉Typescript Yesterday is gone. Tomorrow has not yet come. We have only today. Let us begin.― Mother Theresa  五月的最後一天，明天開始將掀開六月的篇章，未來還有很多挑戰，但今天才是最重要的。 今天想透過React使用Typescript去建立一個簡單的Todolist清單，在四月初其實有使">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/9iAiaPc.jpg">
 <meta property="article:published_time" content="2021-05-31T02:54:34.000Z">
-<meta property="article:modified_time" content="2021-05-31T09:36:53.932Z">
+<meta property="article:modified_time" content="2021-05-31T12:37:44.210Z">
 <meta property="article:author" content="Matsu Chen">
 <meta property="article:tag" content="javascript">
 <meta property="article:tag" content="react">
 <meta property="article:tag" content="typescript">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/9iAiaPc.jpg">
 
 <link rel="canonical" href="https://hiiragimatu.github.io/2021/05/31/React%E7%B3%BB%E5%88%97-%E7%8E%A9%E8%BD%89Typescript%E5%BE%85%E8%BE%A6%E6%B8%85%E5%96%AE/">
 
@@ -193,7 +195,7 @@
               <span class="post-meta-item-text">發表於</span>
               
 
-              <time title="創建時間：2021-05-31 10:54:34 / 修改時間：17:36:53" itemprop="dateCreated datePublished" datetime="2021-05-31T10:54:34+08:00">2021-05-31</time>
+              <time title="創建時間：2021-05-31 10:54:34 / 修改時間：20:37:44" itemprop="dateCreated datePublished" datetime="2021-05-31T10:54:34+08:00">2021-05-31</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -272,6 +274,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;todos-context.tsx&quot;</span><br><span class="line">import React, &#123; useState &#125; from &#39;react&#39;;</span><br><span class="line">import Todo from &#39;..&#x2F;models&#x2F;todo.ts&#39;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 定義通用類型 </span><br><span class="line">type TodoContextObj &#123;</span><br><span class="line">  todos: Todo[];</span><br><span class="line">  addTodo: (name: string) &#x3D;&gt; void;</span><br><span class="line">  deleteTodo: (id: string) &#x3D;&gt; void;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 建立Context API</span><br><span class="line">export const TodoContext &#x3D; React.createContext&lt;TodoContextObj&gt;(&#123;</span><br><span class="line">  todos: [],</span><br><span class="line">  addTodo: () &#x3D;&gt; &#123;&#125;,</span><br><span class="line">  deleteTodo: (id: string) &#x3D;&gt; &#123;&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; React.FC告訴TS這是一個React函數組件，需要有props可以傳遞</span><br><span class="line">const TodoContextProvider: React.FC &#x3D; (props) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; 剛開始初始化時為空陣列，後續更新過後則為Todo類別</span><br><span class="line">  const [todos, setTodos] &#x3D; useState&lt;Todo[]&gt;([]);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; 新增項目</span><br><span class="line">  const addTodoHandler &#x3D; (todoName: string) &#x3D;&gt; &#123;</span><br><span class="line">    const newTodo &#x3D; new Todo(todoName);</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 透過先前的陣列狀況去更新陣列</span><br><span class="line">    setTodos((prevTodos) &#x3D;&gt; &#123;</span><br><span class="line">      return prevTodos.concat(newTodo);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; 刪除項目</span><br><span class="line">  const deleteTodoHandler &#x3D; (todoId: string) &#x3D;&gt; &#123;</span><br><span class="line"></span><br><span class="line">    setTodos((prevTodos) &#x3D;&gt; &#123;</span><br><span class="line">      &#x2F;&#x2F; 透過Array內建函數filter過濾掉id相符的項目</span><br><span class="line">      return prevTodos.filter( todo &#x3D;&gt; todo.id !&#x3D;&#x3D; todoId);</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  const todoContextValue: TodosContextObj &#x3D; &#123;</span><br><span class="line">    todos: todos,</span><br><span class="line">    addtodo: addTodoHandler,</span><br><span class="line">    deleteTodo: deleteTodoHandler</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; 傳遞狀態</span><br><span class="line">  return (</span><br><span class="line">    &lt;TodoContext.Provider value&#x3D;&#123;todoContextValue&#125;&gt;</span><br><span class="line">      &#123;props.children&#125;</span><br><span class="line">    &lt;&#x2F;TodoContext.Prodiver&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default TodoContextProvider;</span><br></pre></td></tr></table></figure>
 <p>使用TS最大優點在於嚴謹明確，但相對的也必須負擔較多的責任，透過使用Generic的方式，將自定義類別<strong>TodosContextObj</strong>分別傳入contextAPI與todosContextObj也是為了解決這部份的問題。相對於為各自的props重複撰寫，我想透過contextAPI去處理已經省略相當多重複的程式區塊。</p>
 <p>到目前為止，我們已經完成最重要的兩步驟，定義類別與ContextAPI，處理完這兩個檔案後，最後僅需要將資料運用在組件上就算正式完成。</p>
+<p><img src="https://i.imgur.com/9iAiaPc.jpg" alt="pic"></p>
 <hr>
 <h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>這篇文章主要講解Typescript的基礎及結合React使用的方式，透過搭配React Hooks展現出更強大的應用能力。希望能夠將內容講解得更詳盡，因此會分上下兩篇文章，若有任何問題歡迎私訊。 </p>
 <p>我個人挺喜歡Typescript給我的感覺，使用上雖然有比較多地方需要注意，卻給我一種不一樣的美，程式碼變得更加純淨的感覺。我想這就是學習的路上有趣的地方，Typescript明明要求得更多卻更簡潔有力，這不是一件很厲害的事情嗎? 看起來限制更多卻更能夠發揮自己的想法，雖然我理解的還很少，但我覺得Typescript很值得去學習。</p>
@@ -298,7 +301,10 @@
     <a href="/2021/05/28/React%E7%B3%BB%E5%88%97-JEST%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8-%E7%BA%8C/" rel="prev" title="React系列-JEST測試概念與使用(續)">
       <i class="fa fa-chevron-left"></i> React系列-JEST測試概念與使用(續)
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/05/31/React%E7%B3%BB%E5%88%97-%E7%8E%A9%E8%BD%89Typescript%E5%BE%85%E8%BE%A6%E6%B8%85%E5%96%AE-%E4%B8%8B/" rel="next" title="React系列-玩轉Typescript待辦清單(下)">
+      React系列-玩轉Typescript待辦清單(下) <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -373,7 +379,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
