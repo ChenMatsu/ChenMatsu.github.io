@@ -163,6 +163,132 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/23/JS%E7%B3%BB%E5%88%97-%E5%90%8C%E6%AD%A5%E8%88%87%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%85%A5%E9%96%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/23/JS%E7%B3%BB%E5%88%97-%E5%90%8C%E6%AD%A5%E8%88%87%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%85%A5%E9%96%80/" class="post-title-link" itemprop="url">JS系列-同步與非同步入門</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2021-05-23 10:39:13 / 修改時間：15:16:55" itemprop="dateCreated datePublished" datetime="2021-05-23T10:39:13+08:00">2021-05-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="JS-Async-Await入門"><a href="#JS-Async-Await入門" class="headerlink" title="JS - Async / Await入門"></a>JS - Async / Await入門</h3><blockquote>
+<p><em>Be who you are and say what you feel, because those who mind don&#39;t matter, and those who matter don&#39;t mind.</em><br><em>― Bernard M. Baruch</em></p>
+</blockquote>
+<p>今天來說說關於JS的同步與非同步問題。JS本身屬於<strong>單執行緒</strong>的語言，因此指令會依照順序或者透過特殊語法來控制執行的順序，這就是要來討論的主題。</p>
+<ul>
+<li>瑪德蓮蛋糕<ul>
+<li>同步與不同步(Synchronous/Asynchronous)</li>
+<li>Callback</li>
+<li>Promise</li>
+<li>Async/Await</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="瑪德蓮蛋糕"><a href="#瑪德蓮蛋糕" class="headerlink" title="瑪德蓮蛋糕"></a>瑪德蓮蛋糕</h4><p>透過製作瑪德蓮來學習同步與非同步的概念，我想應該會相當有趣。瑪德蓮蛋糕是我偶爾會在家裡做的一種法式糕點，有興趣的朋友們也不妨嘗試做做看!<br>首先，我們先來看看瑪德蓮的製作過程:</p>
+<ul>
+<li>準備食材(食譜)<ul>
+<li>雞蛋*2</li>
+<li>牛奶20g</li>
+<li>蜂蜜30g</li>
+<li>細砂糖40g</li>
+<li>低筋麵粉100g + 泡打粉3匙</li>
+<li>無鹽奶油85g</li>
+</ul>
+</li>
+<li>攪拌全蛋</li>
+<li>加入砂糖、牛奶</li>
+<li>加入過篩的低筋麵粉、泡打粉</li>
+<li>加熱無鹽奶油</li>
+<li>加入融化奶油攪拌</li>
+<li>裝入擠花袋冷藏6小時</li>
+<li>烤箱預熱15分鐘170度</li>
+<li>擠上模具烘烤15分鐘</li>
+<li>取出完成</li>
+</ul>
+<p>大致上的製作過程如下，其中有許多步驟是需要一步一步去做，但是這裡就牽涉到不少的同步與非同步的概念。</p>
+<h5 id="同步與非同步"><a href="#同步與非同步" class="headerlink" title="同步與非同步"></a>同步與非同步</h5><p>同步(Synchronous): 同時執行動作<br>非同步(Asynchronous): 等待完成後執行下一個動作</p>
+<p>因為JS特性的關係，我們沒辦法一次執行多個動作，舉例來說: 攪拌全蛋時加熱無鹽奶油，這對於JS本身來說是不可能的。況且有些時候，同步執行不會帶來好處，只會帶來災難，舉例來說，我們如果先預熱烤箱，但是我們根本還沒將瑪德蓮裝入擠花袋並且冷藏6小時，預熱的動作就完全只是徒勞。由此可見，同步與非同步都必須視情況而定。</p>
+<p>我們嘗試將完成製作蛋糕的步驟簡單寫成JS的程式碼試試看:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">const Madeleine &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  prepare_ingredient(); </span><br><span class="line">  stir_egg();</span><br><span class="line">  add_sugar_milk();</span><br><span class="line">  add_flour();</span><br><span class="line">  melt_butter();</span><br><span class="line">  add_butter();</span><br><span class="line">  put_to_bag();</span><br><span class="line">  freeze();</span><br><span class="line">  pre_heated();</span><br><span class="line">  bake();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 準備食材</span><br><span class="line">const prepare_ingredient &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 攪拌全蛋</span><br><span class="line">const stir_egg &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 加入糖、牛奶</span><br><span class="line">const add_sugar_milk &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 加入麵粉</span><br><span class="line">const add_flour &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 加熱奶油</span><br><span class="line">const melt_butter &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 加入奶油</span><br><span class="line">const add_butter &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 裝入擠花袋</span><br><span class="line">const put_to_bag &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 冷藏六小時</span><br><span class="line">const freeze &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 烤箱預熱 </span><br><span class="line">const pre_heated &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 烘烤</span><br><span class="line">const bake &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line">Madeleine();</span><br></pre></td></tr></table></figure>
+
+<p>我將一連串的動作都寫成函數，接著在最後Madeleine函數去模擬做蛋糕，可以看到我們確實依照食譜的順序去逐一執行動作，JS也會根據程式的先後順序去執行。可是這裡似乎會發生一點問題，問題在哪裡? 問題在於，每一個動作間並沒有彼此認識，舉例來說: 在準備完材料後要攪拌全蛋，但是有沒有可能材料還沒準備完，就開始攪拌全蛋，而導致沒有確認無鹽奶油準備到，而後續造成melet_butter函數執行失敗，這就是此處的問題點所在。</p>
+<h5 id="Callback"><a href="#Callback" class="headerlink" title="Callback"></a>Callback</h5><p>先來聊聊關於Callback，Callback是JS裡面有趣的函數使用方式。我們先來看一下MDN上面的解釋:<br><strong>A callback function is a function passed into another function as an argument, which is then invoked inside the outer function to complete some kind of routine or action.</strong><br>簡單來說Callback可以理解成函數執行完後要執行的函數，以上述Madeleine內的步驟來說:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">const Madeleine &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  prepared_Ingredient((res) &#x3D;&gt; &#123;</span><br><span class="line">    if(res &#x3D;&#x3D;&#x3D; &#39;Ingredient prepared.&#39;)&#123;</span><br><span class="line">      stir_egg((res) &#x3D;&gt; &#123;</span><br><span class="line">        if(res &#x3D;&#x3D;&#x3D; &#39;stir finished.&#39;)&#123;</span><br><span class="line">          add_sugar_milk(...其他Callback);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">          console.log(&#39;Not stirred yet!&#39;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      console.log(&#39;Ingredient not prepared yet!&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Madeleine();</span><br></pre></td></tr></table></figure>
+<p>上述的prepared_gradient在執行完成後，才呼叫stir_egg()函數，此外也可以透過Callback去處理錯誤的情況，這樣子動作就能夠認識彼此，更能夠了解彼此的優先順序，相較於先前全權交給JS執行緒處理，是不是更令人安心了? 但是這時候就出現所謂的Callback地獄，雖然Callback很方便也很好使用，但是過度使用，就會造成難維護的窘境。</p>
+<h5 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h5><p>MDN的描述:<br><strong>A Promise is an object representing the eventual completion or failure of an asynchronous operation.</strong><br>簡單來說，Promise是表達<strong>非同步執行</strong>結果的一個物件，會根據執行成功或失敗給予開發者回饋。因此，只要回傳Promise物件，我們都能夠使用Promise物件擁有的then函數和catch函數。then函數可以擁有兩個Callback代表Promise執行成功與失敗後的動作，而catch函數只擁有Promise執行失敗後的Callback。直接更改上述烘焙的程式碼如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 假設Madeleine回傳Promise</span><br><span class="line">const Madeleine &#x3D; new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F;暫定每1s成功執行後執行下一個then()</span><br><span class="line">  setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">    resolve(&#39;Madeleine&#39;);</span><br><span class="line">  &#125;, 1000);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Madeleine()</span><br><span class="line">  .then(prepare_ingredient(), &#123;</span><br><span class="line">    console.log(&#39;Ingredient not prepared yet!&#39;);</span><br><span class="line">  &#125;)</span><br><span class="line">  .then(stir_egg(), &#123;</span><br><span class="line">    console.log(&#39;Not Stirred yet!);</span><br><span class="line">  &#125;)</span><br><span class="line">  .then(add_sugar_milk(), &#123;</span><br><span class="line">    console.log(&#39;No milk to be added!&#39;);</span><br><span class="line">  &#125;</span><br><span class="line">  ...其他的thenc函數</span><br><span class="line">  .catch(() &#x3D;&gt; &#123;</span><br><span class="line">    console.log(&#39;Failed to make Madeleine&#39;);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>透過Promise的使用，我們可以更好的去控管整個製作的流程，也就是將Callback管理的更好。</p>
+<p>這邊要特別注意到new Promise這一段程式碼，這裡其實就是將Madeleine指派一個Promise的物件，而new Promise這個物件通常會有兩個參數resolve和reject，前者代表成功後要執行的行為，後者代表失敗後要執行的動作，相似於then和catch的概念，因為then和catch就是透過它們包裝而來的呀!</p>
+<h5 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async/Await"></a>Async/Await</h5><p>最後要講的是JS改版至ES7後的大明星Async和Await，因為它們的出現，我們得以從Promise Chain的枷鎖中獲得解放。實際看一下如何透過Async/Await來改寫我們在Promise的程式碼:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">const Madeleine &#x3D; async() &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Start making Madeleine&#39;);</span><br><span class="line">  const ingredient &#x3D; await prepared_ingredient();</span><br><span class="line">  const stirredEggs &#x3D; await stir_egg(eggs);</span><br><span class="line"></span><br><span class="line">  ...其餘動作</span><br><span class="line"></span><br><span class="line">  console.log(ingredient);</span><br><span class="line">  console.log(stirredEggs);</span><br><span class="line">  ...其他結果</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const prepared_ingredient &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    if(egg &amp;&amp; milk &amp;&amp; sugar &amp;&amp; honey &amp;&amp; butter &amp;&amp; flour)&#123;</span><br><span class="line">      setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">        resolve(&#39;Ingredient is prepared.&#39;);</span><br><span class="line">      &#125;, 3000);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      reject(&#39;Ingredient is not prepared!&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const stir_egg &#x3D; (eggs) &#x3D;&gt; &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    if(eggs &#x3D;&#x3D;&#x3D; 2)&#123;</span><br><span class="line">      setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">        resolve(&#39;Eggs are stirred.&#39;);</span><br><span class="line">      &#125;, 5000);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      reject(&#39;No enough eggs!&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">... 其他動作的函數</span><br></pre></td></tr></table></figure>
+<p>透過async的關鍵字，我們可以告知JS要將Madeleine當作非同步的函數，此外因為其他動作函數也會是非同步，可以確定在Madeleine內執行的動作都是await等待過後，才會接續執行，而不會發生動作還沒完成就執行下一個動作的問題。</p>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>花了很多時間查看許多文章，對於Callback, Promise, Async/Await，釐清了許多問題，但是還是覺得文章打得不夠好，還不能講解的淺顯易懂，代表我自己還沒有真的很熟悉這些概念以及實作方式。期望接下來能夠對這三者有更深的見解，屆時會再來修正這篇文章。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
     <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/21/%E9%96%B1%E8%AE%80-%E6%9C%80%E6%9C%89%E7%94%9F%E7%94%A2%E5%8A%9B%E7%9A%84%E4%B8%80%E5%B9%B4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -540,129 +666,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
-    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/18/React%E7%B3%BB%E5%88%97-Route%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/matsu.jpg">
-      <meta itemprop="name" content="Matsu Chen">
-      <meta itemprop="description" content="消逝在平凡的日子中">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Matsu Chen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/18/React%E7%B3%BB%E5%88%97-Route%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">React系列-Route概念與使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">發表於</span>
-              
-
-              <time title="創建時間：2021-05-18 11:16:19 / 修改時間：14:06:53" itemprop="dateCreated datePublished" datetime="2021-05-18T11:16:19+08:00">2021-05-18</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分類於</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="Route-in-React"><a href="#Route-in-React" class="headerlink" title="Route in React"></a>Route in React</h3><blockquote>
-<p><em>How did it get so late so soon?</em><br><em>― Dr. Seuss</em></p>
-</blockquote>
-<p>每一個人都有喜歡的事情，只是有時候會忘記。若那件事情，使時間飛逝，那無庸置疑是你喜歡的事，至於它的意義，並不需要由他人來決定。</p>
-<p>從Hooks抽身，今天想要來說說關於Route的基本概念，當然往後會再來說說關於其他Hooks。人生就像在一個又一個的岔路上，React也不例外。想到世界的盡頭，就勢必要懂Route。(笑)</p>
-<ul>
-<li>Route<ul>
-<li>Route的基本使用<ul>
-<li>NavLink</li>
-<li>Switch</li>
-<li>Link</li>
-<li>Redirect</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>結語</li>
-</ul>
-<h4 id="Route"><a href="#Route" class="headerlink" title="Route"></a>Route</h4><p>提到React就會聯想到SPA(Single-Page-Appliaction)，但是即便是React有時候也需要導向其他的頁面，以Netflix來說，總不可能所有影片都在同一個URL執行對吧? 不過若導向其他頁面，那麼還可以稱作SPA嗎? 當然可以，最簡單的判別方式就在於資料流是否與傳統的HTML網站相同。</p>
-<p>經過磨練，我們都理解到React網站僅會在第一次載入網站時發出所有請求，在後續網頁的變動上，僅會更動需要更動的組件，這就是React相較於傳統網站最大的優勢。大幅減輕網站渲染的時間，降低使用者等待時間，達到提升網站使用的舒適度，仔細一想React比喻成跑車也不為過。因此只要每一個頁面都符合React的風格，那每一個頁面都可以稱做SPA，只不過搭配Route後，網站就會升級成Multi-SPA。廢話不多說，我們趕緊來看!</p>
-<p>首先任何一個React專案下，我們只需要額外安裝react-router-dom第三方函式庫即可。在專案終端機上下<code>npm install react-router-dom</code>的指令，這裡要稍微注意react-router與react-router-dom兩個函式庫有些小差別。</p>
-<p>安裝完成後，分別在components資料夾下建立Welcome.js和Travel.js兩個組件。接著App分別匯入兩個檔案，並且匯入react-router-dom的組件，如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Route &#125; from &#39;react-router-dom&#39;;</span><br><span class="line"></span><br><span class="line">import Welcome from &#39;.&#x2F;components&#x2F;Welcome&#39;;</span><br><span class="line">import Travel from &#39;.&#x2F;components&#x2F;Travel&#39;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;Route path&#x3D;&quot;&#x2F;welcome&quot;&gt;</span><br><span class="line">        &lt;Welcome &#x2F;&gt;</span><br><span class="line">      &lt;&#x2F;Route&gt;</span><br><span class="line">      &lt;Route path&#x3D;&quot;&#x2F;travel&quot;&gt;</span><br><span class="line">        &lt;Travel &#x2F;&gt;</span><br><span class="line">      &lt;&#x2F;Route&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default App;</span><br></pre></td></tr></table></figure>
-<p>在這裡我們將<strong>Route</strong>組件匯入後就可以使用，使用Route組件方式和其他組件一樣，只不過它有專屬於自己的屬性。在Route組件的path可以用於設定URL的路徑，接著我們將Welcome和Travel兩個組件分別包在Route裡面，就可以告訴React在這個Url下，我們想要渲染的組件有哪些。但是僅只於此還不夠，因為我們必須要告知React如何去解析Route組件的path，我們還必須在index.js下裝上發動機制。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import ReactDOM from &#39;react-dom&#39;;</span><br><span class="line">import App from &#39;.&#x2F;App&#39;;</span><br><span class="line"></span><br><span class="line">import &#123; BrowserRouter &#125; from &#39;react-router-dom&#39;;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;BrowserRouter&gt;</span><br><span class="line">    &lt;App &#x2F;&gt;</span><br><span class="line">  &lt;&#x2F;BrowserRouter&gt;</span><br><span class="line">  document.getElementById(&quot;root&quot;)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<p>在index中，我們匯入<strong>BrowserRouter</strong>這個組件，緊接著將App組件包覆在其中，如此一來，Route就可以正式發動! 現在我們實際執行<code>npm run start</code>後，分別在URL/(Slash)後方加上welcome或者是travel就可以切換到對應的組件。不過我們這裡會有一個相當大的問題，那就是在切換URL的時候，網站都會重新載入，這是一個大問題! 因為這樣就不能稱作SPA跑車!</p>
-<h5 id="NavLink"><a href="#NavLink" class="headerlink" title="NavLink"></a>NavLink</h5><p>方便起見，我們多加入一個NavHeader.js的檔案，如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import &#123; NavLink &#125; from &#39;react-router-dom&#39;;</span><br><span class="line"></span><br><span class="line">const NavHeader &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;header&gt;</span><br><span class="line">      &lt;nav&gt;</span><br><span class="line">        &lt;ul&gt;</span><br><span class="line">          &lt;li&gt;</span><br><span class="line">            &lt;NavLink activeClassName&#x3D;&quot;active&quot; to&#x3D;&quot;&#x2F;welcome&quot;&gt;Welcome&lt;&#x2F;NavLink&gt;</span><br><span class="line">          &lt;&#x2F;li&gt;</span><br><span class="line">          &lt;li&gt;</span><br><span class="line">            &lt;NavLink activeClassName&#x3D;&quot;active&quot; to&#x3D;&quot;&#x2F;travel&quot;&gt;Travel&lt;&#x2F;NavLink&gt;</span><br><span class="line">          &lt;&#x2F;li&gt;</span><br><span class="line">        &lt;&#x2F;ul&gt;</span><br><span class="line">      &lt;&#x2F;nav&gt;</span><br><span class="line">    &lt;&#x2F;header&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default NavHeader;</span><br></pre></td></tr></table></figure>
-<p>此處多出導引列(Nav)，匯入<strong>NavLink</strong>的組件後，我們用一樣的方式去使用它。這邊注意到NavLink路徑屬性是<strong>to</strong>，務必不要跟Route的path搞混。NavLink很重要的一點就在於它能夠防止網頁重新載入，也就是每一個NavLink都有<strong>event.preventDefault</strong>這個函數功能。</p>
-<p>NavLink還有<strong>activeClassName</strong>供我們使用，它的功能主要在於讓開發者為當下的Nav套上CSS的效果。為了方便觀看，我們在index.css直接加入下方的CSS，雖然這不是一個很好的做法，一般來說，都會為有各自的CSS檔案或者是CSS Module的檔案。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">header &#123;</span><br><span class="line">  height: 3rem;</span><br><span class="line">  width: 100%;</span><br><span class="line">  background: #eee;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ul &#123;</span><br><span class="line">  list-style: none;</span><br><span class="line">  display: flex;</span><br><span class="line">  padding: 0;</span><br><span class="line">  margin: 0;</span><br><span class="line">  align-items: center;</span><br><span class="line">  justify-content: center;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ul li &#123;</span><br><span class="line">  padding: 10px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a &#123;</span><br><span class="line">  color: black;</span><br><span class="line">  text-decoration: none;</span><br><span class="line">  margin: 0 15px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">a.active &#123;</span><br><span class="line">  color:crimson;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">h2 &#123;</span><br><span class="line">  text-align: center;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>實際執行的畫面會如下:<br><img src="https://i.imgur.com/nslDBfa.jpg" alt="nav"><br>點擊Welcome或Travel，可以發現網頁並不會重新載入，Chrome開發者工具的Network也確實沒有傳輸的動作，成功解決剛才的問題。</p>
-<h5 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h5><p>Switch的用法很簡單，基本上想成是JS的Switch也完全沒有問題。我們將App修改成如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Route, Switch &#125; from &#39;react-router-dom&#39;;</span><br><span class="line"></span><br><span class="line">import Welcome from &#39;.&#x2F;components&#x2F;Welcome&#39;;</span><br><span class="line">import Travel from &#39;.&#x2F;components&#x2F;Travel&#39;;</span><br><span class="line">import NavHeader from &#39;.&#x2F;components&#x2F;NavHeader&#39;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;NavHeader &#x2F;&gt;</span><br><span class="line">      &lt;Switch&gt;</span><br><span class="line">        &lt;Route path&#x3D;&quot;&#x2F;welcome&quot;&gt;</span><br><span class="line">          &lt;Welcome &#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;Route&gt;</span><br><span class="line">        &lt;Route path&#x3D;&quot;&#x2F;travel&quot;&gt;</span><br><span class="line">          &lt;Travel &#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;Route&gt;  </span><br><span class="line">      &lt;&#x2F;Switch&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default App;</span><br></pre></td></tr></table></figure>
-<p>直接用Switch包覆住整個Route，Switch會選擇其中一個Route執行，只要URL<strong>符合就不會再繼續執行</strong>。比方說我們多出新的一個Route是關於旅遊國家:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import 同上</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;NavHeader &#x2F;&gt;</span><br><span class="line">      &lt;Switch&gt;</span><br><span class="line">        &lt;Route path&#x3D;&quot;&#x2F;welcome&quot;&gt;</span><br><span class="line">          &lt;Welcome &#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;Route&gt;</span><br><span class="line">        &lt;Route path&#x3D;&quot;&#x2F;travel&quot;&gt;</span><br><span class="line">          &lt;Travel &#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;Route&gt;  </span><br><span class="line">        &lt;Route path&#x3D;&quot;&#x2F;travel&#x2F;:country&quot;&gt;</span><br><span class="line">      &lt;&#x2F;Switch&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>這個時候，如果想要存取的URL是/travel/japan就無法成功存取，因為會在/travel就被Switch攔截下來。要解決這個問題，則必須多給Route屬性<strong>exact</strong>，確保完全一樣才執行特定的Route。因此需要在travel後面加上exact，變成<code>&lt;Route path=&quot;/travel&quot; exact&gt;</code>，才能夠執行country的頁面。</p>
-<h5 id="Link"><a href="#Link" class="headerlink" title="Link"></a>Link</h5><p>現在要來講講關於Link，其實原本想著應該先講Link，但發現似乎要先講完前面的NavLink和Switch才比較不會搞混。眼尖的讀者應該有注意到在最後一個Route裡面有 : 的符號，這個符號的意思其實就是變數，將後方的文字視為變數，可以用來動態更動網址。我們將Travel改成下方的樣子:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">const Travel &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  return &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;Travel&lt;&#x2F;h2&gt;;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &lt;li&gt;</span><br><span class="line">          &lt;Link to&#x3D;&quot;&#x2F;travel&#x2F;japan&quot;&gt;Japan&lt;&#x2F;Link&gt;</span><br><span class="line">        &lt;&#x2F;li&gt;</span><br><span class="line">        &lt;li&gt;</span><br><span class="line">          &lt;Link to&#x3D;&quot;&#x2F;travel&#x2F;uk&quot;&gt;UK&lt;&#x2F;Link&gt;</span><br><span class="line">        &lt;&#x2F;li&gt;</span><br><span class="line">        &lt;li&gt;</span><br><span class="line">          &lt;Link to&#x3D;&quot;&#x2F;travel&#x2F;us&quot;&gt;US&lt;&#x2F;Link&gt;</span><br><span class="line">        &lt;&#x2F;li&gt;</span><br><span class="line">      &lt;&#x2F;ul&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>這裡透過Link去連接，同樣跟NavLink一樣都有防止網頁重載的功能。Link和Route的區別在於Route符合目前URL會渲染裡面的組件，而Link用於切換當下URL頁面的組件，但不會影響到上層的組件，以這個例子來說就是Travel。接著我們還得再多新增一個Country.js的組件，如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import &#123; useParams &#125; from &#39;react-router-dom&#39;;</span><br><span class="line"></span><br><span class="line">const Country &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  const params &#x3D; useParams();</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;Here is &#123;params.country&#125;.&lt;&#x2F;h2&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Country;</span><br></pre></td></tr></table></figure>
-<p>特別注意這裡要引入useParams這個Hook，它的功用主要就是用來抓取URL的動態變數的部分，在這裡就是指:country。實際執行過後，大致如下:<br><img src="https://i.imgur.com/RwAlISv.jpg" alt="japan"></p>
-<h5 id="Redirect"><a href="#Redirect" class="headerlink" title="Redirect"></a>Redirect</h5><p>最後說說Redirect，其實就是為了避免跑到一些奇怪的頁面，自動轉跳到正常頁面，我們修改一下App:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Route, Switch, Redirect &#125; from &quot;react-router-dom&quot;;</span><br><span class="line"></span><br><span class="line">import Welcome from &#39;.&#x2F;components&#x2F;Welcome&#39;;</span><br><span class="line">import Travel from &#39;.&#x2F;components&#x2F;Travel&#39;;</span><br><span class="line">import Country from &#39;.&#x2F;components&#x2F;Country&#39;;</span><br><span class="line">import NavHeader from &#39;.&#x2F;components&#x2F;NavHeader&#39;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  return &lt;div&gt;</span><br><span class="line">      &lt;NavHeader &#x2F;&gt;</span><br><span class="line">      &lt;Switch&gt;</span><br><span class="line">        &lt;Route path&#x3D;&quot;&#x2F;&quot; exact&gt;</span><br><span class="line">          &lt;Redirect to&#x3D;&quot;&#x2F;welcome&quot; &#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;Route&gt;</span><br><span class="line">        &lt;Route path&#x3D;&quot;&#x2F;welcome&quot;&gt;</span><br><span class="line">          &lt;Welcome &#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;Route&gt;</span><br><span class="line">        &lt;Route path&#x3D;&quot;&#x2F;travel&quot; exact&gt;</span><br><span class="line">          &lt;Travel &#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;Route&gt;</span><br><span class="line">        &lt;Route path&#x3D;&quot;&#x2F;travel&#x2F;:country&quot;&gt;</span><br><span class="line">          &lt;Country &#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;Route&gt;</span><br><span class="line">      &lt;&#x2F;Switch&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>在<code>&lt;Route path=&quot;/&quot; exact&gt;</code>的情況下轉跳回/welcome的頁面，沒有太大問題，只是一樣要有exact才不會導致其他Route都無法使用。</p>
-<hr>
-<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天講述一下關於React的Route，稍微釐清一下基本概念以及一些小要點。相信Route並不有這些功能，但至少今天會是一個好的開始，先打穩根基再去研究更複雜的部分，才不會失焦。希望這篇文章能夠幫到需要的人。</p>
-<p>謝謝各位看到最後。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -734,7 +737,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
@@ -747,7 +750,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">34</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
