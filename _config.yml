@@ -106,6 +106,7 @@ deploy:
   type: git
   # https://hiiragimatu.github.io/
   repo: https://github.com/HiiragiMatu/HiiragiMatu.github.io
+  # reop: git@github.com:HiiragiMatu/HiiragiMatu.github.io.git
   branch: main
 
 backup: 
