@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hiiragimatu.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Route和Middleware Have no fear of perfection - you’ll never reach it.― Salvador Dali  昨天第一次介紹Express後端框架，簡單說明如何在Node當中使用以及它的主要功用，另外也提到Middleware的基本概念，今天就來更有效利用Express的超能力吧!  Express Middlewares Express">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Express系列-基本Route和Middleware">
+<meta property="og:url" content="https://hiiragimatu.github.io/2021/06/11/Express%E7%B3%BB%E5%88%97-%E5%9F%BA%E6%9C%ACRoute%E5%92%8CMiddleware/index.html">
+<meta property="og:site_name" content="Matsu Chen">
+<meta property="og:description" content="Route和Middleware Have no fear of perfection - you’ll never reach it.― Salvador Dali  昨天第一次介紹Express後端框架，簡單說明如何在Node當中使用以及它的主要功用，另外也提到Middleware的基本概念，今天就來更有效利用Express的超能力吧!  Express Middlewares Express">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/14i8Ndu.jpg">
+<meta property="og:image" content="https://i.imgur.com/18IKsOk.jpg">
+<meta property="article:published_time" content="2021-06-11T06:44:51.000Z">
+<meta property="article:modified_time" content="2021-06-11T07:46:19.381Z">
+<meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="node">
+<meta property="article:tag" content="express">
+<meta property="article:tag" content="middleware">
+<meta property="article:tag" content="routes">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/14i8Ndu.jpg">
+
+<link rel="canonical" href="https://hiiragimatu.github.io/2021/06/11/Express%E7%B3%BB%E5%88%97-%E5%9F%BA%E6%9C%ACRoute%E5%92%8CMiddleware/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-TW'
+  };
+</script>
+
+  <title>Express系列-基本Route和Middleware | Matsu Chen</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Matsu Chen</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Matsu Life</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首頁</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>標籤</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分類</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>歸檔</a>
+
+  </li>
+        <li class="menu-item menu-item-gadgets">
+
+    <a href="/gadgets/" rel="section"><i class="fas fa-layer-group fa-fw"></i>Gadgets</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/06/11/Express%E7%B3%BB%E5%88%97-%E5%9F%BA%E6%9C%ACRoute%E5%92%8CMiddleware/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Express系列-基本Route和Middleware
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">發表於</span>
+              
+
+              <time title="創建時間：2021-06-11 14:44:51 / 修改時間：15:46:19" itemprop="dateCreated datePublished" datetime="2021-06-11T14:44:51+08:00">2021-06-11</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/Express/" itemprop="url" rel="index"><span itemprop="name">Express</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="Route和Middleware"><a href="#Route和Middleware" class="headerlink" title="Route和Middleware"></a>Route和Middleware</h3><blockquote>
+<p><em>Have no fear of perfection - you’ll never reach it.</em><br><em>― Salvador Dali</em></p>
+</blockquote>
+<p>昨天第一次介紹Express後端框架，簡單說明如何在Node當中使用以及它的主要功用，另外也提到Middleware的基本概念，今天就來更有效利用Express的超能力吧!</p>
+<ul>
+<li>Express Middlewares<ul>
+<li>Express Routes</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="Express-Middlewares"><a href="#Express-Middlewares" class="headerlink" title="Express Middlewares"></a>Express Middlewares</h4><p>比起中介軟體，我還是習慣直接唸英文，或者想成是橋接器都比中介軟體念起來順手多，在概念上也更容易成形。首先我們建立新的檔案app.js，上一篇文章都有提到，忘記的話可以回上一篇回顧。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const express &#x3D; require(&#39;express&#39;);</span><br><span class="line">&#x2F;&#x2F; Express處理檔案路徑的核心模組</span><br><span class="line">const path &#x3D; require(&#39;path&#39;);</span><br><span class="line">const app &#x3D; express();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 內建函數用於提供靜態檔案</span><br><span class="line">app.use(express.static(path.join(__dirname, &#39;public&#39;)));</span><br><span class="line"></span><br><span class="line">app.listen(3000);</span><br></pre></td></tr></table></figure>
+
+<p>這裡特別注意的地方是app.use這段程式碼當中，我們透過Express內建函數static()提供靜態檔案，而路徑的設定方式則是使用核心模組path處理，<strong>主要用途在於可以匯入CSS檔案給HTML。</strong></p>
+<p>至於<strong>path.join</strong>函數則可以根據作業系統(OS)將檔案串接起來，舉例來說:<br>假設路徑路徑為public -&gt; css -&gt; index.css，則會對應如下<br><code>Windows: \public\css\index.css</code><br><code>Linux: /public/css/index.css</code><br>不一樣的地方在於預設路徑的寫法，現在我們不用去煩惱不同作業系統間的寫法啦!此外，若沒有透過path模組，在Express應用程式當中必須使用絕對路徑。</p>
+<p>基本上，我們只需要安裝需要的套件就可以執行功能，省去相當多繁瑣的細節。</p>
+<h5 id="Express-Routes"><a href="#Express-Routes" class="headerlink" title="Express Routes"></a>Express Routes</h5><p>最後想特別提及的部分是關於Routes的處理，在Express當中我們一樣是經由Middleware的概念去處理Routes。因為Routes大部分都和網頁URL有關，固然app.use本身就可以拿來處理Routes。</p>
+<p>可以根據不同請求方式，改寫Middleware啟動的時機，如下: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">app.get((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Mioali is passed!&#39;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.post((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Hsinchu is passed!&#39;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.put((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Taoyuan is passed!&#39;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.delete((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Taipei is arrived!&#39;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>Express Middleware的get, post, put, delete剛好能夠各自對應到http的不同傳輸方式。現在，我們實際上來操作看看Routes。</p>
+<p>首先新增routes的資料夾，接著分別建立welcome.js和users.js。程式碼分別如下:<br><code>welcome.js</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const express &#x3D; require(&#39;express&#39;);</span><br><span class="line">const path &#x3D; require(&#39;path&#39;);</span><br><span class="line">&#x2F;&#x2F; 使用Express內建函數來指向切割後的Routes</span><br><span class="line">const router &#x3D; express.Router();</span><br><span class="line"></span><br><span class="line">router.get(&#39;&#x2F;&#39;, (req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  res.sendFile(path.join(__dirname, &#39;..&#39;, &#39;views&#39;, &#39;welcome.html&#39;));</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 匯出檔案的Routes</span><br><span class="line">module.exports &#x3D; router;</span><br></pre></td></tr></table></figure>
+<p><code>users.js</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const express &#x3D; require(&#39;express&#39;);</span><br><span class="line">const path &#x3D; require(&#39;path&#39;);</span><br><span class="line"></span><br><span class="line">const router &#x3D; express.Router();</span><br><span class="line"></span><br><span class="line">router.get(&#39;&#x2F;users&#39;, (req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  res.sendFile(path.join(__dirname, &#39;..&#39;, &#39;views&#39;, &#39;users.html&#39;));</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">module.exports &#x3D; router;</span><br></pre></td></tr></table></figure>
+<p>我們將原本寫在app.js處理Routes的Middleware切割到其他的檔案當中，透過Express提供的<strong>Router</strong>函數，我們因此可以指向相同的URL。在GET發出請求後，我們回傳<strong>res.sendFile</strong>()函數，它的功能如同函數名稱一樣，用途在於傳送檔案給使用者，聽起來似乎很奇怪，但有時候我們必須在開發者和使用者角度不斷切換，才有助於理解程式開發。在res.sendFile當中，一樣需要透過path模組去調整我們要存取的路徑，以welcome.js檔案當中，get最後會回傳的檔案會指向類似C:\Users\user\tutorial\views\users.html的檔案路徑。</p>
+<p>最後因為我們指向兩個html檔案，自然就需要建立它們，因此先建立views資料夾後再各自建立welcome.html和users.html，內容簡簡單單如下即可:<br><code>welcome.html</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang&#x3D;&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;</span><br><span class="line">  &lt;meta http-equiv&#x3D;&quot;X-UA-Compatible&quot; content&#x3D;&quot;IE&#x3D;edge&quot;&gt;</span><br><span class="line">  &lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, initial-scale&#x3D;1.0&quot;&gt;</span><br><span class="line">  &lt;title&gt;Welcome&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;h2&gt;Welcome&lt;&#x2F;h2&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p><code>users.html</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang&#x3D;&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">  &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;</span><br><span class="line">  &lt;meta http-equiv&#x3D;&quot;X-UA-Compatible&quot; content&#x3D;&quot;IE&#x3D;edge&quot;&gt;</span><br><span class="line">  &lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, initial-scale&#x3D;1.0&quot;&gt;</span><br><span class="line">  &lt;title&gt;Users&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">  &lt;ul&gt;</span><br><span class="line">    &lt;li&gt;Max&lt;&#x2F;li&gt;</span><br><span class="line">    &lt;li&gt;Matsu&lt;&#x2F;li&gt;</span><br><span class="line">    &lt;li&gt;Complex&lt;&#x2F;li&gt;</span><br><span class="line">  &lt;&#x2F;ul&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>最後實際啟動npm start後，我們就能夠順利看到welcome.html和users.html的畫面囉!</p>
+<p><strong>localhost:3000的畫面</strong><br><img src="https://i.imgur.com/14i8Ndu.jpg" alt="welcome"><br><strong>localhost:3000/users的畫面</strong><br><img src="https://i.imgur.com/18IKsOk.jpg" alt="users"></p>
+<p>此外若想要套用CSS，只需要將.css檔案，直接寫在HTML檔案各自的head即可。</p>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天再Review過一次Express的一些基本概念和設定，其實完全算不上真正的開工哈哈哈。不過沒關係，一步一腳印，至少今天已經搞懂在Express切割Routes以及如何在HTML檔案當中參照到專案中的CSS檔案，很多隱藏在背後的細節其實需要深思過後才能夠漸漸明瞭運作，若只是單純的套用別人已經寫好的API，我想久而久之會失去自己的思考能力吧! </p>
+<p><strong>「物事の本質を考えろう！」と阿部寛がこう言った。真正重要的是思考事物的本質。</strong></p>
+<p>繼續苦等東大特訓班2…</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/node/" rel="tag"># node</a>
+              <a href="/tags/express/" rel="tag"># express</a>
+              <a href="/tags/middleware/" rel="tag"># middleware</a>
+              <a href="/tags/routes/" rel="tag"># routes</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/10/Express%E7%B3%BB%E5%88%97-Express%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" rel="prev" title="Express系列-Express介紹與基本概念">
+      <i class="fa fa-chevron-left"></i> Express系列-Express介紹與基本概念
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Route%E5%92%8CMiddleware"><span class="nav-number">1.</span> <span class="nav-text">Route和Middleware</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Express-Middlewares"><span class="nav-number">1.1.</span> <span class="nav-text">Express Middlewares</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Express-Routes"><span class="nav-number">1.1.1.</span> <span class="nav-text">Express Routes</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.2.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Matsu Chen"
+      src="/images/matsu.jpg">
+  <p class="site-author-name" itemprop="name">Matsu Chen</p>
+  <div class="site-description" itemprop="description">消逝在平凡的日子中</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HiiragiMatu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HiiragiMatu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:matuyou0301@gmail.com" title="E-Mail → mailto:matuyou0301@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Matsu Chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 強力驅動
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
