@@ -168,6 +168,204 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/06/13/Express%E7%B3%BB%E5%88%97-%E6%90%AD%E9%85%8DTemplate%E8%AE%8A%E9%AD%94%E8%A1%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/13/Express%E7%B3%BB%E5%88%97-%E6%90%AD%E9%85%8DTemplate%E8%AE%8A%E9%AD%94%E8%A1%93/" class="post-title-link" itemprop="url">Express系列-搭配Template變魔術</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-06-13 16:49:11" itemprop="dateCreated datePublished" datetime="2021-06-13T16:49:11+08:00">2021-06-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-06-14 12:27:24" itemprop="dateModified" datetime="2021-06-14T12:27:24+08:00">2021-06-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/Express/" itemprop="url" rel="index"><span itemprop="name">Express</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="搭配Template變魔術"><a href="#搭配Template變魔術" class="headerlink" title="搭配Template變魔術"></a>搭配Template變魔術</h3><blockquote>
+<p><em>Everything you can imagine is real.</em><br><em>― Pablo Picasso</em></p>
+</blockquote>
+<p>Express幫我們解決撰寫HTML的痛處，透過設置樣板引擎(Template Engine)，我們可以更快速建立網頁，而不用一再重複地撰寫相似的程式碼。樣板引擎同樣有各種不同的引擎可以選擇，裝上不同引擎一樣都能夠跑在高速公路上!</p>
+<ul>
+<li>Template Engine<ul>
+<li>EJS</li>
+<li>PUG</li>
+<li>Handlebars</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="樣板引擎-Template-Engine"><a href="#樣板引擎-Template-Engine" class="headerlink" title="樣板引擎(Template Engine)"></a>樣板引擎(Template Engine)</h4><p>樣板引擎又稱作樣板處理器，簡單來說就是將語法和資料結合在一起的轉換器。透過樣板引擎所寫成的頁面，最後會轉換成常見的HTML檔案，因此樣板引擎也稱作前或預處理器。</p>
+<p>今天將會分別介紹EJS、PUG和Handlebars三個不同的樣板引擎來簡單理解它們的使用方式與差異。</p>
+<h5 id="EJS"><a href="#EJS" class="headerlink" title="EJS"></a>EJS</h5><p>首先在全新的資料夾下建立app.js後執行<code>npm init</code>初始化檔案的設定檔，接著安裝<strong>nodemon</strong>和<strong>express</strong>以及<strong>ejs</strong>三個套件。</p>
+<p>到目前為止都有在介紹Routes時提到，忘記的話可以回上一篇文章複習一下↑。</p>
+<p>首先使用EJS前，必須先在Express設置EJS作為樣板引擎，並且指定樣板的位置路徑給Express。</p>
+<p>如下:</p>
+<pre class="language-none"><code class="language-none">const express &#x3D; require(&#39;express&#39;);
+const app &#x3D; express();
+
+&#x2F;&#x2F; 設定樣板引擎
+app.set(&#39;view engine&#39;, &#39;ejs&#39;);
+&#x2F;&#x2F; 樣板的路徑 -&gt; 從app.js的路徑看起 -&gt; 會找到和app.js同層級的views資料夾內
+app.set(&#39;views&#39;, &#39;views&#39;);
+
+app.listen(3000);</code></pre>
+<p>隨後建立views資料夾，在其中分別建立home.ejs這個檔案，並且撰寫如下:<br><code>home.ejs</code></p>
+<pre class="language-none"><code class="language-none">&lt;!DOCTYPE html&gt;
+&lt;html lang&#x3D;&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;
+  &lt;meta http-equiv&#x3D;&quot;X-UA-Compatible&quot; content&#x3D;&quot;IE&#x3D;edge&quot;&gt;
+  &lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, initial-scale&#x3D;1.0&quot;&gt;
+
+  &lt;!-- &lt;%&#x3D; %&gt; 用於傳遞變數給EJS樣板 --&gt;
+  &lt;title&gt;&lt;%&#x3D; pageTitle %&gt;&lt;&#x2F;title&gt;
+&lt;&#x2F;head&gt;
+&lt;body&gt;
+  &lt;h3&gt;This is Home&lt;&#x2F;h3&gt;
+&lt;&#x2F;body&gt;
+&lt;&#x2F;html&gt;</code></pre>
+
+<p>EJS的特別處在於可以透過&lt;%= %&gt;傳遞變數或者&lt;% %&gt;去執行邏輯，在撰寫上較為直覺。接著再將app.js稍作修改後，就可以看見成功地在Express使用EJS樣板引擎。<br><code>app.js</code></p>
+<pre class="language-none"><code class="language-none">const express &#x3D; require(&#39;express&#39;);
+const app &#x3D; express();
+
+&#x2F;&#x2F; 設定樣板引擎
+app.set(&#39;view engine&#39;, &#39;ejs&#39;);
+&#x2F;&#x2F; 樣板的路徑 -&gt; 從app.js的路徑看起 -&gt; 會找到和app.js同層級的views資料夾內
+app.set(&#39;views&#39;, &#39;views&#39;);
+
+app.get(&#39;&#x2F;&#39;, (req, res, next) &#x3D;&gt; &#123;
+  &#x2F;&#x2F; render函數 -&gt; 參數1: 渲染的檔案  參數2: 傳入的物件 
+  res.render(&#39;home&#39;, &#123; pageTitle: &#39;Home&#39;&#125;);
+&#125;);
+
+app.listen(3000);</code></pre>
+<p>執行<code>npm start</code>後打開瀏覽器輸入localhost:3000，看見Home正對著我們揮手!</p>
+<p><img src="https://i.imgur.com/VzFGGW1.jpg" alt="home"></p>
+<p>除了輸出的This is Home文字外，網頁Title順利存取傳遞至home.ejs的物件屬性pageTitle。</p>
+<h5 id="PUG"><a href="#PUG" class="headerlink" title="PUG"></a>PUG</h5><p>現在我們來透過PUG達到一樣的結果，首先透過npm install –save pug安裝套件後，將app.js的樣板引擎更改至<code>app.set(&#39;view engine&#39;, &#39;pug&#39;)</code>，其餘的不更動。</p>
+<p>接著我們建立home.pug的檔案在views資料夾內，如下:<br><code>home.pug</code></p>
+<pre class="language-none"><code class="language-none">doctype html
+html(lang&#x3D;&quot;en&quot;)
+  head
+    meta(charset&#x3D;&quot;UTF-8&quot;)
+    meta(http-equiv&#x3D;&quot;X-UA-Compatible&quot;, content&#x3D;&quot;IE&#x3D;edge&quot;)
+    meta(name&#x3D;&quot;viewport&quot;, content&#x3D;&quot;width&#x3D;device-width, initial-scale&#x3D;1.0&quot;)
+
+    &lt;!-- #&#123;&#125; 用於傳遞變數給樣板 --&gt;
+    title #&#123;pageTitle&#125;
+    link(rel&#x3D;&quot;stylesheet&quot;, href&#x3D;&quot;&#x2F;css&#x2F;main.css&quot;)
+    body 
+      h3 This is Home </code></pre>
+<p>PUG本身使用上會較EJS簡潔，因為模板是透過成對標籤定位，因此縮排會嚴重影響程式碼的結果，需要特別注意。接著執行來到瀏覽器後會得到和EJS一樣的結果。</p>
+<h5 id="handlebars"><a href="#handlebars" class="headerlink" title="handlebars"></a>handlebars</h5><p>使用handlebars前一樣需要透過npm安裝，注意是要執行<code>npm install --save express-handlebars</code>而不是只有handlebars。handlebars的設置較EJS和PUG不同，主要是因為Express並沒有預先寫好handlebars相關的組態，因此需要多一些步驟，但並不困難，如下:<br><code>app.js</code></p>
+<pre class="language-none"><code class="language-none">const handlebars &#x3D; require(&#39;express-handlebars&#39;);
+
+&#x2F;&#x2F; 執行handlebars樣板函數並設置hbs變數名稱為引擎名稱 
+&#x2F;&#x2F; layoutsDir: 設定樣板的路徑 defaultLayout: 指定樣板架構 extname: 顯示副檔案名稱
+app.engine(&#39;hbs&#39;, handlebars(&#123; layoutsDir: &#39;views&#39;, defaultLayout: &#39;home&#39;, extname: &#39;hbs&#39;&#125;));
+&#x2F;&#x2F; 指定樣板為hbs
+app.set(&#39;view engine&#39;, &#39;hbs&#39;);</code></pre>
+<p>handlebars在設置上比較麻煩，因為Express本身沒有處理它，但在最後都會得到一樣的結果。</p>
+<p>最後我們一樣建立home.hbs的檔案，大致上和EJS較為相近:</p>
+<pre class="language-none"><code class="language-none">&lt;!DOCTYPE html&gt;
+&lt;html lang&#x3D;&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;
+  &lt;meta http-equiv&#x3D;&quot;X-UA-Compatible&quot; content&#x3D;&quot;IE&#x3D;edge&quot;&gt;
+  &lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, initial-scale&#x3D;1.0&quot;&gt;
+
+  &#123;&#123;!-- &#123;&#123; &#125;&#125; 用於傳遞變數給EJS樣板 --&#125;&#125;
+  &lt;title&gt;&#123;&#123; pageTitle &#125;&#125;&lt;&#x2F;title&gt;
+&lt;&#x2F;head&gt;
+&lt;body&gt;
+  &lt;h3&gt;This is Home&lt;&#x2F;h3&gt;
+&lt;&#x2F;body&gt;
+&lt;&#x2F;html&gt;</code></pre>
+
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>樣板引擎我個人比較習慣用PUG，前陣子在Hahow上吳哲宇老師的課程時也是使用PUG和SASS，雖然只是在CodePen上使用，完全不需要自己設置，但還是喜歡PUG的寫法。今天還沒提到繼承樣板的寫法，改天再來寫一篇繼承Layout和使用CSS的文章。 </p>
+<p>那這回就先這樣子囉!</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
     <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/06/11/Express%E7%B3%BB%E5%88%97-%E5%9F%BA%E6%9C%ACRoute%E5%92%8CMiddleware/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -636,118 +834,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
-    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/31/React%E7%B3%BB%E5%88%97-%E7%8E%A9%E8%BD%89Typescript%E5%BE%85%E8%BE%A6%E6%B8%85%E5%96%AE-%E4%B8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/matsu.jpg">
-      <meta itemprop="name" content="Matsu Chen">
-      <meta itemprop="description" content="消逝在平凡的日子中">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Matsu Chen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/31/React%E7%B3%BB%E5%88%97-%E7%8E%A9%E8%BD%89Typescript%E5%BE%85%E8%BE%A6%E6%B8%85%E5%96%AE-%E4%B8%8B/" class="post-title-link" itemprop="url">React系列-玩轉Typescript待辦清單(下)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-05-31 17:37:33 / Modified: 20:51:27" itemprop="dateCreated datePublished" datetime="2021-05-31T17:37:33+08:00">2021-05-31</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/Typescript/" itemprop="url" rel="index"><span itemprop="name">Typescript</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="玩轉Typescript"><a href="#玩轉Typescript" class="headerlink" title="玩轉Typescript"></a>玩轉Typescript</h3><blockquote>
-<p><em>Work without love is slavery.</em><br><em>― Mother Teresa</em></p>
-</blockquote>
-<p>沒有愛的工作是奴役，但要怎麼去確認自己的工作是不是有愛?</p>
-<p>本篇內容主要源自於上一篇React系列-玩轉Typescript待辦清單(上)。</p>
-<p>本來打算將內容都寫在同一篇文章，但還是有點勉強，因此才分為上、下篇，在上一篇文章我們定義完類別和ContextAPI後，這裡我們只需要將它們運用在組件上就大功告成了!</p>
-<ul>
-<li>實作Todolist</li>
-<li>結語</li>
-</ul>
-<hr>
-<h4 id="實作Todolist"><a href="#實作Todolist" class="headerlink" title="實作Todolist"></a>實作Todolist</h4><p>首先處理第一個組件<strong>Todos.tsx</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;Todos.tsx&quot;</span><br><span class="line">import &#123; useContext &#125; from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">import &#123; TodosContext &#125; from &#39;..&#x2F;store&#x2F;todos-context&#39;;</span><br><span class="line">import TodoItem from &#39;.&#x2F;TodoItem&#39;;</span><br><span class="line"></span><br><span class="line">const Todos: React.FC &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; 使用ContextAPI</span><br><span class="line">  const todosCtx &#x3D; useContext(TodosContext);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &#123;todosCtx.todos.map((todo) &#x3D;&gt; (</span><br><span class="line">          &lt;TodoItem</span><br><span class="line">            key&#x3D;&#123;todo.id&#125;</span><br><span class="line">            name&#x3D;&#123;todo.name&#125;</span><br><span class="line">            &#x2F;&#x2F; null告知this不需要參照，todo.id則為第一個參數傳入</span><br><span class="line">            onDeleteTodo&#x3D;&#123;todosCtx.deleteTodo.bind(null, todo.id)&#125;</span><br><span class="line">          &#x2F;&gt;</span><br><span class="line">        ))&#125;</span><br><span class="line">      &lt;&#x2F;ul&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Todos;</span><br></pre></td></tr></table></figure>
-
-<p>在<strong>Todos</strong>當中使用到<strong>TodoItem</strong>組件，當然就需要再為它建一個組件囉! </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;TodoItem.tsx&quot;</span><br><span class="line">import React from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">const TodoItem: React.FC&lt;&#123;name: string; onDeleteTodo: () &#x3D;&gt; void&#125;&gt; &#x3D; (props) &#x3D;&gt; &#123;</span><br><span class="line">    return (</span><br><span class="line">        &lt;li onClick&#x3D;&#123;props.onDeleteTodo&#125;&gt;&#123;props.name&#125;&lt;&#x2F;li&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default TodoItem;</span><br></pre></td></tr></table></figure>
-<p>注意到在React.FC後方透過使用Generic去明確定義變數name和函數onDeleteTodo，因為對於TodoItem組件來說，這兩者都是陌生人。最後，因為我們需要新增項目，自然也就需要新增清單的組件。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;NewTodo.tsx&quot;</span><br><span class="line">import React from &#39;react&#39;;</span><br><span class="line">import &#123; useRef, useContext &#125; from &#39;react&#39;;</span><br><span class="line">import &#123; TodosContext &#125; from &#39;..&#x2F;store&#x2F;todos-context&#39;;</span><br><span class="line"></span><br><span class="line">const NewTodo: React.FC &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  const todosCtx &#x3D; useContext(TodosContext);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; HTMLInputElement代表DOM的元素類別</span><br><span class="line">  const inputRef &#x3D; useRef&lt;HTMLInputElement&gt;(null);</span><br><span class="line"></span><br><span class="line">  const submitHandler &#x3D; (event: React.FormEvent) &#x3D;&gt; &#123;</span><br><span class="line">    event.preventDefault();</span><br><span class="line"></span><br><span class="line">    const todoName &#x3D; inputRef.current!.value;</span><br><span class="line"></span><br><span class="line">    if (todoName.trim().length &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">      return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    todosCtx.addTodo(todoName);</span><br><span class="line">  &#125;;</span><br><span class="line">  return (</span><br><span class="line">    &lt;form onSubmit&#x3D;&#123;submitHandler&#125;&gt;</span><br><span class="line">      &lt;label htmlFor&#x3D;&#39;name&#39;&gt;Todo Name&lt;&#x2F;label&gt;</span><br><span class="line">      &lt;input type&#x3D;&#39;text&#39; id&#x3D;&#39;name&#39; ref&#x3D;&#123;inputRef&#125; &#x2F;&gt;</span><br><span class="line">      &lt;button&gt;Add Todo&lt;&#x2F;button&gt;</span><br><span class="line">    &lt;&#x2F;form&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default NewTodo;</span><br></pre></td></tr></table></figure>
-<p>透過使用useRef Hook，可以簡單存取特定欄位的值。唯一需要注意的是HTMLInputElement，在使用Hooks也必須告訴TS相關的型別定義。其餘的都在React系列-useRef概念篇當中有詳細的了解，對於useRef使用有疑問可以參考那篇文章。</p>
-<p>最後僅需要將App.tsx做點小修改，就可以成功執行我們的代辦清單囉!</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import NewTodo from &#39;.&#x2F;components&#x2F;NewTodo&#39;;</span><br><span class="line">import Todos from &#39;.&#x2F;components&#x2F;Todos&#39;;</span><br><span class="line">import TodosContextProvider from &#39;.&#x2F;store&#x2F;todos-context&#39;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const App &#x3D; () &#x3D;&gt;  &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;TodosContextProvider &gt;</span><br><span class="line">      &lt;NewTodo&#x2F;&gt;</span><br><span class="line">      &lt;Todos&#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;TodosContextProvider&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default App;</span><br></pre></td></tr></table></figure>
-<p>稍微添加CSS樣式在其中後，實際執行程式後，大致上會如下圖一樣:<br><img src="https://i.imgur.com/TtSomMd.jpg" alt="pic"></p>
-<p>給自己拍拍手! 我想是因為對於TS理解的不夠深，個人覺得在使用起來沒有太大的差別，但確實對於明確的去定義每一個細節要如何使用都非常的清楚明瞭，這應該是最能體會TS的威力的一點! 當然還有很多值得我們去探討的，就交給明天的自己吧!(飄~)</p>
-<hr>
-<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>結束五月，不知不覺在這一個月當中有很多成長，不管是學習還是找工作，可以說壓力不少，但卻覺得意外的有趣，看著自己一篇又一篇的文章。有時候都會想為什麼要這麼麻煩，但卻又因為學習的空虛而感到不安，對於我自己來說，忘記以前讀過的書、學會的曲子、寫過的字才是最可怕的，因為那似乎代表自己白活那麼一段時光，一想到此，身體自己就動了起來。</p>
-<p>很多時候想的太多，真正需要的只是放手一搏而已，這段路途定然不容易，卻會是朝著理想的路上。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -819,7 +905,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -832,7 +918,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -168,6 +168,162 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/08/React%E7%B3%BB%E5%88%97-props%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/08/React%E7%B3%BB%E5%88%97-props%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">React系列-props概念與使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-05-08 07:50:27" itemprop="dateCreated datePublished" datetime="2021-05-08T07:50:27+08:00">2021-05-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-16 14:26:23" itemprop="dateModified" datetime="2021-05-16T14:26:23+08:00">2021-05-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Props講解與使用"><a href="#Props講解與使用" class="headerlink" title="Props講解與使用"></a>Props講解與使用</h3><blockquote>
+<p><em>Do what is right, not what is easy nor what is popular.</em><br><em>- Roy T. Bennett</em></p>
+</blockquote>
+<ul>
+<li>Props的概念<ul>
+<li>Props使用實例</li>
+<li>Props也有孩子?!</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<p>早上風很大，天氣很好，適合寫寫關於props的故事。那，我們馬上來說說props吧!</p>
+<hr>
+<h4 id="Props的概念"><a href="#Props的概念" class="headerlink" title="Props的概念"></a>Props的概念</h4><p>我們在第一篇React系列文提到React以組件的方式組成，單一個組件就好比合成金屬一樣，由HTML、CSS、JS三種元素所組成。但是當今天有數十、百個組件的時候，如何去把這些「金屬」組裝在一起，就是一門學問!</p>
+<p>這時候就是Props(Properties)登場的時候了!React提供我們把每一個組件鑲嵌在一起就是透過使用Props。我們來直接看範例。</p>
+<h5 id="Props使用實例"><a href="#Props使用實例" class="headerlink" title="Props使用實例"></a>Props使用實例</h5><p>建立專案的指令<br><code>npx create-react-app &lt;project name&gt;</code></p>
+<p>延續我們系列文第一篇所建立好的專案，大致上會有下面這些檔案:</p>
+<ul>
+<li>first-react-project -&gt; 專案資料夾名稱<ul>
+<li>node_modules -&gt; NPM安裝後的套件</li>
+<li>public  -&gt; 放置圖片和唯一的index.html</li>
+<li>src -&gt; 放置組件的資料夾</li>
+<li>package-lock.json -&gt; 鎖定專案某版本描述檔</li>
+<li>package.json -&gt; 專案規範描述檔</li>
+</ul>
+</li>
+</ul>
+<p>首先我們把APP裡面的預設程式碼更改成像下面一樣:</p>
+<p><img src="https://i.imgur.com/INabReS.jpg" alt="root"></p>
+<p>可以看到App.js這個檔案變得相當乾淨，我們通常稱App這個檔案為<strong>根組件</strong>，也就是說它會擁有許多的子組件，最後將這些子組件拼湊在一起。在Cmd輸入<code>npm run start</code>就可以看到本地端的瀏覽器出現「我是根組件!」這段文字。</p>
+<p><img src="https://i.imgur.com/CihXdJh.jpg" alt="rootme"></p>
+<p>這就是我們第一個組件，接著我們在<strong>src</strong>檔案夾建立兩個資料夾分別是<strong>components</strong>和<strong>styles</strong>。首先我們在components的資料夾內建立叫<strong>Calculate.js</strong>的組件。組件其實都是由函數構成，因此一定是以函數起頭，而<strong>函數名稱同檔案名稱</strong>。特別注意到，必須把這個組件匯出才可以在其他組件使用。我們目前會在App.js這個根組件使用Calculate.js這個子組件。</p>
+<p><img src="https://i.imgur.com/KQjHmho.jpg" alt="cal"></p>
+<p>這就是構建組件的第一步，緊接著我們在App.js匯入Calculate組件。</p>
+<p><img src="https://i.imgur.com/IMl9SyZ.jpg" alt="appcal"></p>
+<p>我們匯入Calculate組件後，再將組件用HTML的形式包覆在App根組件當中，切換到瀏覽器後會發現多了一個12的數字。</p>
+<p><img src="https://i.imgur.com/QdR9Ck3.jpg" alt="num"></p>
+<p>我們現在已經完成最最最基礎的組件使用方式。可以看到我們最後順利地使用Calculate這個組件。可是等等…，說了這麼多，到底跟props有什麼關係? 對，到目前為止都還沒有關係，因為必須先把組件嵌在一起的方式解說後才能理解使用props。總得先學會發動車子，才能開始練習開車對吧?</p>
+<p>我們在App裡面輸入一組物件，這很Hard Core，不過沒關係，我們只是為了示範這個過程。請注意到return前的程式碼是寫JS，return後的程式碼則是寫JSX。接著我們把propme這個物件傳入給Calculate這個子組件。</p>
+<p><img src="https://i.imgur.com/D3K0ooW.jpg" alt="propass"></p>
+<p>我們藉由JSX的形式給定一個變數名稱<strong>value</strong>，把在App組件裡的物件propme透過所謂的<strong>props</strong>方式傳遞給<strong>Calculate</strong>，接著才能回到<strong>Calculate</strong>組件裡面去接收這個資料。</p>
+<p>回到<strong>Calculate</strong>組件(函數)後，注意到參數props可以任意命名，但一般會以props命名。為了讀取從<strong>App</strong>傳來的資料，必須在參數後方寫上我們在<strong>App</strong>設好的變數才能夠去存取<strong>App</strong>的物件屬性。</p>
+<p><strong>props本身是一個物件</strong>，因此可以容納相當多元的資料。</p>
+<p><img src="https://i.imgur.com/RWDDhmo.jpg" alt="cals"></p>
+<p>我們可以看到<strong>Calculate</strong>組件讀取傳遞過來參數的方式，就跟讀取物件屬性一樣，差別只在於要先讀取到在<strong>App</strong>的變數名value。</p>
+<p><img src="https://i.imgur.com/w0pQcO9.jpg" alt="ass"></p>
+<p>成功傳遞資料到其他組件!! 現在我們終於講解完props的概念和使用方式，接著要來討論有點神祕的children。</p>
+<p>什麼? props也有孩子? 還真的有!</p>
+<hr>
+<h4 id="Props也有孩子"><a href="#Props也有孩子" class="headerlink" title="Props也有孩子?!"></a>Props也有孩子?!</h4><p>當我們想給我們組件的孩子保護，這時候children就出現了! 啊不是，在說什麼…。<br>所謂的<strong>props.children</strong>就是用外殼(nutshell)包覆子組件，詳細我們一樣來看例子比較清楚。</p>
+<p>首先我們在components裡面再新建立一個組件叫做Card，Card比較類似統稱，只要有外殼功能的組件都會這樣命名。看看下圖:</p>
+<p><img src="https://i.imgur.com/gWzwD0Q.jpg" alt="card"></p>
+<p>我們看到<strong>Card</strong>同樣透過props傳入資料，宣告一個const用來儲存class的名稱把card的css類別傳到包覆住的子組件，接著在JSX檔寫入<strong>props.children</strong>這段程式碼。<strong>children是保留字</strong>，每一個組件在建立時都會預設好。children獨到之處，在於它的使用方式，而不是單純的寫成組件而已。我們來看看它如何使用，看看下圖:</p>
+<p><img src="https://i.imgur.com/xdN1T2r.jpg" alt="calcard"><br>我們把div替換成Card，Card是客製化的組件。我們順便給Calculate本身的這個div區塊一個class名稱calculate。現在重新檢視瀏覽器，並不會有任何改變，因此我們可以給Card一點點樣式。選定styles資料夾裡頭，新增card.css這個CSS樣式表，並且給它簡單的框線以及背景顏色。<br>如下:</p>
+<p><img src="https://i.imgur.com/E1k72fY.jpg" alt="cardcss"></p>
+<p>記得要在Card這個元件去匯入樣式表<code>import &#39;../styles/card.css&#39;</code>才會套用。</p>
+<p>我們緊接著來檢視一下是否成功使用Card了呢? 打開你/妳的瀏覽器看看吧!</p>
+<p><img src="https://i.imgur.com/bztgqIY.jpg" alt="final"></p>
+<p>哇! 成功套用到Calculate這個組件身上，至於組件外的則沒有套用成功，因為「我是根組件」那段文字是寫在App裡面。如果要套用到整個App，則修改App的div為Card就可以成功套用這段文字。各位讀者不妨自己動手試試看，一定會覺得很有意思。</p>
+<p>-本日回顧-</p>
+<ul>
+<li>props使組件彼此傳遞資料</li>
+<li>children統一管理組件共同性質</li>
+</ul>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天主要把昨日學到關於props的概念和使用方式和大家分享，我相信我目前理解的程度還非常的淺，若有任何問題歡迎告訴我。</p>
+<p>我在剛開始學children覺得有點抽象，但在實際動手做過幾次後，就對於它的概念比較清楚一些。不過我想children應該不會只有這點使用方式，這樣的話就太小看它了!以後若遇到進階的使用方式或有趣的應用再和大家分享!</p>
+<p>寫文章總會花上數小時，但是很有趣，我們下回再見!<br>謝謝各位，祝大家都有美好的周末!</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
     <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/07/%E7%A8%8B%E5%BC%8F%E6%97%A5%E5%B8%B8%E7%B3%BB%E5%88%97-%E5%AE%A3%E5%91%8A%E5%BC%8F%E8%88%87%E6%8C%87%E4%BB%A4%E5%BC%8F%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80%E7%9A%84%E5%B7%AE%E7%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -726,166 +882,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
-    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/05/JS%E7%B3%BB%E5%88%97-ES6%E5%BF%AB%E9%80%9F%E5%85%A5%E9%96%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/matsu.jpg">
-      <meta itemprop="name" content="Matsu Chen">
-      <meta itemprop="description" content="消逝在平凡的日子中">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Matsu Chen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/05/JS%E7%B3%BB%E5%88%97-ES6%E5%BF%AB%E9%80%9F%E5%85%A5%E9%96%80/" class="post-title-link" itemprop="url">JS系列-ES6快速入門</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-05-05 14:40:50" itemprop="dateCreated datePublished" datetime="2021-05-05T14:40:50+08:00">2021-05-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-13 13:45:22" itemprop="dateModified" datetime="2021-05-13T13:45:22+08:00">2021-05-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="JS-ES6快速入門"><a href="#JS-ES6快速入門" class="headerlink" title="JS - ES6快速入門"></a>JS - ES6快速入門</h3><blockquote>
-<p><em>The only true wisdom is in knowing you know nothing.</em><br><em>- Socrates</em></p>
-</blockquote>
-<h4 id="JS語法釐清"><a href="#JS語法釐清" class="headerlink" title="JS語法釐清"></a>JS語法釐清</h4><p>今天重溫JS的基礎，徹底了解ES5與ES6間的差異，那麼廢話不多說，趕緊來看!</p>
-<ul>
-<li>變數命名 let &amp; const</li>
-<li>箭頭函數 ES6<ul>
-<li>ES5函數</li>
-<li>ES6函數</li>
-</ul>
-</li>
-<li>觀念釐清 Export &amp; Import</li>
-<li>類別與繼承 Class </li>
-<li>展開/其餘運算子 Spread &amp; Rest</li>
-<li>拆解 Destructuring</li>
-<li>原始型態和參照型態 Primitive &amp; Reference</li>
-<li>結語</li>
-</ul>
-<p>以下範例程式碼都可以在JSbin實際執行看看喔!不妨動手試試吧!<br><strong>JSbin: <a target="_blank" rel="noopener" href="https://jsbin.com/?js,console">https://jsbin.com/?js,console</a></strong></p>
-<hr>
-<h4 id="變數命名-let-amp-const"><a href="#變數命名-let-amp-const" class="headerlink" title="變數命名 let &amp; const"></a>變數命名 let &amp; const</h4><p>在ES6，var開始出現分身，就是let和const! 簡單來說，它們的功用都是用來定義變數，實際舉例:<br><code>var number = 5;</code><br><code>let number = 5;</code><br><code>const number = 5;</code><br>一般區別在於let所命名的變數是可變的，const所命名的變數則是不可變的。<br>其實還有Scope的問題，但暫且不討論那一塊。</p>
-<hr>
-<h4 id="箭頭函數-ES6"><a href="#箭頭函數-ES6" class="headerlink" title="箭頭函數 ES6"></a>箭頭函數 ES6</h4><p>接下來比較大的改變莫過於箭頭函數，若沒有事先了解，肯定出現ES5和ES6是不同程式語言的錯覺。</p>
-<h5 id="ES5函數"><a href="#ES5函數" class="headerlink" title="ES5函數"></a>ES5函數</h5><p>首先先來看看ES5的函數寫法:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function say(name)&#123;</span><br><span class="line">  console.log(name + &quot; Hey! You cool!&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">say(&#39;Johnny&#39;);</span><br></pre></td></tr></table></figure>
-<p>在ES5撰寫函數的時候，會先寫下<strong>function</strong>這個關鍵字建立函數，接著再寫上函數的名稱，以本例來說<strong>say</strong>就是函數的名稱，往後在呼叫這個函數時則要寫上<strong>say</strong>，而括號()內則填入參數，所以呼叫時我在這裡傳入<strong>Johnny</strong>，這就是ES5典型的函數呼叫方式。<br>實際在JSbin執行過後可以得到結果是<code>&quot;Johnny Hey! You cool!&quot;</code></p>
-<h5 id="ES6函數"><a href="#ES6函數" class="headerlink" title="ES6函數"></a>ES6函數</h5><p>根據ES5的函數寫法，我們來改寫成ES6的箭頭函數:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const say &#x3D; (name) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(name + &quot; Hey! You cool!&quot;);</span><br><span class="line">&#125;</span><br><span class="line">say(&#39;Johnny&#39;);</span><br></pre></td></tr></table></figure>
-<p>一般來說要將ES6寫成等同於ES5的程式碼都必須指派到某變數，同樣可以根據函數是否會更動而宣告為let或者是const。我們可以看到參數的傳遞寫在等號後方，接著才接上箭頭函數。好處在於簡潔的語法外，最重要的優點在於<strong>this</strong>關鍵字的範圍變得更加明瞭，而不會像ES5函數的this常常會超出我們所想。<br>同樣在JSbin執行過後可以得到結果也是<code>&quot;Johnny Hey! You cool!&quot;</code></p>
-<p>TIP:<br><strong>單一參數</strong>，箭頭函數可以簡化成下方寫法:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const say &#x3D; name &#x3D;&gt; console.log(name + &quot; Hey! You cool!&quot;);</span><br></pre></td></tr></table></figure>
-<p><strong>無參數或多參數</strong>，括號()不得省略:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const say &#x3D; () &#x3D;&gt; console.log(&quot;Hey! You cool!&quot;);</span><br><span class="line">const say &#x3D; (fname, lname) &#x3D;&gt; console.log(fname + &quot; &quot; + lname + &quot; Hey! You cool!&quot;);</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h4 id="觀念釐清-Export-amp-Import"><a href="#觀念釐清-Export-amp-Import" class="headerlink" title="觀念釐清 Export &amp; Import"></a>觀念釐清 Export &amp; Import</h4><p>在專案當中，把程式模組化是一件相當明智的選擇。<br>首先模組化的檔案必須先匯出<strong>Export</strong>，才能由其他程式匯入<strong>Import</strong>後使用。<br>匯出Export有兩種方式，我們以ES6的函數為例:<br>–預設匯出–<br><code>export default say</code></p>
-<p>–命名匯出–<br><code>export const say = (name) =&gt; console.log(&quot; Hey! You cool!&quot;)</code><br><code>export const name = &quot;Johnny&quot;</code><br>預設匯出的檔案只有一個模組，以上例來說就是只匯出say這個函數，命名匯出則是會根據名稱匯出不同的模組，以上例來說就是匯出say這個函數外，還能夠再匯出其他函數或變數。</p>
-<p>匯入Import則會根據匯出的方式對應:<br>–預設匯入–<br><code>import say from &#39;./say.js&#39;</code><br>當然say可以當成alias任意命名，如下:<br><code>import greet from &#39;./say.js&#39;</code></p>
-<p>–命名匯入–<br><code>import &#123;say&#125; from &#39;./say.js&#39;</code><br><code>import &#123;name&#125; from &#39;./say.js&#39;</code><br>可以清楚看到若是預設匯入則可以任意命名，但若是命名匯入則必須指定要匯入的函數或變數等等。<br>總結來看，一個檔案只能包含一個預設匯出及數個命名匯出，因此若檔案包含數個模組或變數等，我們也可以一次匯入所有的模組如下:<br><code>import * as all from &#39;./say.js</code><br>存取則可以透過<strong>all.say</strong>和<strong>all.name</strong>存取我們匯出的模組或變數。</p>
-<hr>
-<h4 id="類別與繼承-Class"><a href="#類別與繼承-Class" class="headerlink" title="類別與繼承 Class"></a>類別與繼承 Class</h4><p>噹噹噹，Java跟Javascript就像是Ham跟Hamburger，除了開頭三個英文字其他都不一樣，但自從ES6加入了Class後，它們的相似性又提高了一點，對，就是那麼一點。對於熟悉物件導向程式語言的各位來說，肯定是一件再熟悉不過的事情，不過我們還是來看看JS的Class吧!畢竟三大框架Angular,React,Vue幾乎可以說是完全基於它的概念而發展出來。<br>關鍵字起頭不廢話:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Fish &#123;</span><br><span class="line">  constructor()&#123;</span><br><span class="line">    this.species &#x3D; &#39;fish&#39;;</span><br><span class="line">  &#125;</span><br><span class="line">  swim () &#123;</span><br><span class="line">    console.log(&quot;swims...&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const shark &#x3D; new Fish();</span><br><span class="line">console.log(shark.species);</span><br><span class="line">shark.swim();</span><br></pre></td></tr></table></figure>
-<p>上方定義魚的類別，裡面有一個建構子與方法Swim。典型的類別寫法，同時也是比較<strong>舊</strong>的寫法。constructor可以理解為一開始實體化(初始化)時就具備的東西，以Fish類別來說，鯊魚剛生出來就有個名字叫做’fish’。<br>實際執行後顯示結果<code>&quot;fish&quot;</code>跟<code>&quot;swims...&quot;</code></p>
-<p>接著我們來看看繼承的範例:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Shark extends Fish&#123;</span><br><span class="line">  constructor()&#123;</span><br><span class="line">    super();</span><br><span class="line">    this.name &#x3D; &#39;shark&#39;;</span><br><span class="line">  &#125;</span><br><span class="line">  swim() &#123;</span><br><span class="line">    console.log(&quot;swims pretty fast...&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const shark &#x3D; new Shark();</span><br><span class="line">console.log(shark.species);</span><br><span class="line">console.log(shark.name);</span><br><span class="line">shark.swim();</span><br></pre></td></tr></table></figure>
-<p>鯊魚這個類別繼承魚，鯊魚這次完成進化，游得非常快而且有個更酷炫的名字shark!需要特別注意的是，繼承父類別Fish必須要寫上super()才可以確保父類別屬性的建構子也經過實體化。<br>不過這樣看下來好像JS在class上沒有什麼獨到之處啊? No.No..No…<br>以上的程式碼都能改寫成更有ES6的味道:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class Fish &#123;</span><br><span class="line">  species &#x3D; &#39;fish&#39;;</span><br><span class="line">  swim &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    console.log(&quot;swims...&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Shark extends Fish &#123;</span><br><span class="line">  name &#x3D; &#39;shark&#39;;</span><br><span class="line">  swim &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    console.log(&quot;swims pretty fast...&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const shark &#x3D; new Shark();</span><br><span class="line">console.log(shark.species);</span><br><span class="line">console.log(shark.name);</span><br><span class="line">shark.swim();</span><br></pre></td></tr></table></figure>
-<p>看到JS有多潮了嗎?大概就跟鯊魚一樣潮，海中霸主。可以注意到在JS裡的Class並不是純粹的Class而是經過簡化的Class，所以常常可以聽到有人說JS的Class是類Class也是有點道理在。因為ES6幫我們處理許多像是constructor跟super()，在JS這些都可以省略不寫，因此我們只需要專注在High-Level的部分，裝備穿好了，還不趕快出發嗎?</p>
-<hr>
-<h4 id="展開-其餘運算子-Spread-amp-Rest"><a href="#展開-其餘運算子-Spread-amp-Rest" class="headerlink" title="展開/其餘運算子 Spread &amp; Rest"></a>展開/其餘運算子 Spread &amp; Rest</h4><p>ES6可以與箭頭函數與之比肩的大概就非屬於展開和其餘運算子了，讓我們來了解它們的各自功能。<br><strong>展開運算子(Spread Operator): 將陣列元素或者是物件屬性分割出來</strong><br><strong>其餘運算子(Rest Operator): 將一連串的函數參數合併到陣列中</strong></p>
-<p>不需要懷疑，這兩個運算子放在一起講就是因為它們的寫法一樣都是**…**，沒錯就是點點點，想必大家看完心中也是點點點，但我們立刻來抽絲剝繭。<br>展開運算子其實相當好理解，就是將陣列分開再使用:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const oldYear &#x3D; [2018, 2019, 2020];</span><br><span class="line">const newYear &#x3D; [...oldYear, 2021];</span><br><span class="line">console.log(newYear);</span><br></pre></td></tr></table></figure>
-<p>我們可以了解到newYear第一個參數…oldYear會先將oldYear這個陣列本身切割開來成為單一元素，接著再建立一個新的陣列給newYear並且再加上後續的參數。<br>實際執行後顯示結果<code>[2018, 2019, 2020, 2021]</code>。<br>同樣地，我們也可以將展開運算子運用在物件上:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const fish &#x3D; &#123;</span><br><span class="line">  species: &#39;fish&#39;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const shark &#x3D; &#123;</span><br><span class="line">  ...fish,</span><br><span class="line">  name: &#39;shark&#39;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>實際執行後顯示結果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[object Object] &#123;</span><br><span class="line">  name: &quot;shark&quot;,</span><br><span class="line">  species: &quot;fish&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以發現fish的屬性一樣被添加到shark裡面，這就是展開運算子的功能，帶來意想不到的便捷性，尤其是在複製陣列或物件身上。</p>
-<p>接著來討論其餘運算子:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const filterNums &#x3D; (...args) &#x3D;&gt; &#123;</span><br><span class="line">  return args.filter(el &#x3D;&gt; el &gt; 5);</span><br><span class="line">&#125;</span><br><span class="line">console.log(filterNums(1,3,5,7,9,11,13,15,17));</span><br></pre></td></tr></table></figure>
-<p>我們在這個函數傳入其餘運算子(…args)，args可以任意命名，接著我們回傳args的內建函數filter。因為args在經過其餘運算子後已經轉換為陣列，因此可以套用陣列的內建方法，如:sort(), map(), slice(), splice()等等的方法。特別注意的是filterNums()並不能傳入一組陣列，會造成其餘運算子無法將陣列轉換成功而直接回傳空陣列。<br>實際執行後顯示<code>[7, 9, 11, 13, 15, 17]</code></p>
-<hr>
-<h4 id="拆解-Destructuring"><a href="#拆解-Destructuring" class="headerlink" title="拆解 Destructuring"></a>拆解 Destructuring</h4><p>藉由拆解我們可以很容易的去存取陣列或物件裡面的元素或屬性，我們實際來看點例子。<br>首先是陣列:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const breakMeUp &#x3D; [2, 0, 2, 1, &quot;is&quot;, &quot;cool&quot;];</span><br><span class="line">const [a, b, , d, e] &#x3D; breakMeUp;</span><br><span class="line">console.log(a);</span><br><span class="line">console.log(b);</span><br><span class="line">console.log(d);</span><br><span class="line">console.log(e);</span><br></pre></td></tr></table></figure>
-<p>透過直接拆解陣列可以對應到breakMeUp陣列裡面的元素，而不需要透過其他方式去索引。<br>實際執行後顯示<br>接著是物件:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const Shark &#x3D; &#123;</span><br><span class="line">  species: &#39;fish&#39;,</span><br><span class="line">  name: &#39;shark&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const &#123;species&#125; &#x3D; Shark;</span><br><span class="line">console.log(species);</span><br><span class="line">console.log(name);</span><br></pre></td></tr></table></figure>
-<p>物件的拆解就像是一對一的對應，中括號{}內寫的變數能夠對應到物件的屬性，就能夠讀取，如果沒有對應的屬性則會回傳undefined.<br>實際結果:<code>&quot;fish&quot;和&quot;Undefined&quot;</code></p>
-<hr>
-<h4 id="原始型態和參照型態-Primitive-amp-Reference"><a href="#原始型態和參照型態-Primitive-amp-Reference" class="headerlink" title="原始型態和參照型態 Primitive &amp; Reference"></a>原始型態和參照型態 Primitive &amp; Reference</h4><p>終於來到本日的最後一個段落，喘口氣~茶。<br>JS最重要的概念大概在於釐清原始型態(Primitive)和參照型態(Reference)，基本上數值、字串、布林值、Null、undefined都隸屬於原始型態，至於在JS常常操作的陣列與物件則是所謂的參照型態。<br>等等，什麼型態? 難不成我還得會開二、三檔，接著伸縮機關槍嗎? 不會可能真的打不出機關槍來。<br>首先是原始型態:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let num &#x3D; 1111;</span><br><span class="line">let num2 &#x3D; num;</span><br><span class="line">console.log(num);</span><br><span class="line">console.log(num2);</span><br><span class="line">num &#x3D; 2222;</span><br><span class="line">console.log(num); </span><br><span class="line">console.log(num2)</span><br></pre></td></tr></table></figure>
-<p>上述程式我們可以理解到何謂原始型態，簡單來說就是<strong>參值</strong>(Call By Value)，因此num在後續變更後並不會改動num2的值。可以理解為num2模仿num蓋房子，蓋完後即便num改建，num2的房子還是長的跟num之前的房子一樣。原理就是因為num2其實擁有自己的記憶體位置0x0f03。<br>實際執行結果顯示:<code>1111 1111 2222 1111</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const fish &#x3D; &#123;</span><br><span class="line">  species: &#39;fish&#39;</span><br><span class="line">&#125;</span><br><span class="line">const shark &#x3D; fish;</span><br><span class="line">console.log(shark.species);</span><br><span class="line">fish.species &#x3D; &#39;animal&#39;</span><br><span class="line">console.log(shark.species);</span><br><span class="line">shark.species &#x3D; &#39;fish&#39;;</span><br><span class="line">console.log(fish.species);</span><br></pre></td></tr></table></figure>
-<p>上述程式我們理解參照型態，簡單來說就是<strong>參址</strong>(Call By Reference)，既然它們住的地方都一樣，只要有人去改動房子的，那自然它們就會彼此影響，換句話說，fish和shark都參照到同一個記憶體位址，理解這一點後，就可以理解JS不論是展開、其餘運算子還是陣列內建方法，都會產生新的陣列的原因在，一方面是要避免副作用，試想如果不小心改動陣列，卻把最一開始的值都搞混了，那還需要繼承什麼呢? 可能哪天fish的種類變成dog都不一定對吧?<br>實際執行結果顯示:<code>&quot;fish&quot;, &quot;animal&quot;, &quot;fish&quot;</code></p>
-<hr>
-<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>哇! 今天一個興起就把文章打好打滿，花了不少時間。其實會突然想打這篇文章主要是因為在網路上學React的課程，剛好講師複習JS一些比較需要去注意的改動,<br>像是箭頭函數、展開運算子、類別其實都逐漸讓JS在程式語言的世界裡稱霸，當然還是有許多很好的語言，但JS的強勢卻是無庸置疑，以前或許沒人敢說，但現在肯定大家都會認同JS是很強勢的語言，即便它是弱型態語言，仔細想一想JS根本就是扮豬吃老虎，有夠過分，但大家還是對它愛不釋手，我也是。</p>
-<p>希望今天的系列文能夠快速幫助需要的人複習ES5.6間的改動，其實有些許改動牽連到ES7，有機會再拿出來討論，相信應該不會等上太久的時間。許多細節沒有講到，但我想理解基本概念，等到實務上遇到問題再去深入理解也不遲，畢竟要學的東西太多了!</p>
-<p>謝謝各位看到最後!!</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -957,7 +953,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">28</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -970,7 +966,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">42</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

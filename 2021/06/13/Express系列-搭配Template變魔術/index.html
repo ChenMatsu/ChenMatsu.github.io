@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en,zh-CN,ja,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hiiragimatu.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="搭配Template變魔術 Everything you can imagine is real.― Pablo Picasso  Express幫我們解決撰寫HTML的痛處，透過設置樣板引擎(Template Engine)，我們可以更快速建立網頁，而不用一再重複地撰寫相似的程式碼。樣板引擎同樣有各種不同的引擎可以選擇，裝上不同引擎一樣都能夠跑在高速公路上!  Template Engine E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Express系列-搭配Template變魔術">
+<meta property="og:url" content="https://hiiragimatu.github.io/2021/06/13/Express%E7%B3%BB%E5%88%97-%E6%90%AD%E9%85%8DTemplate%E8%AE%8A%E9%AD%94%E8%A1%93/index.html">
+<meta property="og:site_name" content="Matsu Chen">
+<meta property="og:description" content="搭配Template變魔術 Everything you can imagine is real.― Pablo Picasso  Express幫我們解決撰寫HTML的痛處，透過設置樣板引擎(Template Engine)，我們可以更快速建立網頁，而不用一再重複地撰寫相似的程式碼。樣板引擎同樣有各種不同的引擎可以選擇，裝上不同引擎一樣都能夠跑在高速公路上!  Template Engine E">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/VzFGGW1.jpg">
+<meta property="article:published_time" content="2021-06-13T08:49:11.000Z">
+<meta property="article:modified_time" content="2021-06-14T04:27:24.330Z">
+<meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="node">
+<meta property="article:tag" content="express">
+<meta property="article:tag" content="middleware">
+<meta property="article:tag" content="routes">
+<meta property="article:tag" content="template">
+<meta property="article:tag" content="ejs">
+<meta property="article:tag" content="pug">
+<meta property="article:tag" content="handlebars">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/VzFGGW1.jpg">
+
+<link rel="canonical" href="https://hiiragimatu.github.io/2021/06/13/Express%E7%B3%BB%E5%88%97-%E6%90%AD%E9%85%8DTemplate%E8%AE%8A%E9%AD%94%E8%A1%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<script>
+  ((w, d) => {
+    'use strict';
+      const userScheme = localStorage.getItem('Scheme');
+      if (!userScheme) return;
+    d.documentElement.className += ' darkScheme';
+  })(window, document);
+</script>
+
+  <title>Express系列-搭配Template變魔術 | Matsu Chen</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Matsu Chen</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Matsu Life</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-gadgets">
+
+    <a href="/gadgets/" rel="section"><i class="fas fa-layer-group fa-fw"></i>Gadgets</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/06/13/Express%E7%B3%BB%E5%88%97-%E6%90%AD%E9%85%8DTemplate%E8%AE%8A%E9%AD%94%E8%A1%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Express系列-搭配Template變魔術
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-06-13 16:49:11" itemprop="dateCreated datePublished" datetime="2021-06-13T16:49:11+08:00">2021-06-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-06-14 12:27:24" itemprop="dateModified" datetime="2021-06-14T12:27:24+08:00">2021-06-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/Express/" itemprop="url" rel="index"><span itemprop="name">Express</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-users"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="firestore-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="搭配Template變魔術"><a href="#搭配Template變魔術" class="headerlink" title="搭配Template變魔術"></a>搭配Template變魔術</h3><blockquote>
+<p><em>Everything you can imagine is real.</em><br><em>― Pablo Picasso</em></p>
+</blockquote>
+<p>Express幫我們解決撰寫HTML的痛處，透過設置樣板引擎(Template Engine)，我們可以更快速建立網頁，而不用一再重複地撰寫相似的程式碼。樣板引擎同樣有各種不同的引擎可以選擇，裝上不同引擎一樣都能夠跑在高速公路上!</p>
+<ul>
+<li>Template Engine<ul>
+<li>EJS</li>
+<li>PUG</li>
+<li>Handlebars</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="樣板引擎-Template-Engine"><a href="#樣板引擎-Template-Engine" class="headerlink" title="樣板引擎(Template Engine)"></a>樣板引擎(Template Engine)</h4><p>樣板引擎又稱作樣板處理器，簡單來說就是將語法和資料結合在一起的轉換器。透過樣板引擎所寫成的頁面，最後會轉換成常見的HTML檔案，因此樣板引擎也稱作前或預處理器。</p>
+<p>今天將會分別介紹EJS、PUG和Handlebars三個不同的樣板引擎來簡單理解它們的使用方式與差異。</p>
+<h5 id="EJS"><a href="#EJS" class="headerlink" title="EJS"></a>EJS</h5><p>首先在全新的資料夾下建立app.js後執行<code>npm init</code>初始化檔案的設定檔，接著安裝<strong>nodemon</strong>和<strong>express</strong>以及<strong>ejs</strong>三個套件。</p>
+<p>到目前為止都有在介紹Routes時提到，忘記的話可以回上一篇文章複習一下↑。</p>
+<p>首先使用EJS前，必須先在Express設置EJS作為樣板引擎，並且指定樣板的位置路徑給Express。</p>
+<p>如下:</p>
+<pre class="language-none"><code class="language-none">const express &#x3D; require(&#39;express&#39;);
+const app &#x3D; express();
+
+&#x2F;&#x2F; 設定樣板引擎
+app.set(&#39;view engine&#39;, &#39;ejs&#39;);
+&#x2F;&#x2F; 樣板的路徑 -&gt; 從app.js的路徑看起 -&gt; 會找到和app.js同層級的views資料夾內
+app.set(&#39;views&#39;, &#39;views&#39;);
+
+app.listen(3000);</code></pre>
+<p>隨後建立views資料夾，在其中分別建立home.ejs這個檔案，並且撰寫如下:<br><code>home.ejs</code></p>
+<pre class="language-none"><code class="language-none">&lt;!DOCTYPE html&gt;
+&lt;html lang&#x3D;&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;
+  &lt;meta http-equiv&#x3D;&quot;X-UA-Compatible&quot; content&#x3D;&quot;IE&#x3D;edge&quot;&gt;
+  &lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, initial-scale&#x3D;1.0&quot;&gt;
+
+  &lt;!-- &lt;%&#x3D; %&gt; 用於傳遞變數給EJS樣板 --&gt;
+  &lt;title&gt;&lt;%&#x3D; pageTitle %&gt;&lt;&#x2F;title&gt;
+&lt;&#x2F;head&gt;
+&lt;body&gt;
+  &lt;h3&gt;This is Home&lt;&#x2F;h3&gt;
+&lt;&#x2F;body&gt;
+&lt;&#x2F;html&gt;</code></pre>
+
+<p>EJS的特別處在於可以透過&lt;%= %&gt;傳遞變數或者&lt;% %&gt;去執行邏輯，在撰寫上較為直覺。接著再將app.js稍作修改後，就可以看見成功地在Express使用EJS樣板引擎。<br><code>app.js</code></p>
+<pre class="language-none"><code class="language-none">const express &#x3D; require(&#39;express&#39;);
+const app &#x3D; express();
+
+&#x2F;&#x2F; 設定樣板引擎
+app.set(&#39;view engine&#39;, &#39;ejs&#39;);
+&#x2F;&#x2F; 樣板的路徑 -&gt; 從app.js的路徑看起 -&gt; 會找到和app.js同層級的views資料夾內
+app.set(&#39;views&#39;, &#39;views&#39;);
+
+app.get(&#39;&#x2F;&#39;, (req, res, next) &#x3D;&gt; &#123;
+  &#x2F;&#x2F; render函數 -&gt; 參數1: 渲染的檔案  參數2: 傳入的物件 
+  res.render(&#39;home&#39;, &#123; pageTitle: &#39;Home&#39;&#125;);
+&#125;);
+
+app.listen(3000);</code></pre>
+<p>執行<code>npm start</code>後打開瀏覽器輸入localhost:3000，看見Home正對著我們揮手!</p>
+<p><img src="https://i.imgur.com/VzFGGW1.jpg" alt="home"></p>
+<p>除了輸出的This is Home文字外，網頁Title順利存取傳遞至home.ejs的物件屬性pageTitle。</p>
+<h5 id="PUG"><a href="#PUG" class="headerlink" title="PUG"></a>PUG</h5><p>現在我們來透過PUG達到一樣的結果，首先透過npm install –save pug安裝套件後，將app.js的樣板引擎更改至<code>app.set(&#39;view engine&#39;, &#39;pug&#39;)</code>，其餘的不更動。</p>
+<p>接著我們建立home.pug的檔案在views資料夾內，如下:<br><code>home.pug</code></p>
+<pre class="language-none"><code class="language-none">doctype html
+html(lang&#x3D;&quot;en&quot;)
+  head
+    meta(charset&#x3D;&quot;UTF-8&quot;)
+    meta(http-equiv&#x3D;&quot;X-UA-Compatible&quot;, content&#x3D;&quot;IE&#x3D;edge&quot;)
+    meta(name&#x3D;&quot;viewport&quot;, content&#x3D;&quot;width&#x3D;device-width, initial-scale&#x3D;1.0&quot;)
+
+    &lt;!-- #&#123;&#125; 用於傳遞變數給樣板 --&gt;
+    title #&#123;pageTitle&#125;
+    link(rel&#x3D;&quot;stylesheet&quot;, href&#x3D;&quot;&#x2F;css&#x2F;main.css&quot;)
+    body 
+      h3 This is Home </code></pre>
+<p>PUG本身使用上會較EJS簡潔，因為模板是透過成對標籤定位，因此縮排會嚴重影響程式碼的結果，需要特別注意。接著執行來到瀏覽器後會得到和EJS一樣的結果。</p>
+<h5 id="handlebars"><a href="#handlebars" class="headerlink" title="handlebars"></a>handlebars</h5><p>使用handlebars前一樣需要透過npm安裝，注意是要執行<code>npm install --save express-handlebars</code>而不是只有handlebars。handlebars的設置較EJS和PUG不同，主要是因為Express並沒有預先寫好handlebars相關的組態，因此需要多一些步驟，但並不困難，如下:<br><code>app.js</code></p>
+<pre class="language-none"><code class="language-none">const handlebars &#x3D; require(&#39;express-handlebars&#39;);
+
+&#x2F;&#x2F; 執行handlebars樣板函數並設置hbs變數名稱為引擎名稱 
+&#x2F;&#x2F; layoutsDir: 設定樣板的路徑 defaultLayout: 指定樣板架構 extname: 顯示副檔案名稱
+app.engine(&#39;hbs&#39;, handlebars(&#123; layoutsDir: &#39;views&#39;, defaultLayout: &#39;home&#39;, extname: &#39;hbs&#39;&#125;));
+&#x2F;&#x2F; 指定樣板為hbs
+app.set(&#39;view engine&#39;, &#39;hbs&#39;);</code></pre>
+<p>handlebars在設置上比較麻煩，因為Express本身沒有處理它，但在最後都會得到一樣的結果。</p>
+<p>最後我們一樣建立home.hbs的檔案，大致上和EJS較為相近:</p>
+<pre class="language-none"><code class="language-none">&lt;!DOCTYPE html&gt;
+&lt;html lang&#x3D;&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset&#x3D;&quot;UTF-8&quot;&gt;
+  &lt;meta http-equiv&#x3D;&quot;X-UA-Compatible&quot; content&#x3D;&quot;IE&#x3D;edge&quot;&gt;
+  &lt;meta name&#x3D;&quot;viewport&quot; content&#x3D;&quot;width&#x3D;device-width, initial-scale&#x3D;1.0&quot;&gt;
+
+  &#123;&#123;!-- &#123;&#123; &#125;&#125; 用於傳遞變數給EJS樣板 --&#125;&#125;
+  &lt;title&gt;&#123;&#123; pageTitle &#125;&#125;&lt;&#x2F;title&gt;
+&lt;&#x2F;head&gt;
+&lt;body&gt;
+  &lt;h3&gt;This is Home&lt;&#x2F;h3&gt;
+&lt;&#x2F;body&gt;
+&lt;&#x2F;html&gt;</code></pre>
+
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>樣板引擎我個人比較習慣用PUG，前陣子在Hahow上吳哲宇老師的課程時也是使用PUG和SASS，雖然只是在CodePen上使用，完全不需要自己設置，但還是喜歡PUG的寫法。今天還沒提到繼承樣板的寫法，改天再來寫一篇繼承Layout和使用CSS的文章。 </p>
+<p>那這回就先這樣子囉!</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/node/" rel="tag"># node</a>
+              <a href="/tags/express/" rel="tag"># express</a>
+              <a href="/tags/middleware/" rel="tag"># middleware</a>
+              <a href="/tags/routes/" rel="tag"># routes</a>
+              <a href="/tags/template/" rel="tag"># template</a>
+              <a href="/tags/ejs/" rel="tag"># ejs</a>
+              <a href="/tags/pug/" rel="tag"># pug</a>
+              <a href="/tags/handlebars/" rel="tag"># handlebars</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/11/Express%E7%B3%BB%E5%88%97-%E5%9F%BA%E6%9C%ACRoute%E5%92%8CMiddleware/" rel="prev" title="Express系列-基本Route和Middleware">
+      <i class="fa fa-chevron-left"></i> Express系列-基本Route和Middleware
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%AD%E9%85%8DTemplate%E8%AE%8A%E9%AD%94%E8%A1%93"><span class="nav-number">1.</span> <span class="nav-text">搭配Template變魔術</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A3%E6%9D%BF%E5%BC%95%E6%93%8E-Template-Engine"><span class="nav-number">1.1.</span> <span class="nav-text">樣板引擎(Template Engine)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#EJS"><span class="nav-number">1.1.1.</span> <span class="nav-text">EJS</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PUG"><span class="nav-number">1.1.2.</span> <span class="nav-text">PUG</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#handlebars"><span class="nav-number">1.1.3.</span> <span class="nav-text">handlebars</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.2.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Matsu Chen"
+      src="/images/matsu.jpg">
+  <p class="site-author-name" itemprop="name">Matsu Chen</p>
+  <div class="site-description" itemprop="description">消逝在平凡的日子中</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HiiragiMatu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HiiragiMatu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:matuyou0301@gmail.com" title="E-Mail → mailto:matuyou0301@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+<div class="night-mode motion-element">
+  <a role="button" class="night-btn">
+    <i class="fa fa-lightbulb-o"></i>
+    Night
+  </a>
+</div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Matsu Chen</span>
+</div>
+
+        
+
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+  <script>
+    firebase.initializeApp({
+      apiKey   : 'AIzaSyD-a_FYZRMt6Yb1t5u5zGYY_i0t6FAGqIA',
+      projectId: 'hexo-blog-45950'
+    });
+
+    function getCount(doc, increaseCount) {
+      // IncreaseCount will be false when not in article page
+      return doc.get().then(d => {
+        var count = 0;
+        if (!d.exists) { // Has no data, initialize count
+          if (increaseCount) {
+            doc.set({
+              count: 1
+            });
+            count = 1;
+          }
+        } else { // Has data
+          count = d.data().count;
+          if (increaseCount) {
+            // If first view this article
+            doc.set({ // Increase count
+              count: count + 1
+            });
+            count++;
+          }
+        }
+
+        return count;
+      });
+    }
+
+    function appendCountTo(el) {
+      return count => {
+        el.innerText = count;
+      }
+    }
+  </script>
+  <script>
+    (function() {
+      var db = firebase.firestore();
+      var articles = db.collection('articles');
+
+      if (CONFIG.page.isPost) { // Is article page
+        var title = document.querySelector('.post-title').innerText.trim();
+        var doc = articles.doc(title);
+        var increaseCount = CONFIG.hostname === location.hostname;
+        if (localStorage.getItem(title)) {
+          increaseCount = false;
+        } else {
+          // Mark as visited
+          localStorage.setItem(title, true);
+        }
+        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
+      } else if (CONFIG.page.isHome) { // Is index page
+        var promises = [...document.querySelectorAll('.post-title')].map(element => {
+          var title = element.innerText.trim();
+          var doc = articles.doc(title);
+          return getCount(doc);
+        });
+        Promise.all(promises).then(counts => {
+          var metas = document.querySelectorAll('.firestore-visitors-count');
+          counts.forEach((val, idx) => {
+            appendCountTo(metas[idx])(val);
+          });
+        });
+      }
+    })();
+  </script>
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script>
+  ((w, d) => {
+    'use strict';
+      let userScheme = localStorage.getItem('Scheme');
+      if (userScheme) d.documentElement.className += ' darkScheme';
+      const btn = d.querySelector('.night-btn');
+      w.addEventListener('keydown', e => {
+        if (e.altKey && e.code === 'KeyX') btn.click();
+      });
+      btn.addEventListener('click', () => {
+        d.documentElement.classList.toggle('darkScheme');
+        if ( d.documentElement.classList.contains('darkScheme') ) {
+          localStorage.setItem('Scheme', 'Dark');
+          return;
+        }
+        localStorage.removeItem('Scheme');
+      });
+  })(window, document);
+</script>
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'dff33627bca5f23e2727',
+      clientSecret: 'b131c7b01d14a8d045259195e88194c23469133a',
+      repo        : 'hiiragimatu.github.io',
+      owner       : 'HiiragiMatu',
+      admin       : ['HiiragiMatu'],
+      id          : '246e87480887fee4ff54d01e2fe9c469',
+        language: 'en',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
