@@ -168,6 +168,104 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/06/03/JS%E7%B3%BB%E5%88%97-Closures%E9%96%89%E5%8C%85%E5%85%A5%E9%96%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/03/JS%E7%B3%BB%E5%88%97-Closures%E9%96%89%E5%8C%85%E5%85%A5%E9%96%80/" class="post-title-link" itemprop="url">JS系列-Closures閉包入門</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-06-03 20:02:43 / Modified: 21:08:09" itemprop="dateCreated datePublished" datetime="2021-06-03T20:02:43+08:00">2021-06-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Closures閉包入門"><a href="#Closures閉包入門" class="headerlink" title="Closures閉包入門"></a>Closures閉包入門</h3><blockquote>
+<p><em>Faith is about doing. You are how you act, not just how you believe.</em><br><em>― Mitch Albom, Have a Little Faith: a True Story</em></p>
+</blockquote>
+<p>最近在用React寫組件時，突然想到閉包(Closures)的使用。具體原因已經有點想不太起來，只記得當天研究閉包一段時間。上一篇文章已經是五月底的事情，時間過的很快，不知不覺也在公司的案子裡埋頭三天多，不過進度很緩慢，心情也是有點忐忑，不確定自己能不能好好完成，也不確定一路走來是對是錯。回歸正題，今天就來探究一下閉包的使用吧!</p>
+<ul>
+<li>何謂閉包<ul>
+<li>基本閉包運用</li>
+<li>實際閉包運用</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="何謂閉包"><a href="#何謂閉包" class="headerlink" title="何謂閉包"></a>何謂閉包</h4><p>若沒有特別研究，可能會以為閉包是什麼神奇的東西，它很神奇卻也不神奇。在撰寫JS的日子中，我們很常就會運用到閉包的概念。</p>
+<p>先來看看MDN關於閉包的敘述:<br><strong>A closure is the combination of a function bundled together with references to its surrounding state.</strong></p>
+<p>個人而言，第一次讀到這段話的時候似懂非懂，但唯一可以確信的是，某函數可以參照到它周圍的狀態，至於這個周圍如何判斷就需要透過實際範例來討論，這就好像讀一篇文章，我們必須透過上下文來判斷一句話真正的意圖，程式語言當然也不例外。</p>
+<h5 id="基本閉包運用"><a href="#基本閉包運用" class="headerlink" title="基本閉包運用"></a>基本閉包運用</h5><p>首先來看一個簡單的閉包範例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let findNinja &#x3D; &#39;ninja&#39;;</span><br><span class="line"></span><br><span class="line">const trackNinja &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  if(findNinja &#x3D;&#x3D;&#x3D; &#39;ninja&#39;)&#123;</span><br><span class="line">    console.log(&#39;We find the ninja!&#39;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">trackNinja();</span><br></pre></td></tr></table></figure>
+<p>上述是很常見的函數，我們單純宣告一個全域變數以及函數，但若依照<strong>函數可以參照周圍的狀態</strong>，則其實我們正在使用閉包，卻完全沒有發現。不過僅僅是這樣無法理解閉包的奧義，接著看:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">const findNinja &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  let ninja &#x3D; &#39;Matsu&#39;;</span><br><span class="line">  const catchNinja &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    console.log(ninja);</span><br><span class="line">  &#125;</span><br><span class="line">  return catchNinja;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let realNinja &#x3D; findNinja();</span><br><span class="line">realNinja();</span><br></pre></td></tr></table></figure>
+<p>這次的範例特別的地方在於return catchNinja會先在catchNinja函數執行前先執行，因此若真是如此return過後findNinja就應該找不到Matsu忍者，同樣也無法列印出Ninja的名稱，但是在實際執行後，卻可以找到Matsu忍者，這就是閉包在展現身手的時刻。可是似懂非懂? 我們一步一步解釋，首先當realNinja被指派findNinja函數後參照到catchNinja函數，catchNinja則會建立閉包產生一個泡泡去包住範圍內的變數，而可參照的範圍則是findNinja內的所有變數。我們再看另外一個基本範例:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">let ninja &#x3D; &#39;matsu&#39;;</span><br><span class="line">let ninja_hide;</span><br><span class="line"></span><br><span class="line">const findMoreNinja &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  let realNinja &#x3D; &#39;Matsu&#39;;</span><br><span class="line"></span><br><span class="line">  const moreNinja &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    if(ninja &#x3D;&#x3D;&#x3D; &#39;matsu&#39;) &#123;</span><br><span class="line">      console.log(&#39;I found ninja matsu!&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">    if(realNinja &#x3D;&#x3D;&#x3D; &#39;Matsu&#39;) &#123;</span><br><span class="line">      console.log(realNinja, &#39;I found real ninja Matsu!&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ninja_hide &#x3D; moreNinja;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">findMoreNinja();</span><br><span class="line">ninja_hide();</span><br></pre></td></tr></table></figure>
+<p>先後執行findMoreNinja和ninja_hide後，可以發現ninja_hide參照到findMoreNinja裡頭的moreNinja函數，照理說在findMoreNinja結束後，就無法再取得moreNinja的內容，但我們卻能夠取得，換句話說，ninja_hide()本身建立起新的閉包!</p>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天簡簡單單講解閉包的存在，其實閉包可以更加的複雜，只是透過深入理解日常閉包存在的方式，在撰寫JS的過程中便能多留意這個概念，往後在撰寫網站或應用程式時，就更夠理解JS背後運行的方式。學習框架更需要理解這些基本的概念，當開始談起生態圈與優化時，沒有JS基礎的底子，很難去真正釐清程式寫不好的原因在哪裡。</p>
+<p>我覺得自己的基礎不是很好，希望能夠透過一篇又一篇的文章，一天一天的進步。今天為了透過Git Pages展示UI給公司的同事了解狀況，研究兩個帳號要如何在本地端切換，數小時過後才終於釐清SSH的使用方式，說真的都能夠再寫成另外一篇文章，很有趣的是，在五月初，剛架好部落格時就遇到同樣的問題，當初是打算要透過另外一個Github帳號去重新實作架設Hexo卻在SSH上面碰壁，時隔一個月，在今天才真的理解SSH的使用方法…，突然在IT邦看見其他大神的文章，才頓悟他們的文章在寫什麼，只能說自己真的還太菜!</p>
+<p>希望今天這篇文章能夠對想初步理解閉包的讀者有幫助，謝謝。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
     <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/31/React%E7%B3%BB%E5%88%97-%E7%8E%A9%E8%BD%89Typescript%E5%BE%85%E8%BE%A6%E6%B8%85%E5%96%AE-%E4%B8%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -218,13 +316,6 @@
             </span>
 
           
-            <span class="post-meta-item" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="firestore-visitors-count"></span>
-            </span>
 
         </div>
       </header>
@@ -330,13 +421,6 @@
             </span>
 
           
-            <span class="post-meta-item" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="firestore-visitors-count"></span>
-            </span>
 
         </div>
       </header>
@@ -464,13 +548,6 @@
             </span>
 
           
-            <span class="post-meta-item" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="firestore-visitors-count"></span>
-            </span>
 
         </div>
       </header>
@@ -604,13 +681,6 @@
             </span>
 
           
-            <span class="post-meta-item" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="firestore-visitors-count"></span>
-            </span>
 
         </div>
       </header>
@@ -672,139 +742,6 @@
 <hr>
 <h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>原本想說要一次將測試的文章打完，但才打沒一半就篇幅就已經有點多，因此打算後續再根據這篇文章撰寫整合測試以及處理API的問題。很高興今天自己終於能夠對Test有點基礎概念，希望未來有機會能夠將它派上用場。我想這只能算是初窺JEST的堂奧，但作為認識JEST的第一步，應該算是相當直覺的了。</p>
 <p>謝謝看到最後的各位。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
-    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/23/JS%E7%B3%BB%E5%88%97-%E5%90%8C%E6%AD%A5%E8%88%87%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%85%A5%E9%96%80/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/matsu.jpg">
-      <meta itemprop="name" content="Matsu Chen">
-      <meta itemprop="description" content="消逝在平凡的日子中">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Matsu Chen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/23/JS%E7%B3%BB%E5%88%97-%E5%90%8C%E6%AD%A5%E8%88%87%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%85%A5%E9%96%80/" class="post-title-link" itemprop="url">JS系列-同步與非同步入門</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-05-23 10:39:13 / Modified: 15:16:55" itemprop="dateCreated datePublished" datetime="2021-05-23T10:39:13+08:00">2021-05-23</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="Views">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-users"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span class="firestore-visitors-count"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="JS-Async-Await入門"><a href="#JS-Async-Await入門" class="headerlink" title="JS - Async / Await入門"></a>JS - Async / Await入門</h3><blockquote>
-<p><em>Be who you are and say what you feel, because those who mind don&#39;t matter, and those who matter don&#39;t mind.</em><br><em>― Bernard M. Baruch</em></p>
-</blockquote>
-<p>今天來說說關於JS的同步與非同步問題。JS本身屬於<strong>單執行緒</strong>的語言，因此指令會依照順序或者透過特殊語法來控制執行的順序，這就是要來討論的主題。</p>
-<ul>
-<li>瑪德蓮蛋糕<ul>
-<li>同步與不同步(Synchronous/Asynchronous)</li>
-<li>Callback</li>
-<li>Promise</li>
-<li>Async/Await</li>
-</ul>
-</li>
-<li>結語</li>
-</ul>
-<hr>
-<h4 id="瑪德蓮蛋糕"><a href="#瑪德蓮蛋糕" class="headerlink" title="瑪德蓮蛋糕"></a>瑪德蓮蛋糕</h4><p>透過製作瑪德蓮來學習同步與非同步的概念，我想應該會相當有趣。瑪德蓮蛋糕是我偶爾會在家裡做的一種法式糕點，有興趣的朋友們也不妨嘗試做做看!<br>首先，我們先來看看瑪德蓮的製作過程:</p>
-<ul>
-<li>準備食材(食譜)<ul>
-<li>雞蛋*2</li>
-<li>牛奶20g</li>
-<li>蜂蜜30g</li>
-<li>細砂糖40g</li>
-<li>低筋麵粉100g + 泡打粉3匙</li>
-<li>無鹽奶油85g</li>
-</ul>
-</li>
-<li>攪拌全蛋</li>
-<li>加入砂糖、牛奶</li>
-<li>加入過篩的低筋麵粉、泡打粉</li>
-<li>加熱無鹽奶油</li>
-<li>加入融化奶油攪拌</li>
-<li>裝入擠花袋冷藏6小時</li>
-<li>烤箱預熱15分鐘170度</li>
-<li>擠上模具烘烤15分鐘</li>
-<li>取出完成</li>
-</ul>
-<p>大致上的製作過程如下，其中有許多步驟是需要一步一步去做，但是這裡就牽涉到不少的同步與非同步的概念。</p>
-<h5 id="同步與非同步"><a href="#同步與非同步" class="headerlink" title="同步與非同步"></a>同步與非同步</h5><p>同步(Synchronous): 同時執行動作<br>非同步(Asynchronous): 等待完成後執行下一個動作</p>
-<p>因為JS特性的關係，我們沒辦法一次執行多個動作，舉例來說: 攪拌全蛋時加熱無鹽奶油，這對於JS本身來說是不可能的。況且有些時候，同步執行不會帶來好處，只會帶來災難，舉例來說，我們如果先預熱烤箱，但是我們根本還沒將瑪德蓮裝入擠花袋並且冷藏6小時，預熱的動作就完全只是徒勞。由此可見，同步與非同步都必須視情況而定。</p>
-<p>我們嘗試將完成製作蛋糕的步驟簡單寫成JS的程式碼試試看:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">const Madeleine &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  prepare_ingredient(); </span><br><span class="line">  stir_egg();</span><br><span class="line">  add_sugar_milk();</span><br><span class="line">  add_flour();</span><br><span class="line">  melt_butter();</span><br><span class="line">  add_butter();</span><br><span class="line">  put_to_bag();</span><br><span class="line">  freeze();</span><br><span class="line">  pre_heated();</span><br><span class="line">  bake();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 準備食材</span><br><span class="line">const prepare_ingredient &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 攪拌全蛋</span><br><span class="line">const stir_egg &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 加入糖、牛奶</span><br><span class="line">const add_sugar_milk &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 加入麵粉</span><br><span class="line">const add_flour &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 加熱奶油</span><br><span class="line">const melt_butter &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 加入奶油</span><br><span class="line">const add_butter &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 裝入擠花袋</span><br><span class="line">const put_to_bag &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 冷藏六小時</span><br><span class="line">const freeze &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 烤箱預熱 </span><br><span class="line">const pre_heated &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line">&#x2F;&#x2F; 烘烤</span><br><span class="line">const bake &#x3D; () &#x3D;&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line">Madeleine();</span><br></pre></td></tr></table></figure>
-
-<p>我將一連串的動作都寫成函數，接著在最後Madeleine函數去模擬做蛋糕，可以看到我們確實依照食譜的順序去逐一執行動作，JS也會根據程式的先後順序去執行。可是這裡似乎會發生一點問題，問題在哪裡? 問題在於，每一個動作間並沒有彼此認識，舉例來說: 在準備完材料後要攪拌全蛋，但是有沒有可能材料還沒準備完，就開始攪拌全蛋，而導致沒有確認無鹽奶油準備到，而後續造成melet_butter函數執行失敗，這就是此處的問題點所在。</p>
-<h5 id="Callback"><a href="#Callback" class="headerlink" title="Callback"></a>Callback</h5><p>先來聊聊關於Callback，Callback是JS裡面有趣的函數使用方式。我們先來看一下MDN上面的解釋:<br><strong>A callback function is a function passed into another function as an argument, which is then invoked inside the outer function to complete some kind of routine or action.</strong><br>簡單來說Callback可以理解成函數執行完後要執行的函數，以上述Madeleine內的步驟來說:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">const Madeleine &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  prepared_Ingredient((res) &#x3D;&gt; &#123;</span><br><span class="line">    if(res &#x3D;&#x3D;&#x3D; &#39;Ingredient prepared.&#39;)&#123;</span><br><span class="line">      stir_egg((res) &#x3D;&gt; &#123;</span><br><span class="line">        if(res &#x3D;&#x3D;&#x3D; &#39;stir finished.&#39;)&#123;</span><br><span class="line">          add_sugar_milk(...其他Callback);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">          console.log(&#39;Not stirred yet!&#39;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      console.log(&#39;Ingredient not prepared yet!&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Madeleine();</span><br></pre></td></tr></table></figure>
-<p>上述的prepared_gradient在執行完成後，才呼叫stir_egg()函數，此外也可以透過Callback去處理錯誤的情況，這樣子動作就能夠認識彼此，更能夠了解彼此的優先順序，相較於先前全權交給JS執行緒處理，是不是更令人安心了? 但是這時候就出現所謂的Callback地獄，雖然Callback很方便也很好使用，但是過度使用，就會造成難維護的窘境。</p>
-<h5 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h5><p>MDN的描述:<br><strong>A Promise is an object representing the eventual completion or failure of an asynchronous operation.</strong><br>簡單來說，Promise是表達<strong>非同步執行</strong>結果的一個物件，會根據執行成功或失敗給予開發者回饋。因此，只要回傳Promise物件，我們都能夠使用Promise物件擁有的then函數和catch函數。then函數可以擁有兩個Callback代表Promise執行成功與失敗後的動作，而catch函數只擁有Promise執行失敗後的Callback。直接更改上述烘焙的程式碼如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 假設Madeleine回傳Promise</span><br><span class="line">const Madeleine &#x3D; new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F;暫定每1s成功執行後執行下一個then()</span><br><span class="line">  setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">    resolve(&#39;Madeleine&#39;);</span><br><span class="line">  &#125;, 1000);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Madeleine()</span><br><span class="line">  .then(prepare_ingredient(), &#123;</span><br><span class="line">    console.log(&#39;Ingredient not prepared yet!&#39;);</span><br><span class="line">  &#125;)</span><br><span class="line">  .then(stir_egg(), &#123;</span><br><span class="line">    console.log(&#39;Not Stirred yet!);</span><br><span class="line">  &#125;)</span><br><span class="line">  .then(add_sugar_milk(), &#123;</span><br><span class="line">    console.log(&#39;No milk to be added!&#39;);</span><br><span class="line">  &#125;</span><br><span class="line">  ...其他的thenc函數</span><br><span class="line">  .catch(() &#x3D;&gt; &#123;</span><br><span class="line">    console.log(&#39;Failed to make Madeleine&#39;);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
-<p>透過Promise的使用，我們可以更好的去控管整個製作的流程，也就是將Callback管理的更好。</p>
-<p>這邊要特別注意到new Promise這一段程式碼，這裡其實就是將Madeleine指派一個Promise的物件，而new Promise這個物件通常會有兩個參數resolve和reject，前者代表成功後要執行的行為，後者代表失敗後要執行的動作，相似於then和catch的概念，因為then和catch就是透過它們包裝而來的呀!</p>
-<h5 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async/Await"></a>Async/Await</h5><p>最後要講的是JS改版至ES7後的大明星Async和Await，因為它們的出現，我們得以從Promise Chain的枷鎖中獲得解放。實際看一下如何透過Async/Await來改寫我們在Promise的程式碼:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">const Madeleine &#x3D; async() &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Start making Madeleine&#39;);</span><br><span class="line">  const ingredient &#x3D; await prepared_ingredient();</span><br><span class="line">  const stirredEggs &#x3D; await stir_egg(eggs);</span><br><span class="line"></span><br><span class="line">  ...其餘動作</span><br><span class="line"></span><br><span class="line">  console.log(ingredient);</span><br><span class="line">  console.log(stirredEggs);</span><br><span class="line">  ...其他結果</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const prepared_ingredient &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    if(egg &amp;&amp; milk &amp;&amp; sugar &amp;&amp; honey &amp;&amp; butter &amp;&amp; flour)&#123;</span><br><span class="line">      setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">        resolve(&#39;Ingredient is prepared.&#39;);</span><br><span class="line">      &#125;, 3000);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      reject(&#39;Ingredient is not prepared!&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const stir_egg &#x3D; (eggs) &#x3D;&gt; &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">    if(eggs &#x3D;&#x3D;&#x3D; 2)&#123;</span><br><span class="line">      setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">        resolve(&#39;Eggs are stirred.&#39;);</span><br><span class="line">      &#125;, 5000);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      reject(&#39;No enough eggs!&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">... 其他動作的函數</span><br></pre></td></tr></table></figure>
-<p>透過async的關鍵字，我們可以告知JS要將Madeleine當作非同步的函數，此外因為其他動作函數也會是非同步，可以確定在Madeleine內執行的動作都是await等待過後，才會接續執行，而不會發生動作還沒完成就執行下一個動作的問題。</p>
-<hr>
-<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>花了很多時間查看許多文章，對於Callback, Promise, Async/Await，釐清了許多問題，但是還是覺得文章打得不夠好，還不能講解的淺顯易懂，代表我自己還沒有真的很熟悉這些概念以及實作方式。期望接下來能夠對這三者有更深的見解，屆時會再來修正這篇文章。</p>
 
       
     </div>
@@ -891,20 +828,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -961,77 +898,6 @@
 
 
 
-  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
-  <script>
-    firebase.initializeApp({
-      apiKey   : 'AIzaSyD-a_FYZRMt6Yb1t5u5zGYY_i0t6FAGqIA',
-      projectId: 'hexo-blog-45950'
-    });
-
-    function getCount(doc, increaseCount) {
-      // IncreaseCount will be false when not in article page
-      return doc.get().then(d => {
-        var count = 0;
-        if (!d.exists) { // Has no data, initialize count
-          if (increaseCount) {
-            doc.set({
-              count: 1
-            });
-            count = 1;
-          }
-        } else { // Has data
-          count = d.data().count;
-          if (increaseCount) {
-            // If first view this article
-            doc.set({ // Increase count
-              count: count + 1
-            });
-            count++;
-          }
-        }
-
-        return count;
-      });
-    }
-
-    function appendCountTo(el) {
-      return count => {
-        el.innerText = count;
-      }
-    }
-  </script>
-  <script>
-    (function() {
-      var db = firebase.firestore();
-      var articles = db.collection('articles');
-
-      if (CONFIG.page.isPost) { // Is article page
-        var title = document.querySelector('.post-title').innerText.trim();
-        var doc = articles.doc(title);
-        var increaseCount = CONFIG.hostname === location.hostname;
-        if (localStorage.getItem(title)) {
-          increaseCount = false;
-        } else {
-          // Mark as visited
-          localStorage.setItem(title, true);
-        }
-        getCount(doc, increaseCount).then(appendCountTo(document.querySelector('.firestore-visitors-count')));
-      } else if (CONFIG.page.isHome) { // Is index page
-        var promises = [...document.querySelectorAll('.post-title')].map(element => {
-          var title = element.innerText.trim();
-          var doc = articles.doc(title);
-          return getCount(doc);
-        });
-        Promise.all(promises).then(counts => {
-          var metas = document.querySelectorAll('.firestore-visitors-count');
-          counts.forEach((val, idx) => {
-            appendCountTo(metas[idx])(val);
-          });
-        });
-      }
-    })();
-  </script>
 
 
 
