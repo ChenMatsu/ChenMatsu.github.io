@@ -20,19 +20,24 @@
     var CONFIG = {"hostname":"hiiragimatu.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="消逝在平凡的日子中">
-<meta property="og:type" content="website">
-<meta property="og:title" content="categories">
-<meta property="og:url" content="https://hiiragimatu.github.io/categories/index.html">
+  <meta name="description" content="We write to taste life twice, in the moment and in retrospect.― Anais Nin   MySQL基本使用前陣子我們在處理Node時沒有實際和資料庫互動，今天要來嘗試連上MySQL。 下載完安裝MySQL後，我們將MySQL Workbench打開，它主要就是資料庫的介面。打開介面會發現有一個預設好的資料庫，大致上如下，密碼則是安裝">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node系列-MySQL基本使用">
+<meta property="og:url" content="https://hiiragimatu.github.io/2021/06/26/Node%E7%B3%BB%E5%88%97-MySQL%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="Matsu Chen">
-<meta property="og:description" content="消逝在平凡的日子中">
+<meta property="og:description" content="We write to taste life twice, in the moment and in retrospect.― Anais Nin   MySQL基本使用前陣子我們在處理Node時沒有實際和資料庫互動，今天要來嘗試連上MySQL。 下載完安裝MySQL後，我們將MySQL Workbench打開，它主要就是資料庫的介面。打開介面會發現有一個預設好的資料庫，大致上如下，密碼則是安裝">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-05-01T04:40:48.000Z">
-<meta property="article:modified_time" content="2021-05-01T04:45:52.786Z">
+<meta property="og:image" content="https://i.imgur.com/VgfYYPZ.jpg">
+<meta property="article:published_time" content="2021-06-26T00:25:40.000Z">
+<meta property="article:modified_time" content="2021-06-26T01:34:29.452Z">
 <meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="node">
+<meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/VgfYYPZ.jpg">
 
-<link rel="canonical" href="https://hiiragimatu.github.io/categories/">
+<link rel="canonical" href="https://hiiragimatu.github.io/2021/06/26/Node%E7%B3%BB%E5%88%97-MySQL%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
 
 
 <script id="page-configurations">
@@ -40,7 +45,7 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
@@ -53,8 +58,7 @@
   })(window, document);
 </script>
 
-  <title>categories | Matsu Chen
-</title>
+  <title>Node系列-MySQL基本使用 | Matsu Chen</title>
   
 
 
@@ -164,51 +168,150 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content post posts-expand">
             
 
     
-    
-    
-    <div class="post-block" lang="en">
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/06/26/Node%E7%B3%BB%E5%88%97-MySQL%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
       <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Node系列-MySQL基本使用
+        </h1>
 
-<h1 class="post-title" itemprop="name headline">categories
-</h1>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
 
-<div class="post-meta">
+              <time title="Created: 2021-06-26 08:25:40 / Modified: 09:34:29" itemprop="dateCreated datePublished" datetime="2021-06-26T08:25:40+08:00">2021-06-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/Express/" itemprop="url" rel="index"><span itemprop="name">Express</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p><em>We write to taste life twice, in the moment and in retrospect.</em><br><em>― Anais Nin</em></p>
+</blockquote>
+<hr>
+<h3 id="MySQL基本使用"><a href="#MySQL基本使用" class="headerlink" title="MySQL基本使用"></a>MySQL基本使用</h3><p>前陣子我們在處理Node時沒有實際和資料庫互動，今天要來嘗試連上MySQL。</p>
+<p>下載完安裝MySQL後，我們將MySQL Workbench打開，它主要就是資料庫的介面。打開介面會發現有一個預設好的資料庫，大致上如下，密碼則是安裝過程中設立的密碼:</p>
+<p><img src="https://i.imgur.com/VgfYYPZ.jpg" alt="mysql"></p>
+<p>回到我們的Node當中，一般來說會建立一個<strong>utils</strong>的資料夾，專門放置一些特定用途的檔案，建立資料庫連結就是其中一種。在Node中先安裝<strong>mysql2</strong>的套件<code>npm install mysql2</code>，它主要將MySQL的各種連接方式整合在一起，最後我們只需要建立一個database.js的檔案，就可以順利完成連接。</p>
+<pre class="language-none"><code class="language-none">&#x2F;&#x2F; In database.js
+const mysql2 &#x3D; require(&#39;mysql2&#39;);
+
+&#x2F;&#x2F; createPool()可以有多個同步連接，createConnection()只有一個連接
+const pool &#x3D; mysql2.createPool(&#123;
+  &#x2F;&#x2F; 主機名稱
+  host: &#39;localhost&#39;,
+  &#x2F;&#x2F; 資料庫使用者名稱
+  user: &#39;root&#39;,
+  &#x2F;&#x2F; 資料庫名稱
+  database: &#39;table1&#39;,
+  &#x2F;&#x2F; 登入資料庫的密碼
+  password: &#39;mypassword&#39;
+  &#x2F;&#x2F; 資料庫的埠
+  port: 3306
+&#125;)
+
+&#x2F;&#x2F; 資料庫的回應一定是非同步，因此匯出Promise()來處理
+module.exports &#x3D; pool.promise();</code></pre>
+
+<p>原則上連接MySQL的方式有很多種，在這裡我使用createPool的方式建立連接，它主要可以建立<strong>Node和資料庫的通道</strong>。建立完成後，匯入需要使用SQL語法的檔案中，就可以和資料庫互動。</p>
+<p>舉例來說，我們在app.js檔案中使用:</p>
+<pre class="language-none"><code class="language-none">const db &#x3D; require(&#39;.&#x2F;utils&#x2F;database);
+
+db.execute(SELECT * FROM table1)
+  .then(result &#x3D;&gt; &#123;
+    console.log(result);
+  &#125;)
+  .catch(err &#x3D;&gt; &#123;
+    console.log(err)
+  &#125;);</code></pre>
+
+<p>基本上將SQL語法搭配Express框架，我們就能夠去處理一個完整網站的後端回應。今天單純地講過使用MySQL最基礎的連線方式，基本上連線成功後就能夠在Node當中寫各種SQL語法，不僅可以透過Template Engine處理網站頁面，還能夠透過SQL處理各式各樣的資料，簡直就是全端!! 不過對於不熟悉SQL的前端工程師來說，要去撰寫SQL語法實在是有點痛苦，因此<strong>Sequelize</strong>就出現來幫助我們處理各種複雜的SQL語法，接下來我們只要會踩離合器和油門就能夠在路上奔馳了! </p>
+<hr>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>最近一直在思考自己做事的效率很低，如何去改進，但有時候腦中就是會有太多太多的想法，反而不知所措。其實還是需要由他人來判斷，才能理解自己真實的狀況。</p>
+<p>學習的東西愈來愈多React、Node、Sequelize、Antd…，但是說真的，要將每一個技術學到透徹，真的看不到盡頭，即便將Documents都看過，也不見得真的理解甚至真的可以上戰場，畢竟紙上談兵遠比實際出征還要簡單太多。最近因為公司要架伺服器，將網路環境和電腦組裝都再重新理解過，卻發現交換器、路由器、分享器和集線器的原理有看沒有懂，或者說過目就忘，不去動手操作永遠沒辦法在腦中刻下印象。</p>
+<p>同樣地，我也發現以往自己撰寫文章總是太過冗長繁瑣，希望未來的文章能夠鞭辟入裡，言簡意賅。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/node/" rel="tag"># node</a>
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/21/Structure%E7%B3%BB%E5%88%97-MVC%E6%9E%B6%E6%A7%8B/" rel="prev" title="Structure系列-MVC架構">
+      <i class="fa fa-chevron-left"></i> Structure系列-MVC架構
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
-          <div class="category-all-page">
-            <div class="category-all-title">
-              17 categories in total
-            </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Book/">Book</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Book/Business-Finance/">Business Finance</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Life/">Life</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/">Programming</a><span class="category-list-count">25</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/C/">C</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/C/Leetcode/">Leetcode</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Concept/">Concept</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Concept/Structure/">Structure</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Javascript/">Javascript</a><span class="category-list-count">22</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Javascript/Node/">Node</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Javascript/Node/Express/">Express</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Javascript/React/">React</a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Javascript/Test/">Test</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Programming/Javascript/Typescript/">Typescript</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A5%E8%AA%9E/">日語</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A5%E8%AA%9E/%E6%96%87%E6%B3%95/">文法</a><span class="category-list-count">1</span></li></ul></li></ul>
-            </div>
-          </div>
-        
-      </div>
-      
-      
-      
-    </div>
-    
-
-    
-    
-    
 
 
           </div>
@@ -260,6 +363,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">MySQL基本使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">2.</span> <span class="nav-text">結語</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -421,7 +525,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'hiiragimatu.github.io',
       owner       : 'HiiragiMatu',
       admin       : ['HiiragiMatu'],
-      id          : 'a676607444a8bc8b150c9a3aff884e61',
+      id          : 'c698e201d5040b8f5dcfccc6f4250768',
         language: 'en',
       distractionFreeMode: true
     });

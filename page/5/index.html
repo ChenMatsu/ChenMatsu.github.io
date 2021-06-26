@@ -168,6 +168,125 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/12/React%E7%B3%BB%E5%88%97-useEffect%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/12/React%E7%B3%BB%E5%88%97-useEffect%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">React系列-useEffect概念與使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-05-12 10:43:20 / Modified: 12:32:22" itemprop="dateCreated datePublished" datetime="2021-05-12T10:43:20+08:00">2021-05-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Hooks家族-useEffect"><a href="#Hooks家族-useEffect" class="headerlink" title="Hooks家族 - useEffect"></a>Hooks家族 - useEffect</h3><blockquote>
+<p><em>It is better to fail in originality than to succeed in imitation.</em><br><em>― Herman Melville</em></p>
+</blockquote>
+<p>距離上一次寫useState的文章已經事隔些許日子，今天想來寫寫關於useEffect的事蹟。useState和useEffect在React當中非常有份量，甚至因為它們的出現改寫React的Coding Style。這幾天在研究useEffect，但卻又覺得自己似懂非懂，因此決定透過文章來整理自己所學，我想要試著放慢腳步，再繼續往前。那，我們開始吧!</p>
+<ul>
+<li>useEffect<ul>
+<li>useEffect使用方式</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="useEffect"><a href="#useEffect" class="headerlink" title="useEffect"></a>useEffect</h4><p>程式往往都會有許多的<strong>副作用</strong>(Side Effect)，useEffect這個Hook正是React開發團隊為了解決副作用的問題而研發出來的程式撰寫方式，就像是JSX是為了將JS和HTML合併的概念。</p>
+<h5 id="useEffect使用方式"><a href="#useEffect使用方式" class="headerlink" title="useEffect使用方式"></a>useEffect使用方式</h5><p>useEffect大致上寫法如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">useEffect(()&#x3D;&gt; &#123;</span><br><span class="line">  console.log(&quot;Hi! I\&#39;m useEffect in Hooks Family!&quot;);</span><br><span class="line">&#125;, [])</span><br></pre></td></tr></table></figure>
+<p>我們可以注意到在useEffect這個Hook函式中有兩個參數，參數一是匿名函數，參數二則是一組陣列。如同先前所述，這個Hook是為了解決副作用的問題，那具體來說，我們應該如何在React專案中使用他? 我們一樣來看點範例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">import &#123; useState, useEffect &#125; from &#39;react&#39;;</span><br><span class="line">const Hook &#x3D; props &#x3D;&gt; &#123;</span><br><span class="line">  const [email, setEmail] &#x3D; useState(&#39;&#39;);</span><br><span class="line"></span><br><span class="line">  const submitHandler &#x3D; (event) &#x3D;&gt; &#123;</span><br><span class="line">    event.preventDefault();</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  const setEmailHandler &#x3D; (event) &#x3D;&gt; &#123;</span><br><span class="line">    setEmail(event.target.value);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    console.log(&quot;Hi! I\&#39;m useEffect in Hooks Family!&quot;);</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className&#x3D;&quot;hook&quot;&gt;</span><br><span class="line">      &lt;form onSubmit&#x3D;&#123;submitHandler&#125;&gt;</span><br><span class="line">        &lt;label htmlFor&#x3D;&quot;email&quot;&gt;E-mail&lt;&#x2F;label&gt;</span><br><span class="line">        &lt;input type&#x3D;&quot;text&quot; id&#x3D;&quot;email&quot; value&#x3D;&#123;email&#125; onChange&#x3D;&#123;setEmailHandler&#125; &#x2F;&gt;</span><br><span class="line">        &lt;button type&#x3D;&quot;submit&quot;&gt;Submit&lt;&#x2F;button&gt;</span><br><span class="line">      &lt;&#x2F;form&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>使用Hooks前先匯入，接著我們試著建立一個簡單的Email表單，並且給它一個state，到目前為止都和上一篇文章提的差不多。我們透過useState這個Hook來控管狀態，緊接著我們直接在setEmailHandler下方加上useEffect Hook。實際將這個組件匯入後執行後，可以在Chrome的Console裡面發現以下我們在useEffect列印的字串。</p>
+<p><strong>補充：</strong> event.preventDefault()是為了防止submit按鈕送出請求給Http後端伺服器而導致頁面重載</p>
+<p><img src="https://i.imgur.com/LF9ZWGy.jpg" alt="console"></p>
+<p>我們發現useEffect執行過的痕跡，但是它究竟如何執行呢？我們試著在它給定的第二個陣列裡面填入我們的<strong>email</strong>狀態值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    console.log(&quot;Hi! I\&#39;m useEffect in Hooks Family!&quot;);</span><br><span class="line">  &#125;, [email]);</span><br></pre></td></tr></table></figure>
+<p>同樣地，我們回到Chrome去執行，試著在欄位裡面隨意輸入。接著我們發現如下圖:<br><img src="https://i.imgur.com/BSi2jE4.jpg" alt="console2"><br>useEffect會在Hook組件完成載入後執行一次，接著隨著我們輸入N個字元，就多印出N次訊息。這個結果我們可以理解useEffect這個Hook會根據陣列二的狀態值而改動，而這個狀態值指的就是email這個狀態(變數)的改變。</p>
+<p>接著我們再將useEffect更改成以下的形式:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&quot;Hi! I&#39;m useEffect in Hooks Family!&quot;);</span><br><span class="line">  return () &#x3D;&gt; &#123;</span><br><span class="line">    console.log(&quot;Return comes first!&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, [email]);</span><br></pre></td></tr></table></figure>
+<p>在開發者工具觀察實際在欄位輸入後的訊息:<br><img src="https://i.imgur.com/aJlCI5X.jpg" alt="console3"></p>
+<p>我們發現<strong>return</strong>所列印的訊息會<strong>優先</strong>於匿名函數內的訊息，我們現在可以清楚理解藉由useEffect，可以很輕鬆地去解決在撰寫React時可能出現的副作用問題。能夠透過useEffect去決定特定情況下的程式碼，降低程式邏輯的模糊與不確定性。</p>
+<p>-重點回顧-</p>
+<ul>
+<li>useEffect用於處理程式的副作用</li>
+<li>參數一是執行的函數<ul>
+<li>函數內的return會優先執行</li>
+</ul>
+</li>
+<li>參數二是狀態陣列<ul>
+<li>根據狀態的改變而執行useEffect內的函數</li>
+<li>若為空陣列則僅執行一次</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>本篇算是淺談useEffect，在useEffect身後還有useReducer的存在。礙於小弟的才疏學淺，僅能夠將最基礎的應用和各位讀者分享。useEffect往往還會搭配計時器的使用去處理問題，舉例來說，我們可以驗證Email欄位是否包含@符號，但我們不會想在每輸入一個字就對欄位執行驗證，而是在使用者輸入完畢後才進行驗證，在這樣的情況下，就需要配合計時器去處理。</p>
+<p>未來若有任何想法想補充都會來更新這系列的文章，期望能夠將Hooks講述的更完善。</p>
+<p>最後，謝謝各位的閱讀!</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
     <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/09/React%E7%B3%BB%E5%88%97-useState%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -661,137 +780,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
-    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/06/React%E7%B3%BB%E5%88%97-React%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/matsu.jpg">
-      <meta itemprop="name" content="Matsu Chen">
-      <meta itemprop="description" content="消逝在平凡的日子中">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Matsu Chen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/06/React%E7%B3%BB%E5%88%97-React%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">React系列-React介紹與基本概念淺談</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-05-06 11:27:46" itemprop="dateCreated datePublished" datetime="2021-05-06T11:27:46+08:00">2021-05-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-16 14:24:34" itemprop="dateModified" datetime="2021-05-16T14:24:34+08:00">2021-05-16</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="React介紹與基本概念淺談"><a href="#React介紹與基本概念淺談" class="headerlink" title="React介紹與基本概念淺談"></a>React介紹與基本概念淺談</h3><blockquote>
-<p><em>Live as if you were to die tomorrow. Learn as if you were to live forever.</em><br><em>- Mahatma Gandhi</em></p>
-</blockquote>
-<p>React是近年來盛行的三大框架其一，在ES6後甚至更加盛行。國外統計程式設計師學習React的人數逐年上升，可見React的強勢，因此今天想和大家一起來學習使用React。當然不是隨波逐流，而是在嘗試使用過React後，發現它的強大!更不消說有超級多的第三方函式庫可以使用。那，廢話不多說，我們趕緊往下看!</p>
-<ul>
-<li>React的定義與用途</li>
-<li>React的基本概念<ul>
-<li>React的組件(Component)</li>
-<li>React的兄弟JSX(JS-XML)</li>
-</ul>
-</li>
-<li>結語</li>
-</ul>
-<hr>
-<h4 id="React的定義與用途"><a href="#React的定義與用途" class="headerlink" title="React的定義與用途"></a>React的定義與用途</h4><ul>
-<li><strong>React是用來打造使用者介面(UI)的JS函式庫。</strong></li>
-<li><strong>React是由組件(Component)所組成。</strong></li>
-</ul>
-<p>讀者可能會想說不是有HTML、CSS、JS就可以打造UI了嗎? 為什麼要大費周章去學習一項新的技術? 其實一項新的技術的產生，都是因為舊有的東西的缺點存在，才會促使新的科技、技術的發展。好比人類覺得走路太久才能到達目的地，所以研究出動力機械，這些道理都是一樣的。可想而知，React產生固然是因為傳統的HTML和CSS在撰寫介面上，不管是維護還是新增介面，盡管有PUG和SCSS這些預處理器多少可以加速開發，但是卻還是有其致命的缺點。</p>
-<p>使用傳統的HTML和CSS的主要缺點:</p>
-<ul>
-<li>頁面轉跳時都需要發送GET請求到Server端後再次渲染頁面</li>
-<li>當APP變得複雜且龐大時難以維護以及管理</li>
-<li>網頁載入速度慢</li>
-</ul>
-<p>使用React的優點:</p>
-<ul>
-<li>整個Web只會在第一次開啟時發送GET請求</li>
-<li>以組件的方式開發網站</li>
-<li>網頁載入速度超快</li>
-</ul>
-<hr>
-<h4 id="React的基本概念"><a href="#React的基本概念" class="headerlink" title="React的基本概念"></a>React的基本概念</h4><p>網頁最後呈現給使用者的始終是HTML、CSS以及JS。<br>React使用宣告式方法(Declarative Approach)去執行程式，因此開發者只需要專注在程式的狀態(State)，接著React就會幫我們處理JS和DOM的程式碼，聽起來很像魔法，但其實就是我們只需要懂得駕駛React這台跑車，至於引擎是V8還是V12，不懂也沒關係。</p>
-<p>有機會我們再來深入研究宣告式(Declarative)與指令式(Imperative)程式設計!</p>
-<h5 id="React的組件-Component"><a href="#React的組件-Component" class="headerlink" title="React的組件(Component)"></a>React的組件(Component)</h5><p>React的核心概念就是組件，所謂的組件就是將HTML、CSS、JS三者合在一起，最後再由組件去建立整個使用者介面(UI)。<br>因此組件的優點有:</p>
-<ul>
-<li>可重複使用(Re-usable)</li>
-<li>可回應的(Reactive)</li>
-</ul>
-<p>React的架構大概如下:<br><img src="https://i.imgur.com/9LTFVrR.png" alt="react"></p>
-<p>大概就像圖表一樣的架構，抱歉，我沒有美術天分XDD。</p>
-<h5 id="React的兄弟JSX-JS-XML"><a href="#React的兄弟JSX-JS-XML" class="headerlink" title="React的兄弟JSX(JS-XML)"></a>React的兄弟JSX(JS-XML)</h5><p>React的程式碼如下:<br><img src="https://i.imgur.com/Gu2EQPY.jpg" alt="jsx"></p>
-<p>剛開始接觸React一定會充滿困惑，會什麼JS檔案裡面的程式碼相當奇怪? 居然包含像是HTML的標記語言，其實這是React開發團隊為了方便撰寫組件所開發的程式碼，叫做JSX(JS-XML)。在渲染畫面前，React會透過第三方函式庫將JSX轉換成瀏覽器讀得懂的方式。</p>
-<p>今日回顧:</p>
-<ul>
-<li>React是HTML、CSS、JS整合後的框架</li>
-<li>React的特殊語法JSX</li>
-<li>React組件的概念</li>
-</ul>
-<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天只稍微了解一下React框架以及它的由來，接下來我們就會逐步進入React專案實作囉! 能夠用React實作各種大大小小的網站，用想的就覺得興奮對吧!如果重複打繁瑣的Code還不足以讓你學習它的話，那再接下來的文章你一定會愛上React。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -863,7 +851,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -876,7 +864,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
