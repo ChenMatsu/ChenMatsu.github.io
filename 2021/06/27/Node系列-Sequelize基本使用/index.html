@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en,zh-CN,ja,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"hiiragimatu.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":"mac"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Angry people are not always wise. &gt; ― Jane Austen, Pride and Prejudice   Sequelize 基本使用昨天主要圍繞在 Node 連接 MySQL 資料庫的概念上，今天要來講述如何不透過撰寫 SQL 語法與資料庫互動，而這都要仰賴於物件關聯對映(Object-Relational-Mapping)的概念。藉由 ORM 的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node系列-Sequelize基本使用">
+<meta property="og:url" content="https://hiiragimatu.github.io/2021/06/27/Node%E7%B3%BB%E5%88%97-Sequelize%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Matsu Chen">
+<meta property="og:description" content="Angry people are not always wise. &gt; ― Jane Austen, Pride and Prejudice   Sequelize 基本使用昨天主要圍繞在 Node 連接 MySQL 資料庫的概念上，今天要來講述如何不透過撰寫 SQL 語法與資料庫互動，而這都要仰賴於物件關聯對映(Object-Relational-Mapping)的概念。藉由 ORM 的">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-27T08:58:37.000Z">
+<meta property="article:modified_time" content="2021-06-27T15:14:01.078Z">
+<meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="node">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="sequelize">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://hiiragimatu.github.io/2021/06/27/Node%E7%B3%BB%E5%88%97-Sequelize%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<script>
+  ((w, d) => {
+    'use strict';
+      const userScheme = localStorage.getItem('Scheme');
+      if (!userScheme) return;
+    d.documentElement.className += ' darkScheme';
+  })(window, document);
+</script>
+
+  <title>Node系列-Sequelize基本使用 | Matsu Chen</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Matsu Chen</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Matsu Life</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-gadgets">
+
+    <a href="/gadgets/" rel="section"><i class="fas fa-layer-group fa-fw"></i>Gadgets</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/06/27/Node%E7%B3%BB%E5%88%97-Sequelize%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Node系列-Sequelize基本使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-06-27 16:58:37 / Modified: 23:14:01" itemprop="dateCreated datePublished" datetime="2021-06-27T16:58:37+08:00">2021-06-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/Express/" itemprop="url" rel="index"><span itemprop="name">Express</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p><em>Angry people are not always wise.</em> &gt; <em>― Jane Austen, Pride and Prejudice</em></p>
+</blockquote>
+<hr>
+<h3 id="Sequelize-基本使用"><a href="#Sequelize-基本使用" class="headerlink" title="Sequelize 基本使用"></a>Sequelize 基本使用</h3><p>昨天主要圍繞在 Node 連接 MySQL 資料庫的概念上，今天要來講述如何不透過撰寫 SQL 語法與資料庫互動，而這都要仰賴於<strong>物件關聯對映</strong>(Object-Relational-Mapping)的概念。藉由 ORM 的概念，我們可以更簡單地去處理資料庫。</p>
+<ul>
+<li>何謂物件關聯對映(ORM)</li>
+<li>Sequelize 介紹與使用</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="何謂物件關聯對映-ORM"><a href="#何謂物件關聯對映-ORM" class="headerlink" title="何謂物件關聯對映(ORM)"></a>何謂物件關聯對映(ORM)</h4><p>ORM 的概念在於轉換物件導向語言和資料不相容的地方。一般來說，習慣撰寫 Java 物件導向程式語言的工程師，在處理 SQL 時通常都必須要再額外花費心力處理程式和資料庫間的關係，而 ORM 的初衷就在於減輕工程師轉換的痛點。但不只有撰寫 Java，基本上只要面臨資料庫的使用，都必須面臨程式碼與資料庫間的關係，同樣地，接觸 Node 的我們勢必要勇敢正對這個問題。</p>
+<p>ORM 的優點和缺點最基本可以簡述成以下兩點:</p>
+<ul>
+<li>優點: 避免撰寫 SQL 語法</li>
+<li>缺點: 程式效能降低</li>
+</ul>
+<p>其他的優缺點，待某日有機會再來和各位敘敘舊。</p>
+<h4 id="Sequelize-介紹與使用"><a href="#Sequelize-介紹與使用" class="headerlink" title="Sequelize 介紹與使用"></a>Sequelize 介紹與使用</h4><p>Sequelize 就是 Javascript 基於 ORM 的概念開發出來的套件，功能上一樣是轉換程式碼和資料庫間的對應關係。</p>
+<p>Sequelize 是以 Promise 為基底的 Node.js ORM 轉換工具，可以處理的資料庫基本上有 MySQL、Postgres、MariaDB 和 SQLite 等等。首先要在 Node.js 透過<code>npm install --save sequelize</code>安裝 Sequelize 並且匯入後才能夠使用，另外因為要使用 MySQL 也必須透過<code> npm install --save mysql2</code>安裝 MySQL 的 Driver。同上篇文章提到連接 MySQL，這邊我們一樣慣例將檔案放在<strong>utils</strong>資料夾當中，此外使用資料庫是 MySQL，記得先安裝好 Workbench，詳細可以看 MySQL 那篇文章!</p>
+<pre class="language-none"><code class="language-none">&#x2F;&#x2F; database-sequelize.js
+&#x2F;&#x2F; v5改版後，要透過以下的方式匯出
+const &#123; Sequelize &#125; &#x3D; require(&#39;sequelize&#39;);
+
+&#x2F;&#x2F; new Sequelize(資料庫名稱、使用者名稱、密碼、&#123;&#39;dialect&#39;: 使用的資料庫, host: &#39;主機&#39;&#125;)
+const sequelize &#x3D; new Sequelize(&#39;sequelize-practice&#39;, &#39;root&#39;, &#39;123456&#39;, &#123;
+  dialect: &#39;mysql&#39;,
+  host: &#39;localhost&#39;,
+&#125;);
+
+module.exports &#x3D; sequelize;</code></pre>
+
+<p>完成設置後，我們透過 Sequelize 去建立一個 User Model:</p>
+<pre class="language-none"><code class="language-none">&#x2F;&#x2F; In user.js
+const &#123; Sequelize &#125; &#x3D; require(&#39;sequelize&#39;);
+const sequelize &#x3D; require(&#39;.&#x2F;utils&#x2F;database-sequelize&#39;);
+
+&#x2F;&#x2F; sequelize.define(&#39;資料表名稱&#39;, &#123; 資料定義 &#125;)
+const User &#x3D; sequelize.define(&#39;users&#39;, &#123;
+  id: &#123;
+    type: sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  &#125;,
+  username: &#123;
+    type: sequelize.STRING,
+    allowNull: false,
+  &#125;,
+  email: &#123;
+    type: sequelize.STRING,
+    allowNull: false
+  &#125;
+&#125;);
+
+module.exports &#x3D; User;</code></pre>
+
+<p>透過 Sequelize 我們可以只需要去定義資料庫的欄位與條件，其餘的都會透過 ORM 去轉換成 MySQL 的語法。</p>
+<p>最後我們實際在 app.js 匯入 database-sequelize.js 和 user.js:</p>
+<pre class="language-none"><code class="language-none">const sequelize &#x3D; require(&#39;.&#x2F;utils&#x2F;database-sequelize&#39;);
+const User &#x3D; require(&#39;.&#x2F;models&#x2F;user&#39;);
+
+sequelize.sync()
+  .then(result &#x3D;&gt; &#123;
+    &#x2F;&#x2F; 建立資料庫User表中的資料
+    User.create(&#123; name: &#39;Matsu&#39;, email: &#39;Matsu@matsu.com&#39;&#125;);
+  &#125;)
+  .catch(error &#x3D;&gt; &#123;
+    console.log(err);
+  &#125;)</code></pre>
+<p>透過ORM的概念，使用Sequelize就能夠免除撰寫SQL語法的問題，類似的還有Django ORM和其他的ORM轉換套件，究竟是直接寫SQL還是使用ORM其實說法不一，但我個人認為Sequelize在Node.js當中其實是相當Powerful的。</p>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>Sequelize ORM非常好用，不過身為前端的自己其實只是單純想對後端有更深入的理解，現在也依舊只是蜻蜓點水，不過卻覺得能夠理解前、後端的各自運作方式非常有趣，希望未來也能一直保持熱情和動力持續學習下去。雖然有時候會在學習的路上後悔以前大學沒積極學習，但逝者已逝，來者可追，就追吧! 就放手去追吧!</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/node/" rel="tag"># node</a>
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+              <a href="/tags/sequelize/" rel="tag"># sequelize</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/06/26/Node%E7%B3%BB%E5%88%97-MySQL%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" rel="prev" title="Node系列-MySQL基本使用">
+      <i class="fa fa-chevron-left"></i> Node系列-MySQL基本使用
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sequelize-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">Sequelize 基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%95%E8%AC%82%E7%89%A9%E4%BB%B6%E9%97%9C%E8%81%AF%E5%B0%8D%E6%98%A0-ORM"><span class="nav-number">1.1.</span> <span class="nav-text">何謂物件關聯對映(ORM)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Sequelize-%E4%BB%8B%E7%B4%B9%E8%88%87%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">Sequelize 介紹與使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.3.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Matsu Chen"
+      src="/images/matsu.jpg">
+  <p class="site-author-name" itemprop="name">Matsu Chen</p>
+  <div class="site-description" itemprop="description">消逝在平凡的日子中</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HiiragiMatu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HiiragiMatu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:matuyou0301@gmail.com" title="E-Mail → mailto:matuyou0301@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+<div class="night-mode motion-element">
+  <a role="button" class="night-btn">
+    <i class="fa fa-lightbulb-o"></i>
+    Night
+  </a>
+</div>
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Matsu Chen</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+<script>
+  ((w, d) => {
+    'use strict';
+      let userScheme = localStorage.getItem('Scheme');
+      if (userScheme) d.documentElement.className += ' darkScheme';
+      const btn = d.querySelector('.night-btn');
+      w.addEventListener('keydown', e => {
+        if (e.altKey && e.code === 'KeyX') btn.click();
+      });
+      btn.addEventListener('click', () => {
+        d.documentElement.classList.toggle('darkScheme');
+        if ( d.documentElement.classList.contains('darkScheme') ) {
+          localStorage.setItem('Scheme', 'Dark');
+          return;
+        }
+        localStorage.removeItem('Scheme');
+      });
+  })(window, document);
+</script>
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'dff33627bca5f23e2727',
+      clientSecret: 'b131c7b01d14a8d045259195e88194c23469133a',
+      repo        : 'hiiragimatu.github.io',
+      owner       : 'HiiragiMatu',
+      admin       : ['HiiragiMatu'],
+      id          : '9fafdd542954234c661eee1d77d4116c',
+        language: 'en',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

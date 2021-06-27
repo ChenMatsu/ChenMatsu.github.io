@@ -168,6 +168,158 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/06/27/Node%E7%B3%BB%E5%88%97-Sequelize%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/27/Node%E7%B3%BB%E5%88%97-Sequelize%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">Node系列-Sequelize基本使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-06-27 16:58:37 / Modified: 23:14:01" itemprop="dateCreated datePublished" datetime="2021-06-27T16:58:37+08:00">2021-06-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/Express/" itemprop="url" rel="index"><span itemprop="name">Express</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <blockquote>
+<p><em>Angry people are not always wise.</em> &gt; <em>― Jane Austen, Pride and Prejudice</em></p>
+</blockquote>
+<hr>
+<h3 id="Sequelize-基本使用"><a href="#Sequelize-基本使用" class="headerlink" title="Sequelize 基本使用"></a>Sequelize 基本使用</h3><p>昨天主要圍繞在 Node 連接 MySQL 資料庫的概念上，今天要來講述如何不透過撰寫 SQL 語法與資料庫互動，而這都要仰賴於<strong>物件關聯對映</strong>(Object-Relational-Mapping)的概念。藉由 ORM 的概念，我們可以更簡單地去處理資料庫。</p>
+<ul>
+<li>何謂物件關聯對映(ORM)</li>
+<li>Sequelize 介紹與使用</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="何謂物件關聯對映-ORM"><a href="#何謂物件關聯對映-ORM" class="headerlink" title="何謂物件關聯對映(ORM)"></a>何謂物件關聯對映(ORM)</h4><p>ORM 的概念在於轉換物件導向語言和資料不相容的地方。一般來說，習慣撰寫 Java 物件導向程式語言的工程師，在處理 SQL 時通常都必須要再額外花費心力處理程式和資料庫間的關係，而 ORM 的初衷就在於減輕工程師轉換的痛點。但不只有撰寫 Java，基本上只要面臨資料庫的使用，都必須面臨程式碼與資料庫間的關係，同樣地，接觸 Node 的我們勢必要勇敢正對這個問題。</p>
+<p>ORM 的優點和缺點最基本可以簡述成以下兩點:</p>
+<ul>
+<li>優點: 避免撰寫 SQL 語法</li>
+<li>缺點: 程式效能降低</li>
+</ul>
+<p>其他的優缺點，待某日有機會再來和各位敘敘舊。</p>
+<h4 id="Sequelize-介紹與使用"><a href="#Sequelize-介紹與使用" class="headerlink" title="Sequelize 介紹與使用"></a>Sequelize 介紹與使用</h4><p>Sequelize 就是 Javascript 基於 ORM 的概念開發出來的套件，功能上一樣是轉換程式碼和資料庫間的對應關係。</p>
+<p>Sequelize 是以 Promise 為基底的 Node.js ORM 轉換工具，可以處理的資料庫基本上有 MySQL、Postgres、MariaDB 和 SQLite 等等。首先要在 Node.js 透過<code>npm install --save sequelize</code>安裝 Sequelize 並且匯入後才能夠使用，另外因為要使用 MySQL 也必須透過<code> npm install --save mysql2</code>安裝 MySQL 的 Driver。同上篇文章提到連接 MySQL，這邊我們一樣慣例將檔案放在<strong>utils</strong>資料夾當中，此外使用資料庫是 MySQL，記得先安裝好 Workbench，詳細可以看 MySQL 那篇文章!</p>
+<pre class="language-none"><code class="language-none">&#x2F;&#x2F; database-sequelize.js
+&#x2F;&#x2F; v5改版後，要透過以下的方式匯出
+const &#123; Sequelize &#125; &#x3D; require(&#39;sequelize&#39;);
+
+&#x2F;&#x2F; new Sequelize(資料庫名稱、使用者名稱、密碼、&#123;&#39;dialect&#39;: 使用的資料庫, host: &#39;主機&#39;&#125;)
+const sequelize &#x3D; new Sequelize(&#39;sequelize-practice&#39;, &#39;root&#39;, &#39;123456&#39;, &#123;
+  dialect: &#39;mysql&#39;,
+  host: &#39;localhost&#39;,
+&#125;);
+
+module.exports &#x3D; sequelize;</code></pre>
+
+<p>完成設置後，我們透過 Sequelize 去建立一個 User Model:</p>
+<pre class="language-none"><code class="language-none">&#x2F;&#x2F; In user.js
+const &#123; Sequelize &#125; &#x3D; require(&#39;sequelize&#39;);
+const sequelize &#x3D; require(&#39;.&#x2F;utils&#x2F;database-sequelize&#39;);
+
+&#x2F;&#x2F; sequelize.define(&#39;資料表名稱&#39;, &#123; 資料定義 &#125;)
+const User &#x3D; sequelize.define(&#39;users&#39;, &#123;
+  id: &#123;
+    type: sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  &#125;,
+  username: &#123;
+    type: sequelize.STRING,
+    allowNull: false,
+  &#125;,
+  email: &#123;
+    type: sequelize.STRING,
+    allowNull: false
+  &#125;
+&#125;);
+
+module.exports &#x3D; User;</code></pre>
+
+<p>透過 Sequelize 我們可以只需要去定義資料庫的欄位與條件，其餘的都會透過 ORM 去轉換成 MySQL 的語法。</p>
+<p>最後我們實際在 app.js 匯入 database-sequelize.js 和 user.js:</p>
+<pre class="language-none"><code class="language-none">const sequelize &#x3D; require(&#39;.&#x2F;utils&#x2F;database-sequelize&#39;);
+const User &#x3D; require(&#39;.&#x2F;models&#x2F;user&#39;);
+
+sequelize.sync()
+  .then(result &#x3D;&gt; &#123;
+    &#x2F;&#x2F; 建立資料庫User表中的資料
+    User.create(&#123; name: &#39;Matsu&#39;, email: &#39;Matsu@matsu.com&#39;&#125;);
+  &#125;)
+  .catch(error &#x3D;&gt; &#123;
+    console.log(err);
+  &#125;)</code></pre>
+<p>透過ORM的概念，使用Sequelize就能夠免除撰寫SQL語法的問題，類似的還有Django ORM和其他的ORM轉換套件，究竟是直接寫SQL還是使用ORM其實說法不一，但我個人認為Sequelize在Node.js當中其實是相當Powerful的。</p>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>Sequelize ORM非常好用，不過身為前端的自己其實只是單純想對後端有更深入的理解，現在也依舊只是蜻蜓點水，不過卻覺得能夠理解前、後端的各自運作方式非常有趣，希望未來也能一直保持熱情和動力持續學習下去。雖然有時候會在學習的路上後悔以前大學沒積極學習，但逝者已逝，來者可追，就追吧! 就放手去追吧!</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
     <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/06/26/Node%E7%B3%BB%E5%88%97-MySQL%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -838,125 +990,10 @@ app.set(&#39;view engine&#39;, &#39;hbs&#39;);</code></pre>
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
-    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/06/10/Express%E7%B3%BB%E5%88%97-Express%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/matsu.jpg">
-      <meta itemprop="name" content="Matsu Chen">
-      <meta itemprop="description" content="消逝在平凡的日子中">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Matsu Chen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/10/Express%E7%B3%BB%E5%88%97-Express%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">Express系列-Express介紹與基本概念</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-06-10 20:08:55" itemprop="dateCreated datePublished" datetime="2021-06-10T20:08:55+08:00">2021-06-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-06-11 14:45:37" itemprop="dateModified" datetime="2021-06-11T14:45:37+08:00">2021-06-11</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/Node/Express/" itemprop="url" rel="index"><span itemprop="name">Express</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="Express介紹與基本概念"><a href="#Express介紹與基本概念" class="headerlink" title="Express介紹與基本概念"></a>Express介紹與基本概念</h3><blockquote>
-<p><em>I have not failed. I havve just found 10,000 ways that won&#39;t work.</em><br><em>― Thomas A. Edison</em></p>
-</blockquote>
-<p>Express是伺服器或稱作<strong>後端框架</strong>，最近才認知到Express有別於React、Angular和Vue，說起來也算是天大誤會，好在還沒弄成笑話。今天一起來看看這個框架可以給予我們什麼樣的能力吧!</p>
-<ul>
-<li>Express介紹<ul>
-<li>Express使用</li>
-</ul>
-</li>
-<li>結語</li>
-</ul>
-<hr>
-<h4 id="Express介紹"><a href="#Express介紹" class="headerlink" title="Express介紹"></a>Express介紹</h4><p>誠如先前所說，Express是伺服器框架其一 ，其餘的類似的框架有Laravel、Flask等等。Express主要的用途在於協助Node去打造Web應用程式的框架和API，大幅減輕開發的負擔。以往在Express開發前，處理API和Web應用程式，需要針對網頁的請求與回應逐一處理，但現在只需要透過Express就可以達到一樣的結果。Express扮演的角色就像是遙控器一樣，開啟電視只需要按下開機關機鍵，若沒有遙控器的話則必須直接按電視螢幕<strong>本身</strong>的開關，但結果上來看是一樣的。</p>
-<p>簡言之，Express就是Node處理網站的遙控器!</p>
-<h5 id="Express使用"><a href="#Express使用" class="headerlink" title="Express使用"></a>Express使用</h5><p>在使用Express前，我們需要先認識<strong>中介軟體</strong>(Middleware)，中介軟體本身可以想成火車，假設火車從台中北上開往台北，這一路上必須經過苗栗、新竹、桃園、新北幾個城市，而中介軟體則是城市與城市間的溝通方式，並且溝通結果會影響到接下來的行程。</p>
-<p>首先在一個資料夾內建立app.js的檔案，基本上檔案名不會影響，不過一般都會命名為app或index兩者其一。建立完成後，切換到資料夾內執行<strong>npm init</strong>設定專案檔。一路按Enter到底將專案檔設為預設即可。大致上會看起來像下方圖片的路徑。</p>
-<p><img src="https://i.imgur.com/WyiVozE.jpg" alt="pic1"></p>
-<p>接著便於開發我們分別下載<strong>nodemon</strong>套件以及必備的<strong>express</strong>框架，執行以下指令:<br><code>npm install nodemon --save-dev</code><br><code>npm install express --save</code><br>第一個套件的主要功能是用於<strong>自動重啟伺服器</strong>，而不用手動一直重新開啟伺服器，安裝完成後，將<strong>package.json</strong>檔案寫入一個新的腳本檔案，就可以無痛使用nodemon從此不再手殘，如下:</p>
-<p><img src="https://i.imgur.com/jAz6Hf7.jpg" alt="script"></p>
-<p>接著回到app.js檔案，這裡我們將Express套件引入檔案中:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 匯入Express框架套件</span><br><span class="line">const express &#x3D; require(&#39;express&#39;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 建立Express應用程式 -&gt; 物件具有許多Function和Settings</span><br><span class="line">const app &#x3D; app.express();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 等同於</span><br><span class="line">&#x2F;&#x2F; const server &#x3D; http.createServer();</span><br><span class="line">&#x2F;&#x2F; server.listen(3000);</span><br><span class="line">app.listen(3000);</span><br></pre></td></tr></table></figure>
-
-<p>這段程式碼當中，我們建立Express的應用程式，透過它我們可以使用Express提供的各種Middleware來處理網站，從最後一行app.listen()可以看出Express已經將http核心模組打包起來。<br><code>const server = http.createServer()</code><br><code>server.listen(3000)</code><br>↓<br><code>app.listen(3000)</code></p>
-<p>接下來我們將app.js稍微修改一下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">const express &#x3D; require(&#39;express&#39;);</span><br><span class="line">const app &#x3D; express();</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Set off at Taichung City!&#39;);</span><br><span class="line">  &#x2F;&#x2F; 告訴Middleware可以前往下一個Middleware!</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Mioali is passed!&#39;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Hsinchu is passed!&#39;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Taoyuan is passed!&#39;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;New-Taipei is passed!&#39;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Taipei is arrived!&#39;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.listen(3000);</span><br></pre></td></tr></table></figure>
-
-<p>透過next()可以調動middleware不斷前往下一個middleware直到發生狀況或是抵達終點。<br>最後<strong>npm start</strong>啟動伺服器後就可以發現我們的中介軟體確實可以一路由台中抵達台北! </p>
-<hr>
-<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天簡單講解Middleware的概念，其實Middleware可以細分成不同層級的Middleware，就留到下次有機會再來討論。希望不會有人再跟我一樣傻傻分不清楚前後端框架。</p>
-<p>最近真的是想到什麼就寫什麼，完全沒有規劃，不過總是想的比較多。這系列文章估計也會寫好幾篇，希望能和React結合在一起XD。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1024,7 +1061,7 @@ app.set(&#39;view engine&#39;, &#39;hbs&#39;);</code></pre>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1037,7 +1074,7 @@ app.set(&#39;view engine&#39;, &#39;hbs&#39;);</code></pre>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

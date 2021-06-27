@@ -168,6 +168,121 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
+    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/06/10/Express%E7%B3%BB%E5%88%97-Express%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/matsu.jpg">
+      <meta itemprop="name" content="Matsu Chen">
+      <meta itemprop="description" content="消逝在平凡的日子中">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/10/Express%E7%B3%BB%E5%88%97-Express%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="post-title-link" itemprop="url">Express系列-Express介紹與基本概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-06-10 20:08:55" itemprop="dateCreated datePublished" datetime="2021-06-10T20:08:55+08:00">2021-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-06-11 14:45:37" itemprop="dateModified" datetime="2021-06-11T14:45:37+08:00">2021-06-11</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Programming/Javascript/Node/Express/" itemprop="url" rel="index"><span itemprop="name">Express</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Express介紹與基本概念"><a href="#Express介紹與基本概念" class="headerlink" title="Express介紹與基本概念"></a>Express介紹與基本概念</h3><blockquote>
+<p><em>I have not failed. I havve just found 10,000 ways that won&#39;t work.</em><br><em>― Thomas A. Edison</em></p>
+</blockquote>
+<p>Express是伺服器或稱作<strong>後端框架</strong>，最近才認知到Express有別於React、Angular和Vue，說起來也算是天大誤會，好在還沒弄成笑話。今天一起來看看這個框架可以給予我們什麼樣的能力吧!</p>
+<ul>
+<li>Express介紹<ul>
+<li>Express使用</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="Express介紹"><a href="#Express介紹" class="headerlink" title="Express介紹"></a>Express介紹</h4><p>誠如先前所說，Express是伺服器框架其一 ，其餘的類似的框架有Laravel、Flask等等。Express主要的用途在於協助Node去打造Web應用程式的框架和API，大幅減輕開發的負擔。以往在Express開發前，處理API和Web應用程式，需要針對網頁的請求與回應逐一處理，但現在只需要透過Express就可以達到一樣的結果。Express扮演的角色就像是遙控器一樣，開啟電視只需要按下開機關機鍵，若沒有遙控器的話則必須直接按電視螢幕<strong>本身</strong>的開關，但結果上來看是一樣的。</p>
+<p>簡言之，Express就是Node處理網站的遙控器!</p>
+<h5 id="Express使用"><a href="#Express使用" class="headerlink" title="Express使用"></a>Express使用</h5><p>在使用Express前，我們需要先認識<strong>中介軟體</strong>(Middleware)，中介軟體本身可以想成火車，假設火車從台中北上開往台北，這一路上必須經過苗栗、新竹、桃園、新北幾個城市，而中介軟體則是城市與城市間的溝通方式，並且溝通結果會影響到接下來的行程。</p>
+<p>首先在一個資料夾內建立app.js的檔案，基本上檔案名不會影響，不過一般都會命名為app或index兩者其一。建立完成後，切換到資料夾內執行<strong>npm init</strong>設定專案檔。一路按Enter到底將專案檔設為預設即可。大致上會看起來像下方圖片的路徑。</p>
+<p><img src="https://i.imgur.com/WyiVozE.jpg" alt="pic1"></p>
+<p>接著便於開發我們分別下載<strong>nodemon</strong>套件以及必備的<strong>express</strong>框架，執行以下指令:<br><code>npm install nodemon --save-dev</code><br><code>npm install express --save</code><br>第一個套件的主要功能是用於<strong>自動重啟伺服器</strong>，而不用手動一直重新開啟伺服器，安裝完成後，將<strong>package.json</strong>檔案寫入一個新的腳本檔案，就可以無痛使用nodemon從此不再手殘，如下:</p>
+<p><img src="https://i.imgur.com/jAz6Hf7.jpg" alt="script"></p>
+<p>接著回到app.js檔案，這裡我們將Express套件引入檔案中:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 匯入Express框架套件</span><br><span class="line">const express &#x3D; require(&#39;express&#39;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 建立Express應用程式 -&gt; 物件具有許多Function和Settings</span><br><span class="line">const app &#x3D; app.express();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 等同於</span><br><span class="line">&#x2F;&#x2F; const server &#x3D; http.createServer();</span><br><span class="line">&#x2F;&#x2F; server.listen(3000);</span><br><span class="line">app.listen(3000);</span><br></pre></td></tr></table></figure>
+
+<p>這段程式碼當中，我們建立Express的應用程式，透過它我們可以使用Express提供的各種Middleware來處理網站，從最後一行app.listen()可以看出Express已經將http核心模組打包起來。<br><code>const server = http.createServer()</code><br><code>server.listen(3000)</code><br>↓<br><code>app.listen(3000)</code></p>
+<p>接下來我們將app.js稍微修改一下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">const express &#x3D; require(&#39;express&#39;);</span><br><span class="line">const app &#x3D; express();</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Set off at Taichung City!&#39;);</span><br><span class="line">  &#x2F;&#x2F; 告訴Middleware可以前往下一個Middleware!</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Mioali is passed!&#39;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Hsinchu is passed!&#39;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Taoyuan is passed!&#39;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;New-Taipei is passed!&#39;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) &#x3D;&gt; &#123;</span><br><span class="line">  console.log(&#39;Taipei is arrived!&#39;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.listen(3000);</span><br></pre></td></tr></table></figure>
+
+<p>透過next()可以調動middleware不斷前往下一個middleware直到發生狀況或是抵達終點。<br>最後<strong>npm start</strong>啟動伺服器後就可以發現我們的中介軟體確實可以一路由台中抵達台北! </p>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天簡單講解Middleware的概念，其實Middleware可以細分成不同層級的Middleware，就留到下次有機會再來討論。希望不會有人再跟我一樣傻傻分不清楚前後端框架。</p>
+<p>最近真的是想到什麼就寫什麼，完全沒有規劃，不過總是想的比較多。這系列文章估計也會寫好幾篇，希望能和React結合在一起XD。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
     <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/06/08/Node%E7%B3%BB%E5%88%97-Node%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -607,137 +722,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en,zh-CN,ja,default">
-    <link itemprop="mainEntityOfPage" href="https://hiiragimatu.github.io/2021/05/28/React%E7%B3%BB%E5%88%97-JEST%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8-%E7%BA%8C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/matsu.jpg">
-      <meta itemprop="name" content="Matsu Chen">
-      <meta itemprop="description" content="消逝在平凡的日子中">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Matsu Chen">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/28/React%E7%B3%BB%E5%88%97-JEST%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8-%E7%BA%8C/" class="post-title-link" itemprop="url">React系列-JEST測試概念與使用(續)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-05-28 16:26:56 / Modified: 17:48:23" itemprop="dateCreated datePublished" datetime="2021-05-28T16:26:56+08:00">2021-05-28</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-                </span>
-                  , 
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Programming/Javascript/Test/" itemprop="url" rel="index"><span itemprop="name">Test</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="React-with-JEST"><a href="#React-with-JEST" class="headerlink" title="React with JEST"></a>React with JEST</h3><blockquote>
-<p><em>You cannot change what you are, only what you do.</em><br><em>― Philip Pullman, The Golden Compass</em></p>
-</blockquote>
-<ul>
-<li>實際測試</li>
-<li>結語</li>
-</ul>
-<p>今天延續上篇JEST測驗概念與使用的內容，若還沒看的朋友們，可以點開下方連結讀過再來看本篇。</p>
-<p><strong>React系列-JEST測試概念與使用: <a target="_blank" rel="noopener" href="https://tinyurl.com/yh5puf3t">https://tinyurl.com/yh5puf3t</a></strong></p>
-<p>前幾天稍微聊過關於測試的類別與JEST的使用，最後展示基本範例的測試過程。在本篇我們將來討論其他方面的測試。話不多說，現在就來進入正題。</p>
-<hr>
-<h4 id="實際測試"><a href="#實際測試" class="headerlink" title="實際測試"></a>實際測試</h4><p>首先建立新的檔案叫做<strong>GoodBye.js</strong>:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In GoodBye.js</span><br><span class="line">const GoodBye &#x3D; props &#x3D;&gt; &#123;</span><br><span class="line">  return &lt;p&gt;&#123;props.children&#125;&lt;&#x2F;p&gt;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default GoodBye;</span><br></pre></td></tr></table></figure>
-<p>建立這個檔案用途是能夠在<strong>Greeting.test.js</strong>當中，一同測試GoodBye組件，去試著了解整合測試的概念。同時，我們在Greeting組件匯入GoodBye並且將檔案修改一下，相信大家對於props.children不會太陌生，用一句話來說的話，就是打包內容。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;Greeting.js&quot;</span><br><span class="line">import GoodBye from &#39;.&#x2F;GoodBye&#39;;</span><br><span class="line"></span><br><span class="line">const Greeting &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;Hello World!&lt;&#x2F;h2&gt;</span><br><span class="line">      &lt;GoodBye&gt;It is good to see you.&lt;&#x2F;GoodBye&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Greeting;</span><br></pre></td></tr></table></figure>
-<p>接著修改測試檔案的內容:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;Greeting.test.js&quot;</span><br><span class="line">describe(&#39;&lt;Greeting &#x2F;&gt;&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">  test(&#39;Render Hello World as a text&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">    render(&lt;Greeting &#x2F;&gt;);</span><br><span class="line"></span><br><span class="line">    const findText &#x3D; screen.getByText(&#39;Hello World&#39;, &#123; exact: false &#125;);</span><br><span class="line">    expect(findText).toBeInTheDocument();</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  test(&#39;GoodBye in Greeting&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">    render(&lt;Greeting &#x2F;&gt;);</span><br><span class="line">    </span><br><span class="line">    const findGoodBye &#x3D; screen.getByText(&#39;It is good to see you.&#39;, &#123; exact: true&#125;);</span><br><span class="line">    expect(findGoodBye).toBeInTheDocument();</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>特別的是<strong>describe</strong>函數主要用來告知Test要測試的是一個組合(Suite)，每一個describe可以有數個test，使用方式和test函數相似。延續上篇文章的測試後，出現下方結果。</p>
-<p><img src="https://i.imgur.com/07nGgkM.jpg" alt="test"></p>
-<p>緊接著來討論關於事件的測試方式，將Greeting組件修改，增加一個狀態管理文字是否顯示:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import &#123; useState &#125; from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">import GoodBye from &#39;.&#x2F;GoodBye&#39;;</span><br><span class="line"></span><br><span class="line">const Greeting &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  const [text, setText] &#x3D; useState(false);</span><br><span class="line"></span><br><span class="line">  const changeText &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">      setText(true);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;Hello World!&lt;&#x2F;h2&gt;</span><br><span class="line">      &#123;!text &amp;&amp; &lt;GoodBye&gt;It is good to see you.&lt;&#x2F;GoodBye&gt;&#125;</span><br><span class="line">      &#123;text &amp;&amp; &lt;GoodBye&gt;Not good to see you.&lt;&#x2F;GoodBye&gt;&#125;</span><br><span class="line">      &lt;button onClick&#x3D;&#123;changeText&#125;&gt;Change Text!&lt;&#x2F;button&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Greeting;</span><br></pre></td></tr></table></figure>
-<p>因為測試事件需要模擬使用者點擊的行為，必須先引入<strong>userEvent</strong>物件進行模擬。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;Greeting.test.js&quot;</span><br><span class="line">import userEvent from &#39;@test-library&#x2F;user-event</span><br><span class="line"></span><br><span class="line">describe(&#39;&lt;Greeting &#x2F;&gt;&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">  ...同上述測試碼...</span><br><span class="line"></span><br><span class="line">  test(&#39;Check original text is invisible&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">      render(&lt;Greeting &#x2F;&gt;);</span><br><span class="line"></span><br><span class="line">      const button &#x3D; screen.getByRole(&#39;button&#39;);</span><br><span class="line">      userEvent.click(button);</span><br><span class="line"></span><br><span class="line">      const originalText &#x3D; screen.queryByText(&#39;It is good to see you.&#39;);</span><br><span class="line">      expect(originalText).toBeNull();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);     </span><br></pre></td></tr></table></figure>
-<p>新增模擬按鈕的測試後，此處只有一個按鈕，直接透過getByRole去找到唯一的一個按鈕。實際上選擇方式和JS處理DOM的概念一樣，接著透過userEvent物件的方式click去模擬按鈕的行為，最後搜尋是否有原先的文字。注意到queryByText作用和getByText一樣，差別在於<strong>query若找到目標會回傳相符的節點，若沒有找到目標則會回傳null</strong>。現在執行測試就會看到三個測試通過囉!</p>
-<p><img src="https://i.imgur.com/CdV1WJR.jpg" alt="test2"></p>
-<p>最後我們來看看本日的最後一個測試，主要針對fetch API和資料庫互動的測試。我們來仔細思考一下若測試時也真的與資料庫互動，會產生哪些問題? 以下是可能發生的問題:</p>
-<ul>
-<li>資料庫流量擁擠</li>
-<li>影響資料庫資料</li>
-<li>測試成本暴增</li>
-</ul>
-<p>當我們主要想測試是否可以連線成功時，其實是完全不需要真的跟資料庫有後續的互動，即便是真的需要驗證資料庫是否可以成功運作，我想也會有一個模擬的資料庫，而不是與實際使用的資料庫溝通。我們先新增一個新的組件Async。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; In &quot;Async.js&quot;</span><br><span class="line">import &#123; useEffect, useState &#125; from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">const Async &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  const [posts, setPosts] &#x3D; useState([]);</span><br><span class="line"></span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    &#x2F;&#x2F; 網路上公開測試用API</span><br><span class="line">    fetch(&#39;https:&#x2F;&#x2F;jsonplaceholder.typicode.com&#x2F;posts&#39;)</span><br><span class="line">      .then((response) &#x3D;&gt; response.json())</span><br><span class="line">      .then((data) &#x3D;&gt; &#123;</span><br><span class="line">        setPosts(data);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &#123;posts.map((post) &#x3D;&gt; (</span><br><span class="line">          &lt;li key&#x3D;&#123;post.id&#125;&gt;&#123;post.title&#125;&lt;&#x2F;li&gt;</span><br><span class="line">        ))&#125;</span><br><span class="line">      &lt;&#x2F;ul&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Async;</span><br></pre></td></tr></table></figure>
-<p>使用fetch API需要處理非同步的問題，因為從資料庫傳來的資料需要時間傳遞。在Async組件當中使用到useEffect和useState兩個Hooks，用途可以參見先前的文章。另外建立Async.test.js的檔案。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import &#123; render, screen &#125; from &#39;@testing-library&#x2F;react&#39;;</span><br><span class="line"></span><br><span class="line">import Asnyc from &#39;.&#x2F;Async&#39;;</span><br><span class="line"></span><br><span class="line">describe(&#39;Asynchronous API Testing&#39;, () &#x3D;&gt; &#123;</span><br><span class="line">  test(&#39;Check request successes or not&#39;, async () &#x3D;&gt; &#123;</span><br><span class="line">    &#x2F;&#x2F; 建立Mock(Spy)</span><br><span class="line">    window.fetch &#x3D; jest.fn();</span><br><span class="line">    &#x2F;&#x2F; 覆寫fecth API的動作，連線後回傳資料</span><br><span class="line">    window.fetch.mockResolvedValueOnce(&#123;</span><br><span class="line">      json: async () &#x3D;&gt; [&#123; id: &#39;p1&#39;, title: &#39;First Post&#39; &#125;],</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    render(&lt;Asnyc &#x2F;&gt;);</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 等待fetch動作完成後檢查是否有listitem陣列</span><br><span class="line">    const listItem &#x3D; await screen.findAllByRole(&#39;listitem&#39;);</span><br><span class="line">    expect(listItem).not.toHaveLength(0);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>處理非同步的問題需要覆寫fetch API的方法，這裡必須呼叫<strong>window.fetch</strong>才能夠正確覆寫，單純只呼叫fetch API會直接使用這個函數而無法覆寫。接著透過<strong>jest.fn</strong>函數去模擬回傳資料，jest.fn會建立所謂的<strong>Mock</strong>，Mock常常又稱作間諜，因為它可以模仿函數的行為，最後則是透過<strong>mockResolvedValueOnce</strong>去模擬資料的運作。一連串過程中，可以測試是否連線成功，唯一的差別在於資料是由測試人員自行建立。最後確認回傳的list長度是否為0，就能確認模擬狀況。這裡特別要注意到find的方法和get與query都一樣，差別在於它會回傳Promise，因此會等到模擬fetch完成後才執行。</p>
-<p>最後我們執行測試，出現下方的結果。</p>
-<p><img src="https://i.imgur.com/XmcR3lu.jpg" alt="test3"></p>
-<p>Test Suites共用兩個，因為我們分別有Async和Greeting兩個測試，此外內部分別有1和3個測試，總共有四個測試項目。</p>
-<p>-重點回顧-</p>
-<ul>
-<li>Query回傳DOM節點或Null</li>
-<li>Find回傳Promise</li>
-<li>Mock透過jest.fn建立</li>
-</ul>
-<hr>
-<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天把上一篇文章後續的內容討論一下，順便在腦中重新複習一下JEST測試的過程，不過如何針對props去測試還沒有仔細想過，或許會是未來一個有趣的內容。最近花兩天時間讓大腦好好放鬆，看完Netflix上的救命倒數這部美劇，第一季挺不錯的，但第二季就好冗長，跳過的內容相當多。另外艾莉西亞才真的值得珍惜，茱莉亞趕快下去…看的有夠討厭，連恩頭殼壞去，編劇要不要這麼搞?</p>
-<p>最後謝謝看到這裡的妳/你們。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -805,7 +793,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -818,7 +806,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-count">48</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
