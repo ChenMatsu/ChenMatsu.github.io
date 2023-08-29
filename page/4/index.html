@@ -116,18 +116,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">文章</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">分類</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-count">37</span>
         <span class="site-state-item-name">標籤</span></a>
       </div>
   </nav>
@@ -144,131 +144,6 @@
     </div>
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://chenmatsu.github.io/2021/05/15/React%E7%B3%BB%E5%88%97-useReducer%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Matsu Chen">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Matsu">
-      <meta itemprop="description" content="Nothing more than curiosity">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Matsu">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/15/React%E7%B3%BB%E5%88%97-useReducer%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">React系列-useReducer概念與使用</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">發表於</span>
-
-      <time title="創建時間：2021-05-15 10:32:54" itemprop="dateCreated datePublished" datetime="2021-05-15T10:32:54+08:00">2021-05-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新於</span>
-      <time title="修改時間：2023-08-29 17:36:53" itemprop="dateModified" datetime="2023-08-29T17:36:53+08:00">2023-08-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分類於</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="Hooks家族-useReducer"><a href="#Hooks家族-useReducer" class="headerlink" title="Hooks家族 - useReducer"></a>Hooks家族 - useReducer</h3><blockquote>
-<p><em>Don&#39;t be pushed around by the fears in your mind. Be led by the dreams in your heart.</em><br><em>― Roy T. Bennett</em></p>
-</blockquote>
-<p>上一次講述useContext的性質主要是管理變數。今天則是要來介紹useState的強化版，<strong>useReducer</strong>!最近這幾天在學習使用Hooks，雖然我還是沒有開竅，但卻對於Hooks所帶來的改變深深著迷，像是useRef、useCallback，甚至是客製化useHooks，我都覺得相當有趣。好的，廢話不多說，我們馬上來認識useReducer吧!</p>
-<ul>
-<li>useReducer<ul>
-<li>useReducer使用方式</li>
-</ul>
-</li>
-<li>結語</li>
-</ul>
-<hr>
-<h4 id="useReducer"><a href="#useReducer" class="headerlink" title="useReducer"></a>useReducer</h4><p>為什麼我會說useReducer是useState的強化版? 我們來看一段官方文件所述的話:<br><strong>useReducer is usually preferable to useState when you have complex state logic that involves multiple sub-values or when the next state depends on the previous one.</strong><br>大致上的意思是說當我們有複雜的狀態邏輯或者是狀態依賴先前的狀態時，我們就可以考慮使用useReducer，這句話聽起來就像是useState的強化版。我們一般處理狀態時會為各自的狀態寫一個useState:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">const Counter = () =&gt; &#123;</span><br><span class="line">  const [count, setCount] = useState(0);</span><br><span class="line">  const [addText, setAddText] = useState(&#x27;&#x27;);</span><br><span class="line">  const [minusText, setMinusText] = useState(&#x27;&#x27;);</span><br><span class="line">  </span><br><span class="line">  const addCountHandler = () =&gt; &#123;</span><br><span class="line">    setCount(count+1);</span><br><span class="line">    setAddText(&quot;I am adding!&quot;)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  const minusCountHandler = () =&gt; &#123;</span><br><span class="line">    setCount(count-1);</span><br><span class="line">    setMinusText(&quot;I am minusing!&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;counter&quot;&gt;</span><br><span class="line">      &lt;button onClick=&#123;addCountHandler&#125;&gt;Add&lt;/button&gt;</span><br><span class="line">      &lt;p&gt;&#123;addText&#125; to &#123;count&#125; &lt;/p&gt;</span><br><span class="line">      &lt;button onClick=&#123;minusCountHandler&#125;&gt;Minus&lt;/button&gt;</span><br><span class="line">      &lt;p&gt;&#123;minusText&#125; to &#123;count&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其實這邊寫得相當的繁瑣，有點不符合實際情況。不過沒關係，這邊只是單純展示使用useReducer的時機。從上述程式碼，我們可以看見當我們要設定增減按鈕時，需要為增減的行為設定一個useState，若我們想再加上文字的變更，必須再多新增文字各自的狀態。透過useState，已經減輕不少工作，但，礙於人類的天性，我們還是覺得這樣過於繁瑣。</p>
-<p>這時候useReducer的就派上用場了!<br>useReducer往往會搭配useContext使用，但我們這邊先專注在useReducer本身。</p>
-<h5 id="useReducer使用方式"><a href="#useReducer使用方式" class="headerlink" title="useReducer使用方式"></a>useReducer使用方式</h5><p>useReducer是useState的一種替換寫法。它的長相大概如下所示:<br><code>const [state, dispatch] = useReducer(reducer, initialArg)</code></p>
-<p>主要的概念是透過useReducer將<strong>reducer</strong>這個<strong>函數</strong>串接進來，reducer則會根據dispatch去決定要執行的動作。state會根據initialArg去決定型態，若initialArg是物件，則state也會是物件。同樣地，dispatch也會是物件的型態，裡頭會儲存各種方法，以這邊的例子來說，就是增減的方法。我們來實際看看如何改寫上述的計時器:</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">const defaultCountState = &#123;</span><br><span class="line">   count: 0,</span><br><span class="line">   text: &quot;&quot;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const countReducer = (state, action) =&gt; &#123;</span><br><span class="line">  switch(action.type)&#123;</span><br><span class="line">    case &#x27;ADD&#x27;:</span><br><span class="line">      return &#123; </span><br><span class="line">        count: state.count + 1,</span><br><span class="line">        text: &quot;I am adding.&quot;</span><br><span class="line">      &#125;;</span><br><span class="line">    case &#x27;MINUS&#x27;:</span><br><span class="line">      return &#123; </span><br><span class="line">        count: state.count - 1&#125;</span><br><span class="line">        text: &quot;I am minusing.&quot;</span><br><span class="line">      &#125;;</span><br><span class="line">    default:</span><br><span class="line">      throw new Error();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const Counter = () =&gt; &#123;</span><br><span class="line">  const [countState, dispatchCount] = useReducer(countReducer, defaultCountState);</span><br><span class="line">  </span><br><span class="line">  const addCountHandler = () =&gt; &#123;</span><br><span class="line">    dispatchCount(&#123;type: &#x27;ADD&#x27;&#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  const minusCountHandler = () =&gt; &#123;</span><br><span class="line">    dispatchCount(&#123;type: &#x27;MINUS&#x27;&#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;counter&quot;&gt;</span><br><span class="line">      &lt;p&gt;Count: &#123;countState.text&#125; &#123;countState.count&#125;  &lt;/p&gt;</span><br><span class="line">      &lt;button onClick=&#123;addCountHandler&#125;&gt;Add&lt;/button&gt;</span><br><span class="line">      &lt;button onClick=&#123;minusCountHandler&#125;&gt;Minus&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>寫好count的reducer，裡面包含增減對應的方法，接著再透過useReducer將方法以及我們預設的變數傳入Counter組件。最後當我們實際執行上述的程式碼的時候，就可以發現，透過useReducer，我們成功同時控制文字與數字的狀態。好像有點小興奮!沒錯，這就是我們useReducer的Power所在!<br><img src="https://i.imgur.com/rlvovbM.jpg" alt="count"></p>
-<p>-重點回顧-</p>
-<ul>
-<li>useReducer可以控管複雜的狀態<ul>
-<li>reducer是一組函數</li>
-<li>state、dispatch一般都是物件</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天簡單講解useReducer這個Hook，熟悉Redux的各位大大一定不陌生這個Hook，但心中可能會有疑惑為何有Redux又需要useReducer呢? 這就因人而異，只要能達到目的，我想用哪種方法都沒有對錯的分別，全取決於個人。在這篇章，我們還沒提到global變數的概念，一般來說useReducer都會搭配useContext的使用去處理資料，接下來的篇章也許會討論這塊也說不定。</p>
-<p>useReducer並不是要完全取代useState，它只有當狀態變得複雜時才適合使用，換句話說在處理簡單的狀態時，就不需要去使用它，畢竟殺雞焉用牛刀是吧?</p>
-<p>題外話: 今天一直在想要怎麼去寫useReducer，最後坐在馬桶上還是覺得簡單用Count去解釋好了，原先考慮用自己實作的訂餐網站來講解，但似乎不適合當作介紹篇章的範例。</p>
-<p>最後，謝謝各位大大看到最後!</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -843,8 +718,137 @@
 
 
 
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://chenmatsu.github.io/2021/05/07/%E7%A8%8B%E5%BC%8F%E6%97%A5%E5%B8%B8%E7%B3%BB%E5%88%97-%E5%AE%A3%E5%91%8A%E5%BC%8F%E8%88%87%E6%8C%87%E4%BB%A4%E5%BC%8F%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80%E7%9A%84%E5%B7%AE%E7%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu">
+      <meta itemprop="description" content="Nothing more than curiosity">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Matsu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/07/%E7%A8%8B%E5%BC%8F%E6%97%A5%E5%B8%B8%E7%B3%BB%E5%88%97-%E5%AE%A3%E5%91%8A%E5%BC%8F%E8%88%87%E6%8C%87%E4%BB%A4%E5%BC%8F%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80%E7%9A%84%E5%B7%AE%E7%95%B0/" class="post-title-link" itemprop="url">程式日常-指令式與宣告式程式語言的差異</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2021-05-07 12:45:52" itemprop="dateCreated datePublished" datetime="2021-05-07T12:45:52+08:00">2021-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2023-08-29 17:36:53" itemprop="dateModified" datetime="2023-08-29T17:36:53+08:00">2023-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Concept/" itemprop="url" rel="index"><span itemprop="name">Concept</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="分不清指令式與宣告式程式語言"><a href="#分不清指令式與宣告式程式語言" class="headerlink" title="分不清指令式與宣告式程式語言?"></a>分不清指令式與宣告式程式語言?</h3><blockquote>
+<p><em>Lack of direction, not lack of time, is the problem. We all have twenty-four hour days.</em><br><em>― Zig Ziglar</em></p>
+</blockquote>
+<p>今天要來和各位聊聊指令式(Imperative)和宣告式(Declarative)程式語言，聽起來會有點像講古喔!但，仔細想一想，學習一門外語，最難的並不是會使用那門語言，而是語言背後的文化才是真正難以摸透的。我想，程式語言也一樣!因為它也是「語言」!我相信在了解程式語言的歷史後，對於自己在寫的程式會更有深入的理解，而不是在瞬息萬變的世界下走馬看花。</p>
+<ul>
+<li>指令式程式語言(Imperative Programming)<ul>
+<li>低階指令式</li>
+<li>高階指令式</li>
+</ul>
+</li>
+<li>宣告式程式語言(Declarative Programming)<ul>
+<li>控制流程(Control flow)</li>
+<li>資料庫語言(Database Programming) </li>
+<li>函式語言(Functional Programming)</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="指令式程式語言-Imperative-Programming"><a href="#指令式程式語言-Imperative-Programming" class="headerlink" title="指令式程式語言(Imperative Programming)"></a>指令式程式語言(Imperative Programming)</h4><p><strong>Imperative programming is a programming paradigm that uses statements that change a program&#39;s state.</strong><br>我們來仔細思考一下這一句擷取自Wiki頁面的敘述。<br>指令式程式語言是使用陳述式語法去改變程式狀態的一種程式範式(典範)。嗯…相當的文謅謅，可不可以用更直覺的方式來理解指令式程式語言? 沒問題，我們馬上看下面的程式碼:</p>
+<p>指令式程式語言有分低階與高階</p>
+<h5 id="低階指令式程式語言-Low-Level"><a href="#低階指令式程式語言-Low-Level" class="headerlink" title="低階指令式程式語言(Low-Level)"></a>低階指令式程式語言(Low-Level)</h5><p>廣義上來說，低階與高階是相對的概念，以現今來看，就像是C++相對於Python語言就能夠劃分成低階與高階。但狹義上來說，我們劃分低階與高階指令式，可以用組合語言與高階語言來劃分。我們看看下方的例子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">ITER EQU 10           ; number of iterations</span><br><span class="line">OVERHEAD EQU 15       ; 15 for Pentium, 17 for Pentium MMX</span><br><span class="line"></span><br><span class="line">RDTSC MACRO           ; define RDTSC instruction</span><br><span class="line">DB 0FH,31H</span><br><span class="line">ENDM</span><br><span class="line"></span><br><span class="line">.DATA</span><br><span class="line"></span><br><span class="line">ALIGN 4</span><br><span class="line">COUNTER DD 0           ; loop counter</span><br><span class="line">TICS DD 0              ; temporary storage of clock</span><br><span class="line">RESULTLIST DD ITER DUP (0)         ; list of test results</span><br><span class="line"></span><br><span class="line">.CODE</span><br><span class="line">BEGIN: MOV [COUNTER],0             ; reset loop counter</span><br><span class="line"></span><br><span class="line">TESTLOOP:                          ; test loop</span><br><span class="line">;**************** Do any initializations here: ******</span><br><span class="line">FINIT</span><br><span class="line">;**************** End of initializations *************</span><br><span class="line">    </span><br><span class="line">RDTSC                   ; read clock counter</span><br><span class="line">MOV [TICS],EAX          ; save count</span><br><span class="line">CLD                     ; non-pairable filler</span><br><span class="line"></span><br><span class="line">REPT 8</span><br><span class="line">NOP                     ; eight NOP&#x27;s to avoid shadowing effect</span><br><span class="line">ENDM</span><br><span class="line"></span><br><span class="line">;**************** Put instructions to test here: ************************</span><br><span class="line">FLDPI                                                </span><br><span class="line">FSQRT</span><br><span class="line">RCR EBX,10</span><br><span class="line">FSTP ST</span><br><span class="line">;********************* End of instructions to test ************************</span><br></pre></td></tr></table></figure>
+<p>以上的程式碼是組合語言，在我們的定義上來說就是低階的程式語言。現在前後端工程師比較少碰到組合語言，基本上都是處理硬體、韌體時比較有機會接觸到底層的程式語言，也就是低階指令式語言，大部分的情況都是為了使硬體效能最佳化，才會去撰寫組合語言。不過小弟對於組合語言也是一知半解，如果有誤，還請多多指正!</p>
+<h5 id="高階指令式程式語言-High-Level"><a href="#高階指令式程式語言-High-Level" class="headerlink" title="高階指令式程式語言(High-Level)"></a>高階指令式程式語言(High-Level)</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;stdio.h&gt;</span><br><span class="line">#include&lt;stdlib.h&gt;</span><br><span class="line">#include&lt;stdbool.h&gt;</span><br><span class="line"></span><br><span class="line">bool isPalindrome(int x)</span><br><span class="line">&#123;</span><br><span class="line">     long reverse = 0;</span><br><span class="line">     int compare = x;</span><br><span class="line"></span><br><span class="line">     if(x &lt; 0) </span><br><span class="line">     &#123; </span><br><span class="line">         return false;</span><br><span class="line">     &#125;</span><br><span class="line">     while(x != 0)</span><br><span class="line">     &#123;</span><br><span class="line">         int popin = x % 10;</span><br><span class="line">         x = x / 10;</span><br><span class="line">         reverse = reverse*10 + popin;</span><br><span class="line">     &#125;</span><br><span class="line">     if(reverse == compare) </span><br><span class="line">        return true;</span><br><span class="line">     else </span><br><span class="line">        return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的程式要確認某一個數字是不是回文(Palindrome)，舉例來說:12321。上述就是指令式程式語言的一種。可以看到說我們必須一步一步地去規劃程式的每一個步驟。首先，我們建立另外一個新的數值，利用取餘(Mod %)的方式，去反向依序填入x的值，最後在經過數值比對去核對數字是否一樣，若一樣則回傳True，相反則回傳False。這就是現今比較常看到的高階指令式程式語言。</p>
+<p>指令式程式語言基本上的概念就像上述所說，可以劃分為低階與高階。特別注意的是，在C語言後出現的C+、C++以及Java都屬於<strong>OOP</strong>(Object-Oriented Programmin)的程式語言，但它們本質上依舊屬於指令式程式語言，只是又更上一層樓變得更為高階。其實所謂的指令式沒有想像中的難理解，我們日常在料理的過程，本質上一樣是指令式程式語言。倒不如說，指令式程式語言是從現實生活中，逐步發展出來才是正確的理解方式，有點做什麼(What to)的意味。</p>
+<hr>
+<h4 id="宣告式程式語言-Declarative-Programming"><a href="#宣告式程式語言-Declarative-Programming" class="headerlink" title="宣告式程式語言(Declarative Programming)"></a>宣告式程式語言(Declarative Programming)</h4><p>同樣地，我們來看看Wiki上面如何定義宣告式程式語言。<br><strong>A style of building the structure and elements of computer programs—that expresses the logic of a computation without describing its control flow.</strong><br>一種不需描述控制流程即可表達運算邏輯的電腦架構與元素風格。嗯…翻譯的似乎不是很到位，不過反覆思考這段話，什麼是不需描述控制流程(Control flow))的架構? 我們先來看看何謂控制流程(Control flow):</p>
+<h5 id="控制流程-Control-flow"><a href="#控制流程-Control-flow" class="headerlink" title="控制流程(Control flow)"></a>控制流程(Control flow)</h5><p>控制流程可以用一種方式去理解，那就是「順序」。當程式碼的擺放位置不同時，執行過程就會不同，這就是控制流程的概念。<br>我們來簡單舉個JS的例子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">const world = &#x27;Hello&#x27;;</span><br><span class="line">switch (world) &#123;</span><br><span class="line">  case &#x27;Hello&#x27;:</span><br><span class="line">    console.log(&#x27;Hello world!&#x27;);</span><br><span class="line">    break;</span><br><span class="line">  case &#x27;hello&#x27;:</span><br><span class="line">    console.log(&#x27;World hello!);</span><br><span class="line">    break;</span><br><span class="line">  case &#x27;Hi&#x27;:</span><br><span class="line">    console.log(&#x27;Hi, world!&#x27;);</span><br><span class="line">    break;</span><br><span class="line">  default:</span><br><span class="line">    console.log(`Sorry, we are out of $&#123;world&#125;.`);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述程式碼就是控制流程的概念，可以看到如果改動case的順序，程式流向就會改變。我們暫且討論到這邊，因為重點還是在宣告式程式語言。<br>宣告式語言基本上就是由指令式語言逐步發展過來，因為它的最大區別在於<strong>避免副作用</strong>(Side Effect)。一般來說，撰寫程式免不了會出現副作用，白話一點就是改了這邊的程式碼，壞了那邊的程式碼的概念，因為副作用的其中一種可能性便是改變程式執行的順序，而導致某些程式片段無法成功讀取定義好的函數、物件、陣列等等。</p>
+<h5 id="資料庫語言-Database-Programming"><a href="#資料庫語言-Database-Programming" class="headerlink" title="資料庫語言(Database Programming)"></a>資料庫語言(Database Programming)</h5><p>最容易理解也不會令人困惑的非屬於資料庫語言，如：MySQL、PostgreSQL等等的資料庫語言。<br>同樣舉例來看:<br><code>SELECT name FROM tw.male ORDER BY name</code><br> 這就是宣告式程式語言的一種，因為我們並不知道SELECT以及FROM還有ORDER BY的內部程式碼，就算我們更改name以及tw.male的欄位，都不會對整體程式造成任何副作用，頂多回報格式不符合或是查無資料的訊息。</p>
+<h5 id="函式語言-Functional-Programming"><a href="#函式語言-Functional-Programming" class="headerlink" title="函式語言(Functional Programming)"></a>函式語言(Functional Programming)</h5><p>函式語言同樣是宣告式程式語言，你正拿來寫網站的JS就是其中的一名。可是你會說寫JS可能會有副作用啊? 沒錯，確實有可能產生，但那只是符合宣告式定義的一種。因為副作用不是必要條件，而是充分條件。換句話說，沒有副作用一定是宣告式程式語言，但有副作用也有可能是宣告式程式語言。直接來看看JS的範例吧!</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const filterNums = (...args) =&gt; &#123;</span><br><span class="line">  return args.filter(el =&gt; el &gt; 5);</span><br><span class="line">&#125;</span><br><span class="line">console.log(filterNums(1,3,5,7,9,11,13,15,17));</span><br></pre></td></tr></table></figure>
+<p>這段程式碼很眼熟對吧! 因為在ES6快速入門那篇文章也有提到。我們仔細看一下回傳過後的那段程式碼<code>return args.filter(el =&gt; el &gt; 5);</code>這段程式碼讀來沒有任何問題，但是仔細想想filter是什麼? 它是一個函數，可是函數就不會有副作用嗎? 不一定，但至少在這裡它確實不會有副作用，因為不管傳入什麼樣的陣列，都不會影響filter()本身。</p>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天概略講過指令式和宣告式程式語言的差別，因為在Udemy上課程時，講師剛好提到React是宣告式程式語言，就很好奇到底什麼是宣告式程式語言。從React是宣告式語言這一點來看，我們可以知道HTML、CSS、JS都可以歸類為宣告式語言，甚至是XML，畢竟JSX就是JS-XML形式的程式碼，具有標記語言的性質。</p>
+<p>這一篇希望對能了解這兩個概念的讀者有點幫助，一開始查資料時，覺得內容蠻多而且還有點乏味。不過仔細去品味程式語言的整個發展，就像發現新世界一樣，一切都是環環相扣。礙於篇幅，還有許多沒有提到，如：DSL(Domain-Specific Language)就沒有提到，但是加上DSL其實就會變得不單純。</p>
+<p>那今天就先這樣囉! 我們下回見!</p>
+<p>組合語言程式片段來源: <a target="_blank" rel="noopener" href="https://www.csie.ntu.edu.tw/~b5506058/optimize.html">https://www.csie.ntu.edu.tw/~b5506058/optimize.html</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一頁" aria-label="上一頁" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" title="下一頁" aria-label="下一頁" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" title="上一頁" aria-label="上一頁" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" title="下一頁" aria-label="下一頁" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
