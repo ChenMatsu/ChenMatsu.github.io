@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chenmatsu.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="玩轉Typescript Work without love is slavery.― Mother Teresa  沒有愛的工作是奴役，但要怎麼去確認自己的工作是不是有愛? 本篇內容主要源自於上一篇React系列-玩轉Typescript待辦清單(上)。 本來打算將內容都寫在同一篇文章，但還是有點勉強，因此才分為上、下篇，在上一篇文章我們定義完類別和ContextAPI後，這裡我們只需要將它們運">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React系列-玩轉Typescript待辦清單(下)">
+<meta property="og:url" content="https://chenmatsu.github.io/2021/05/31/React%E7%B3%BB%E5%88%97-%E7%8E%A9%E8%BD%89Typescript%E5%BE%85%E8%BE%A6%E6%B8%85%E5%96%AE-%E4%B8%8B/index.html">
+<meta property="og:site_name" content="Matsu">
+<meta property="og:description" content="玩轉Typescript Work without love is slavery.― Mother Teresa  沒有愛的工作是奴役，但要怎麼去確認自己的工作是不是有愛? 本篇內容主要源自於上一篇React系列-玩轉Typescript待辦清單(上)。 本來打算將內容都寫在同一篇文章，但還是有點勉強，因此才分為上、下篇，在上一篇文章我們定義完類別和ContextAPI後，這裡我們只需要將它們運">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/TtSomMd.jpg">
+<meta property="article:published_time" content="2021-05-31T09:37:33.000Z">
+<meta property="article:modified_time" content="2023-08-29T09:36:53.761Z">
+<meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="react">
+<meta property="article:tag" content="typescript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/TtSomMd.jpg">
+
+
+<link rel="canonical" href="https://chenmatsu.github.io/2021/05/31/React%E7%B3%BB%E5%88%97-%E7%8E%A9%E8%BD%89Typescript%E5%BE%85%E8%BE%A6%E6%B8%85%E5%96%AE-%E4%B8%8B/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://chenmatsu.github.io/2021/05/31/React%E7%B3%BB%E5%88%97-%E7%8E%A9%E8%BD%89Typescript%E5%BE%85%E8%BE%A6%E6%B8%85%E5%96%AE-%E4%B8%8B/","path":"2021/05/31/React系列-玩轉Typescript待辦清單-下/","title":"React系列-玩轉Typescript待辦清單(下)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React系列-玩轉Typescript待辦清單(下) | Matsu</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Matsu</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Nothing more than curiosity</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%A9%E8%BD%89Typescript"><span class="nav-number">1.</span> <span class="nav-text">玩轉Typescript</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%A6%E4%BD%9CTodolist"><span class="nav-number">1.1.</span> <span class="nav-text">實作Todolist</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.2.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Matsu Chen</p>
+  <div class="site-description" itemprop="description">Nothing more than curiosity</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://chenmatsu.github.io/2021/05/31/React%E7%B3%BB%E5%88%97-%E7%8E%A9%E8%BD%89Typescript%E5%BE%85%E8%BE%A6%E6%B8%85%E5%96%AE-%E4%B8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu">
+      <meta itemprop="description" content="Nothing more than curiosity">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="React系列-玩轉Typescript待辦清單(下) | Matsu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React系列-玩轉Typescript待辦清單(下)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2021-05-31 17:37:33" itemprop="dateCreated datePublished" datetime="2021-05-31T17:37:33+08:00">2021-05-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2023-08-29 17:36:53" itemprop="dateModified" datetime="2023-08-29T17:36:53+08:00">2023-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/Typescript/" itemprop="url" rel="index"><span itemprop="name">Typescript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="玩轉Typescript"><a href="#玩轉Typescript" class="headerlink" title="玩轉Typescript"></a>玩轉Typescript</h3><blockquote>
+<p><em>Work without love is slavery.</em><br><em>― Mother Teresa</em></p>
+</blockquote>
+<p>沒有愛的工作是奴役，但要怎麼去確認自己的工作是不是有愛?</p>
+<p>本篇內容主要源自於上一篇React系列-玩轉Typescript待辦清單(上)。</p>
+<p>本來打算將內容都寫在同一篇文章，但還是有點勉強，因此才分為上、下篇，在上一篇文章我們定義完類別和ContextAPI後，這裡我們只需要將它們運用在組件上就大功告成了!</p>
+<ul>
+<li>實作Todolist</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="實作Todolist"><a href="#實作Todolist" class="headerlink" title="實作Todolist"></a>實作Todolist</h4><p>首先處理第一個組件<strong>Todos.tsx</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// In &quot;Todos.tsx&quot;</span><br><span class="line">import &#123; useContext &#125; from &#x27;react&#x27;;</span><br><span class="line"></span><br><span class="line">import &#123; TodosContext &#125; from &#x27;../store/todos-context&#x27;;</span><br><span class="line">import TodoItem from &#x27;./TodoItem&#x27;;</span><br><span class="line"></span><br><span class="line">const Todos: React.FC = () =&gt; &#123;</span><br><span class="line">  // 使用ContextAPI</span><br><span class="line">  const todosCtx = useContext(TodosContext);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;ul&gt;</span><br><span class="line">        &#123;todosCtx.todos.map((todo) =&gt; (</span><br><span class="line">          &lt;TodoItem</span><br><span class="line">            key=&#123;todo.id&#125;</span><br><span class="line">            name=&#123;todo.name&#125;</span><br><span class="line">            // null告知this不需要參照，todo.id則為第一個參數傳入</span><br><span class="line">            onDeleteTodo=&#123;todosCtx.deleteTodo.bind(null, todo.id)&#125;</span><br><span class="line">          /&gt;</span><br><span class="line">        ))&#125;</span><br><span class="line">      &lt;/ul&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Todos;</span><br></pre></td></tr></table></figure>
+
+<p>在<strong>Todos</strong>當中使用到<strong>TodoItem</strong>組件，當然就需要再為它建一個組件囉! </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// In &quot;TodoItem.tsx&quot;</span><br><span class="line">import React from &#x27;react&#x27;;</span><br><span class="line"></span><br><span class="line">const TodoItem: React.FC&lt;&#123;name: string; onDeleteTodo: () =&gt; void&#125;&gt; = (props) =&gt; &#123;</span><br><span class="line">    return (</span><br><span class="line">        &lt;li onClick=&#123;props.onDeleteTodo&#125;&gt;&#123;props.name&#125;&lt;/li&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default TodoItem;</span><br></pre></td></tr></table></figure>
+<p>注意到在React.FC後方透過使用Generic去明確定義變數name和函數onDeleteTodo，因為對於TodoItem組件來說，這兩者都是陌生人。最後，因為我們需要新增項目，自然也就需要新增清單的組件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">// In &quot;NewTodo.tsx&quot;</span><br><span class="line">import React from &#x27;react&#x27;;</span><br><span class="line">import &#123; useRef, useContext &#125; from &#x27;react&#x27;;</span><br><span class="line">import &#123; TodosContext &#125; from &#x27;../store/todos-context&#x27;;</span><br><span class="line"></span><br><span class="line">const NewTodo: React.FC = () =&gt; &#123;</span><br><span class="line">  const todosCtx = useContext(TodosContext);</span><br><span class="line"></span><br><span class="line">  // HTMLInputElement代表DOM的元素類別</span><br><span class="line">  const inputRef = useRef&lt;HTMLInputElement&gt;(null);</span><br><span class="line"></span><br><span class="line">  const submitHandler = (event: React.FormEvent) =&gt; &#123;</span><br><span class="line">    event.preventDefault();</span><br><span class="line"></span><br><span class="line">    const todoName = inputRef.current!.value;</span><br><span class="line"></span><br><span class="line">    if (todoName.trim().length === 0) &#123;</span><br><span class="line">      return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    todosCtx.addTodo(todoName);</span><br><span class="line">  &#125;;</span><br><span class="line">  return (</span><br><span class="line">    &lt;form onSubmit=&#123;submitHandler&#125;&gt;</span><br><span class="line">      &lt;label htmlFor=&#x27;name&#x27;&gt;Todo Name&lt;/label&gt;</span><br><span class="line">      &lt;input type=&#x27;text&#x27; id=&#x27;name&#x27; ref=&#123;inputRef&#125; /&gt;</span><br><span class="line">      &lt;button&gt;Add Todo&lt;/button&gt;</span><br><span class="line">    &lt;/form&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default NewTodo;</span><br></pre></td></tr></table></figure>
+<p>透過使用useRef Hook，可以簡單存取特定欄位的值。唯一需要注意的是HTMLInputElement，在使用Hooks也必須告訴TS相關的型別定義。其餘的都在React系列-useRef概念篇當中有詳細的了解，對於useRef使用有疑問可以參考那篇文章。</p>
+<p>最後僅需要將App.tsx做點小修改，就可以成功執行我們的代辦清單囉!</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import NewTodo from &#x27;./components/NewTodo&#x27;;</span><br><span class="line">import Todos from &#x27;./components/Todos&#x27;;</span><br><span class="line">import TodosContextProvider from &#x27;./store/todos-context&#x27;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const App = () =&gt;  &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;TodosContextProvider &gt;</span><br><span class="line">      &lt;NewTodo/&gt;</span><br><span class="line">      &lt;Todos/&gt;</span><br><span class="line">    &lt;/TodosContextProvider&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default App;</span><br></pre></td></tr></table></figure>
+<p>稍微添加CSS樣式在其中後，實際執行程式後，大致上會如下圖一樣:<br><img src="https://i.imgur.com/TtSomMd.jpg" alt="pic"></p>
+<p>給自己拍拍手! 我想是因為對於TS理解的不夠深，個人覺得在使用起來沒有太大的差別，但確實對於明確的去定義每一個細節要如何使用都非常的清楚明瞭，這應該是最能體會TS的威力的一點! 當然還有很多值得我們去探討的，就交給明天的自己吧!(飄~)</p>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>結束五月，不知不覺在這一個月當中有很多成長，不管是學習還是找工作，可以說壓力不少，但卻覺得意外的有趣，看著自己一篇又一篇的文章。有時候都會想為什麼要這麼麻煩，但卻又因為學習的空虛而感到不安，對於我自己來說，忘記以前讀過的書、學會的曲子、寫過的字才是最可怕的，因為那似乎代表自己白活那麼一段時光，一想到此，身體自己就動了起來。</p>
+<p>很多時候想的太多，真正需要的只是放手一搏而已，這段路途定然不容易，卻會是朝著理想的路上。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/react/" rel="tag"># react</a>
+              <a href="/tags/typescript/" rel="tag"># typescript</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/31/React%E7%B3%BB%E5%88%97-%E7%8E%A9%E8%BD%89Typescript%E5%BE%85%E8%BE%A6%E6%B8%85%E5%96%AE/" rel="prev" title="React系列-玩轉Typescript待辦清單(上)">
+                  <i class="fa fa-angle-left"></i> React系列-玩轉Typescript待辦清單(上)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/03/JS%E7%B3%BB%E5%88%97-Closures%E9%96%89%E5%8C%85%E5%85%A5%E9%96%80/" rel="next" title="JS系列-Closures閉包入門">
+                  JS系列-Closures閉包入門 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Matsu Chen</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

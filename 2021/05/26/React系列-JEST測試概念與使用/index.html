@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chenmatsu.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="React with JEST The unexamined life is not worth living.― Socrates  這幾天在思考值得研究的主題，但是腦中卻一絲想法都沒有，我想是因為不斷在思考眼前的煩惱，而沒有空出時間給大腦去自由翱翔。不過，今天剛好學習到一門挺有趣的課程也是我想特別討論的主題，在求職過程中，我發現不少資深的職缺都有這部分的能力要求，那就是 Test。 蘇格拉底說">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React系列-JEST測試概念與使用">
+<meta property="og:url" content="https://chenmatsu.github.io/2021/05/26/React%E7%B3%BB%E5%88%97-JEST%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Matsu">
+<meta property="og:description" content="React with JEST The unexamined life is not worth living.― Socrates  這幾天在思考值得研究的主題，但是腦中卻一絲想法都沒有，我想是因為不斷在思考眼前的煩惱，而沒有空出時間給大腦去自由翱翔。不過，今天剛好學習到一門挺有趣的課程也是我想特別討論的主題，在求職過程中，我發現不少資深的職缺都有這部分的能力要求，那就是 Test。 蘇格拉底說">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/9WtRQL7.jpg">
+<meta property="article:published_time" content="2021-05-26T06:49:58.000Z">
+<meta property="article:modified_time" content="2023-08-29T09:36:53.760Z">
+<meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="react">
+<meta property="article:tag" content="jest">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/9WtRQL7.jpg">
+
+
+<link rel="canonical" href="https://chenmatsu.github.io/2021/05/26/React%E7%B3%BB%E5%88%97-JEST%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://chenmatsu.github.io/2021/05/26/React%E7%B3%BB%E5%88%97-JEST%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/","path":"2021/05/26/React系列-JEST測試概念與使用/","title":"React系列-JEST測試概念與使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React系列-JEST測試概念與使用 | Matsu</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Matsu</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Nothing more than curiosity</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#React-with-JEST"><span class="nav-number">1.</span> <span class="nav-text">React with JEST</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#React-%E8%88%87-JEST"><span class="nav-number">1.1.</span> <span class="nav-text">React 與 JEST</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#JEST"><span class="nav-number">1.1.1.</span> <span class="nav-text">JEST</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6%E3%80%81%E6%95%B4%E5%90%88%E6%B8%AC%E8%A9%A6%E3%80%81%E7%AB%AF%E5%B0%8D%E7%AB%AF%E6%B8%AC%E8%A9%A6"><span class="nav-number">1.1.2.</span> <span class="nav-text">單元測試、整合測試、端對端測試</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AF%A6%E9%9A%9B%E6%B8%AC%E8%A9%A6"><span class="nav-number">1.1.3.</span> <span class="nav-text">實際測試</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.2.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Matsu Chen</p>
+  <div class="site-description" itemprop="description">Nothing more than curiosity</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://chenmatsu.github.io/2021/05/26/React%E7%B3%BB%E5%88%97-JEST%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu">
+      <meta itemprop="description" content="Nothing more than curiosity">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="React系列-JEST測試概念與使用 | Matsu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React系列-JEST測試概念與使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2021-05-26 14:49:58" itemprop="dateCreated datePublished" datetime="2021-05-26T14:49:58+08:00">2021-05-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2023-08-29 17:36:53" itemprop="dateModified" datetime="2023-08-29T17:36:53+08:00">2023-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/Test/" itemprop="url" rel="index"><span itemprop="name">Test</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="React-with-JEST"><a href="#React-with-JEST" class="headerlink" title="React with JEST"></a>React with JEST</h3><blockquote>
+<p><em>The unexamined life is not worth living</em>.<br><em>― Socrates</em></p>
+</blockquote>
+<p>這幾天在思考值得研究的主題，但是腦中卻一絲想法都沒有，我想是因為不斷在思考眼前的煩惱，而沒有空出時間給大腦去自由翱翔。不過，今天剛好學習到一門挺有趣的課程也是我想特別討論的主題，在求職過程中，我發現不少資深的職缺都有這部分的能力要求，那就是 Test。</p>
+<p>蘇格拉底說:沒有經過審視的生命不值得去體驗。我想沒有經過測試的產品，也不值得人們去使用，程式碼也是一樣的道理，仔細去思考，一個產品只要有瑕疵就要面臨下架或者回收的下場，程式碼又何嘗不是如此，我們立刻進入主題。</p>
+<ul>
+<li>React 與 JEST<ul>
+<li>何謂 JEST</li>
+<li>單元測試、整合測試、端對端測試</li>
+<li>實際測試</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="React-與-JEST"><a href="#React-與-JEST" class="headerlink" title="React 與 JEST"></a>React 與 JEST</h4><p>今天主要透過 Jest 去測試 React，因為最近比較熟悉 React 框架，覺得透過 React 來學習會比較快上手。一般來說，專案都需要引入第三方的函式庫才能夠去執行測試，不過幸運的是，當我們透過<code>create-react-app</code>指令建立專案時，測試函式庫都會一併安裝完成，在 package.json 檔案中，我們能夠發現下方這三個套件。<br><code>&quot;@testing-library/jest-dom&quot;: &quot;^5.11.6&quot;</code><br><code>&quot;@testing-library/react&quot;: &quot;^11.2.2&quot;</code><br><code>&quot;@testing-library/user-event&quot;: &quot;^12.5.0&quot;</code><br>當然就算沒有也沒關係，手動安裝一下，應該也不成問題。</p>
+<hr>
+<h5 id="JEST"><a href="#JEST" class="headerlink" title="JEST"></a>JEST</h5><p>首先從 JEST 開始談起，JEST 其實是專門用來測試所有 Javascript 程式碼的測試函式庫，不僅限於 React，同樣可以用於 Vue, Angular, TypeScript, Node 等等…。</p>
+<p>JEST 大致上有幾大特點:</p>
+<ul>
+<li>Fast/Safe: 平行執行測試且確保測試碼擁有唯一的全域狀態</li>
+<li>Code Coverage: 透過設定–coverage 旗標來設定測試範圍</li>
+<li>Easy Mocking: 執行模擬測試範圍外的程式碼</li>
+</ul>
+<h5 id="單元測試、整合測試、端對端測試"><a href="#單元測試、整合測試、端對端測試" class="headerlink" title="單元測試、整合測試、端對端測試"></a>單元測試、整合測試、端對端測試</h5><p>在 Coding 的過程中除錯，其實就是一種測試，大致上可以將測試分為以下兩類:</p>
+<ul>
+<li>手動測試</li>
+<li>自動化測試</li>
+</ul>
+<p>但是我們都知道，只透過手動的測試，必然會出現許多的盲點，因此才會有自動化測試，而自動化又可以根據不同的測試要點，分為以下三類:</p>
+<ul>
+<li>單元測試(Unit Test)</li>
+<li>整合測試(Integration Test)</li>
+<li>端對端測試(End-to-End Test)</li>
+</ul>
+<p><strong>單元測試:</strong> 分離測試獨立區塊、函數、組件<br><strong>整合測試:</strong> 整合測試數個區塊、函數、組件<br><strong>端對端測試:</strong> 專案測試使用者體驗</p>
+<p>基本上，最常看到的是單元測試，在一個專案當中，往往會將各種情境都盡可能測試過，因此大部分情況下都會針對個別的小區塊做測試。因此，一個專案可能會有數百數千個單元測試，數百個整合測試與數個端對端測試，根據情況去使用不同的測試。</p>
+<p>但是要如何在專案中直接執行測試? 這就需要仰賴 JEST 去執行我們的測試碼，除此之外，我們還需要模擬 React App 的工具，也就是 React Testing 函式庫，上述兩個工具都已經在先前提到過。我們實際來測試看看。</p>
+<hr>
+<h5 id="實際測試"><a href="#實際測試" class="headerlink" title="實際測試"></a>實際測試</h5><p>首先我們在專案當中建立 components 的資料夾，接著在資料夾中建立 Greeting.js 這個組件，如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// In &quot;Greeting.js&quot;</span><br><span class="line">const Greeting = () =&gt; &#123;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2&gt;Hello World!&lt;/h2&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Greeting;</span><br></pre></td></tr></table></figure>
+
+<p>現在我們已經有 Greeting 組件可以測試，但是現在要如何撰寫測試檔案? 一般來說，我們會在同一個資料夾直接建立同樣檔名的測試檔案，這裡我們在 components 建立 Greeting.test.js 測試檔。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// In &quot;Greeting.test.js&quot;</span><br><span class="line">import &#123; render, screen &#125; from &#x27;@testing-library/react&#x27;;</span><br><span class="line">import Greeting from &#x27;./Greeting&#x27;;</span><br><span class="line"></span><br><span class="line">test(&#x27;Render Hello World as a text&#x27;, () =&gt; &#123;</span><br><span class="line">    render(&lt;Greeting /&gt;);</span><br><span class="line"></span><br><span class="line">    const findText = screen.getByText(&#x27;Hello World&#x27;, &#123; exact: false &#125;);</span><br><span class="line">    expect(findText).toBeInTheDocument();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>測試Greeting組件要將它匯入測試檔中，此外還必須匯入兩個函數，分別為<strong>render</strong>和<strong>screen</strong>:<br>render: 模擬React渲染<br>screen: 模擬DOM的選取</p>
+<p>接著透過JEST的test函數，告訴React這裡是要進行測試的檔案。<code>test(&#39;&#39;, &#123;&#125;)</code>，參數一描述測試用途，參數二則是用來撰寫測試的程式碼，可以注意到我們在這裡透過render(<Greeting />)去模擬React渲染，接著透過screen去尋找是否有<strong>Hello World</strong>的文字，exact代表是否需要完全相符，預設情況下是false。最後透過expect函數去回傳測試結果。</p>
+<p>實際跑過<code>npm test</code>就會出現下方測試通過的結果:<br><img src="https://i.imgur.com/9WtRQL7.jpg" alt="test1"></p>
+<p>這就是最簡單單單的單元測試，希望想對快速了解JEST和單元測試的朋友們有點幫助。</p>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>原本想說要一次將測試的文章打完，但才打沒一半就篇幅就已經有點多，因此打算後續再根據這篇文章撰寫整合測試以及處理API的問題。很高興今天自己終於能夠對Test有點基礎概念，希望未來有機會能夠將它派上用場。我想這只能算是初窺JEST的堂奧，但作為認識JEST的第一步，應該算是相當直覺的了。</p>
+<p>謝謝看到最後的各位。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/react/" rel="tag"># react</a>
+              <a href="/tags/jest/" rel="tag"># jest</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/23/JS%E7%B3%BB%E5%88%97-%E5%90%8C%E6%AD%A5%E8%88%87%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%85%A5%E9%96%80/" rel="prev" title="JS系列-同步與非同步入門">
+                  <i class="fa fa-angle-left"></i> JS系列-同步與非同步入門
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/28/React%E7%B3%BB%E5%88%97-JEST%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8-%E7%BA%8C/" rel="next" title="React系列-JEST測試概念與使用(續)">
+                  React系列-JEST測試概念與使用(續) <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Matsu Chen</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

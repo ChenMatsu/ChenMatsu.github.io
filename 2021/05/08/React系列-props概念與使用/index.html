@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chenmatsu.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Props講解與使用 Do what is right, not what is easy nor what is popular.- Roy T. Bennett   Props的概念 Props使用實例 Props也有孩子?!   結語  早上風很大，天氣很好，適合寫寫關於props的故事。那，我們馬上來說說props吧!  Props的概念我們在第一篇React系列文提到React以組件的方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React系列-props概念與使用">
+<meta property="og:url" content="https://chenmatsu.github.io/2021/05/08/React%E7%B3%BB%E5%88%97-props%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Matsu">
+<meta property="og:description" content="Props講解與使用 Do what is right, not what is easy nor what is popular.- Roy T. Bennett   Props的概念 Props使用實例 Props也有孩子?!   結語  早上風很大，天氣很好，適合寫寫關於props的故事。那，我們馬上來說說props吧!  Props的概念我們在第一篇React系列文提到React以組件的方">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/INabReS.jpg">
+<meta property="og:image" content="https://i.imgur.com/CihXdJh.jpg">
+<meta property="og:image" content="https://i.imgur.com/KQjHmho.jpg">
+<meta property="og:image" content="https://i.imgur.com/IMl9SyZ.jpg">
+<meta property="og:image" content="https://i.imgur.com/QdR9Ck3.jpg">
+<meta property="og:image" content="https://i.imgur.com/D3K0ooW.jpg">
+<meta property="og:image" content="https://i.imgur.com/RWDDhmo.jpg">
+<meta property="og:image" content="https://i.imgur.com/w0pQcO9.jpg">
+<meta property="og:image" content="https://i.imgur.com/gWzwD0Q.jpg">
+<meta property="og:image" content="https://i.imgur.com/xdN1T2r.jpg">
+<meta property="og:image" content="https://i.imgur.com/E1k72fY.jpg">
+<meta property="og:image" content="https://i.imgur.com/bztgqIY.jpg">
+<meta property="article:published_time" content="2021-05-07T23:50:27.000Z">
+<meta property="article:modified_time" content="2023-08-29T09:36:53.760Z">
+<meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="react">
+<meta property="article:tag" content="component">
+<meta property="article:tag" content="props">
+<meta property="article:tag" content="children">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/INabReS.jpg">
+
+
+<link rel="canonical" href="https://chenmatsu.github.io/2021/05/08/React%E7%B3%BB%E5%88%97-props%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://chenmatsu.github.io/2021/05/08/React%E7%B3%BB%E5%88%97-props%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/","path":"2021/05/08/React系列-props概念與使用/","title":"React系列-props概念與使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React系列-props概念與使用 | Matsu</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Matsu</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Nothing more than curiosity</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Props%E8%AC%9B%E8%A7%A3%E8%88%87%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">Props講解與使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Props%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">Props的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Props%E4%BD%BF%E7%94%A8%E5%AF%A6%E4%BE%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">Props使用實例</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Props%E4%B9%9F%E6%9C%89%E5%AD%A9%E5%AD%90"><span class="nav-number">1.2.</span> <span class="nav-text">Props也有孩子?!</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.3.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Matsu Chen</p>
+  <div class="site-description" itemprop="description">Nothing more than curiosity</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://chenmatsu.github.io/2021/05/08/React%E7%B3%BB%E5%88%97-props%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu">
+      <meta itemprop="description" content="Nothing more than curiosity">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="React系列-props概念與使用 | Matsu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React系列-props概念與使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2021-05-08 07:50:27" itemprop="dateCreated datePublished" datetime="2021-05-08T07:50:27+08:00">2021-05-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2023-08-29 17:36:53" itemprop="dateModified" datetime="2023-08-29T17:36:53+08:00">2023-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="Props講解與使用"><a href="#Props講解與使用" class="headerlink" title="Props講解與使用"></a>Props講解與使用</h3><blockquote>
+<p><em>Do what is right, not what is easy nor what is popular.</em><br><em>- Roy T. Bennett</em></p>
+</blockquote>
+<ul>
+<li>Props的概念<ul>
+<li>Props使用實例</li>
+<li>Props也有孩子?!</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<p>早上風很大，天氣很好，適合寫寫關於props的故事。那，我們馬上來說說props吧!</p>
+<hr>
+<h4 id="Props的概念"><a href="#Props的概念" class="headerlink" title="Props的概念"></a>Props的概念</h4><p>我們在第一篇React系列文提到React以組件的方式組成，單一個組件就好比合成金屬一樣，由HTML、CSS、JS三種元素所組成。但是當今天有數十、百個組件的時候，如何去把這些「金屬」組裝在一起，就是一門學問!</p>
+<p>這時候就是Props(Properties)登場的時候了!React提供我們把每一個組件鑲嵌在一起就是透過使用Props。我們來直接看範例。</p>
+<h5 id="Props使用實例"><a href="#Props使用實例" class="headerlink" title="Props使用實例"></a>Props使用實例</h5><p>建立專案的指令<br><code>npx create-react-app &lt;project name&gt;</code></p>
+<p>延續我們系列文第一篇所建立好的專案，大致上會有下面這些檔案:</p>
+<ul>
+<li>first-react-project -&gt; 專案資料夾名稱<ul>
+<li>node_modules -&gt; NPM安裝後的套件</li>
+<li>public  -&gt; 放置圖片和唯一的index.html</li>
+<li>src -&gt; 放置組件的資料夾</li>
+<li>package-lock.json -&gt; 鎖定專案某版本描述檔</li>
+<li>package.json -&gt; 專案規範描述檔</li>
+</ul>
+</li>
+</ul>
+<p>首先我們把APP裡面的預設程式碼更改成像下面一樣:</p>
+<p><img src="https://i.imgur.com/INabReS.jpg" alt="root"></p>
+<p>可以看到App.js這個檔案變得相當乾淨，我們通常稱App這個檔案為<strong>根組件</strong>，也就是說它會擁有許多的子組件，最後將這些子組件拼湊在一起。在Cmd輸入<code>npm run start</code>就可以看到本地端的瀏覽器出現「我是根組件!」這段文字。</p>
+<p><img src="https://i.imgur.com/CihXdJh.jpg" alt="rootme"></p>
+<p>這就是我們第一個組件，接著我們在<strong>src</strong>檔案夾建立兩個資料夾分別是<strong>components</strong>和<strong>styles</strong>。首先我們在components的資料夾內建立叫<strong>Calculate.js</strong>的組件。組件其實都是由函數構成，因此一定是以函數起頭，而<strong>函數名稱同檔案名稱</strong>。特別注意到，必須把這個組件匯出才可以在其他組件使用。我們目前會在App.js這個根組件使用Calculate.js這個子組件。</p>
+<p><img src="https://i.imgur.com/KQjHmho.jpg" alt="cal"></p>
+<p>這就是構建組件的第一步，緊接著我們在App.js匯入Calculate組件。</p>
+<p><img src="https://i.imgur.com/IMl9SyZ.jpg" alt="appcal"></p>
+<p>我們匯入Calculate組件後，再將組件用HTML的形式包覆在App根組件當中，切換到瀏覽器後會發現多了一個12的數字。</p>
+<p><img src="https://i.imgur.com/QdR9Ck3.jpg" alt="num"></p>
+<p>我們現在已經完成最最最基礎的組件使用方式。可以看到我們最後順利地使用Calculate這個組件。可是等等…，說了這麼多，到底跟props有什麼關係? 對，到目前為止都還沒有關係，因為必須先把組件嵌在一起的方式解說後才能理解使用props。總得先學會發動車子，才能開始練習開車對吧?</p>
+<p>我們在App裡面輸入一組物件，這很Hard Core，不過沒關係，我們只是為了示範這個過程。請注意到return前的程式碼是寫JS，return後的程式碼則是寫JSX。接著我們把propme這個物件傳入給Calculate這個子組件。</p>
+<p><img src="https://i.imgur.com/D3K0ooW.jpg" alt="propass"></p>
+<p>我們藉由JSX的形式給定一個變數名稱<strong>value</strong>，把在App組件裡的物件propme透過所謂的<strong>props</strong>方式傳遞給<strong>Calculate</strong>，接著才能回到<strong>Calculate</strong>組件裡面去接收這個資料。</p>
+<p>回到<strong>Calculate</strong>組件(函數)後，注意到參數props可以任意命名，但一般會以props命名。為了讀取從<strong>App</strong>傳來的資料，必須在參數後方寫上我們在<strong>App</strong>設好的變數才能夠去存取<strong>App</strong>的物件屬性。</p>
+<p><strong>props本身是一個物件</strong>，因此可以容納相當多元的資料。</p>
+<p><img src="https://i.imgur.com/RWDDhmo.jpg" alt="cals"></p>
+<p>我們可以看到<strong>Calculate</strong>組件讀取傳遞過來參數的方式，就跟讀取物件屬性一樣，差別只在於要先讀取到在<strong>App</strong>的變數名value。</p>
+<p><img src="https://i.imgur.com/w0pQcO9.jpg" alt="ass"></p>
+<p>成功傳遞資料到其他組件!! 現在我們終於講解完props的概念和使用方式，接著要來討論有點神祕的children。</p>
+<p>什麼? props也有孩子? 還真的有!</p>
+<hr>
+<h4 id="Props也有孩子"><a href="#Props也有孩子" class="headerlink" title="Props也有孩子?!"></a>Props也有孩子?!</h4><p>當我們想給我們組件的孩子保護，這時候children就出現了! 啊不是，在說什麼…。<br>所謂的<strong>props.children</strong>就是用外殼(nutshell)包覆子組件，詳細我們一樣來看例子比較清楚。</p>
+<p>首先我們在components裡面再新建立一個組件叫做Card，Card比較類似統稱，只要有外殼功能的組件都會這樣命名。看看下圖:</p>
+<p><img src="https://i.imgur.com/gWzwD0Q.jpg" alt="card"></p>
+<p>我們看到<strong>Card</strong>同樣透過props傳入資料，宣告一個const用來儲存class的名稱把card的css類別傳到包覆住的子組件，接著在JSX檔寫入<strong>props.children</strong>這段程式碼。<strong>children是保留字</strong>，每一個組件在建立時都會預設好。children獨到之處，在於它的使用方式，而不是單純的寫成組件而已。我們來看看它如何使用，看看下圖:</p>
+<p><img src="https://i.imgur.com/xdN1T2r.jpg" alt="calcard"><br>我們把div替換成Card，Card是客製化的組件。我們順便給Calculate本身的這個div區塊一個class名稱calculate。現在重新檢視瀏覽器，並不會有任何改變，因此我們可以給Card一點點樣式。選定styles資料夾裡頭，新增card.css這個CSS樣式表，並且給它簡單的框線以及背景顏色。<br>如下:</p>
+<p><img src="https://i.imgur.com/E1k72fY.jpg" alt="cardcss"></p>
+<p>記得要在Card這個元件去匯入樣式表<code>import &#39;../styles/card.css&#39;</code>才會套用。</p>
+<p>我們緊接著來檢視一下是否成功使用Card了呢? 打開你/妳的瀏覽器看看吧!</p>
+<p><img src="https://i.imgur.com/bztgqIY.jpg" alt="final"></p>
+<p>哇! 成功套用到Calculate這個組件身上，至於組件外的則沒有套用成功，因為「我是根組件」那段文字是寫在App裡面。如果要套用到整個App，則修改App的div為Card就可以成功套用這段文字。各位讀者不妨自己動手試試看，一定會覺得很有意思。</p>
+<p>-本日回顧-</p>
+<ul>
+<li>props使組件彼此傳遞資料</li>
+<li>children統一管理組件共同性質</li>
+</ul>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天主要把昨日學到關於props的概念和使用方式和大家分享，我相信我目前理解的程度還非常的淺，若有任何問題歡迎告訴我。</p>
+<p>我在剛開始學children覺得有點抽象，但在實際動手做過幾次後，就對於它的概念比較清楚一些。不過我想children應該不會只有這點使用方式，這樣的話就太小看它了!以後若遇到進階的使用方式或有趣的應用再和大家分享!</p>
+<p>寫文章總會花上數小時，但是很有趣，我們下回再見!<br>謝謝各位，祝大家都有美好的周末!</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/react/" rel="tag"># react</a>
+              <a href="/tags/component/" rel="tag"># component</a>
+              <a href="/tags/props/" rel="tag"># props</a>
+              <a href="/tags/children/" rel="tag"># children</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/07/%E7%A8%8B%E5%BC%8F%E6%97%A5%E5%B8%B8%E7%B3%BB%E5%88%97-%E5%AE%A3%E5%91%8A%E5%BC%8F%E8%88%87%E6%8C%87%E4%BB%A4%E5%BC%8F%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80%E7%9A%84%E5%B7%AE%E7%95%B0/" rel="prev" title="程式日常-指令式與宣告式程式語言的差異">
+                  <i class="fa fa-angle-left"></i> 程式日常-指令式與宣告式程式語言的差異
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/09/React%E7%B3%BB%E5%88%97-useState%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" rel="next" title="React系列-useState概念與使用">
+                  React系列-useState概念與使用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Matsu Chen</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

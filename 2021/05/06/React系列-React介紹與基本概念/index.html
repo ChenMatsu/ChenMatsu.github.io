@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chenmatsu.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="React介紹與基本概念淺談 Live as if you were to die tomorrow. Learn as if you were to live forever.- Mahatma Gandhi  React是近年來盛行的三大框架其一，在ES6後甚至更加盛行。國外統計程式設計師學習React的人數逐年上升，可見React的強勢，因此今天想和大家一起來學習使用React。當然不是隨波">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React系列-React介紹與基本概念淺談">
+<meta property="og:url" content="https://chenmatsu.github.io/2021/05/06/React%E7%B3%BB%E5%88%97-React%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="Matsu">
+<meta property="og:description" content="React介紹與基本概念淺談 Live as if you were to die tomorrow. Learn as if you were to live forever.- Mahatma Gandhi  React是近年來盛行的三大框架其一，在ES6後甚至更加盛行。國外統計程式設計師學習React的人數逐年上升，可見React的強勢，因此今天想和大家一起來學習使用React。當然不是隨波">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/9LTFVrR.png">
+<meta property="og:image" content="https://i.imgur.com/Gu2EQPY.jpg">
+<meta property="article:published_time" content="2021-05-06T03:27:46.000Z">
+<meta property="article:modified_time" content="2023-08-29T09:36:53.760Z">
+<meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="react">
+<meta property="article:tag" content="component">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/9LTFVrR.png">
+
+
+<link rel="canonical" href="https://chenmatsu.github.io/2021/05/06/React%E7%B3%BB%E5%88%97-React%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://chenmatsu.github.io/2021/05/06/React%E7%B3%BB%E5%88%97-React%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/","path":"2021/05/06/React系列-React介紹與基本概念/","title":"React系列-React介紹與基本概念淺談"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React系列-React介紹與基本概念淺談 | Matsu</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Matsu</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Nothing more than curiosity</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#React%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E6%B7%BA%E8%AB%87"><span class="nav-number">1.</span> <span class="nav-text">React介紹與基本概念淺談</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#React%E7%9A%84%E5%AE%9A%E7%BE%A9%E8%88%87%E7%94%A8%E9%80%94"><span class="nav-number">1.1.</span> <span class="nav-text">React的定義與用途</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#React%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.</span> <span class="nav-text">React的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#React%E7%9A%84%E7%B5%84%E4%BB%B6-Component"><span class="nav-number">1.2.1.</span> <span class="nav-text">React的組件(Component)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#React%E7%9A%84%E5%85%84%E5%BC%9FJSX-JS-XML"><span class="nav-number">1.2.2.</span> <span class="nav-text">React的兄弟JSX(JS-XML)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.3.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Matsu Chen</p>
+  <div class="site-description" itemprop="description">Nothing more than curiosity</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://chenmatsu.github.io/2021/05/06/React%E7%B3%BB%E5%88%97-React%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu">
+      <meta itemprop="description" content="Nothing more than curiosity">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="React系列-React介紹與基本概念淺談 | Matsu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React系列-React介紹與基本概念淺談
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2021-05-06 11:27:46" itemprop="dateCreated datePublished" datetime="2021-05-06T11:27:46+08:00">2021-05-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2023-08-29 17:36:53" itemprop="dateModified" datetime="2023-08-29T17:36:53+08:00">2023-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="React介紹與基本概念淺談"><a href="#React介紹與基本概念淺談" class="headerlink" title="React介紹與基本概念淺談"></a>React介紹與基本概念淺談</h3><blockquote>
+<p><em>Live as if you were to die tomorrow. Learn as if you were to live forever.</em><br><em>- Mahatma Gandhi</em></p>
+</blockquote>
+<p>React是近年來盛行的三大框架其一，在ES6後甚至更加盛行。國外統計程式設計師學習React的人數逐年上升，可見React的強勢，因此今天想和大家一起來學習使用React。當然不是隨波逐流，而是在嘗試使用過React後，發現它的強大!更不消說有超級多的第三方函式庫可以使用。那，廢話不多說，我們趕緊往下看!</p>
+<ul>
+<li>React的定義與用途</li>
+<li>React的基本概念<ul>
+<li>React的組件(Component)</li>
+<li>React的兄弟JSX(JS-XML)</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="React的定義與用途"><a href="#React的定義與用途" class="headerlink" title="React的定義與用途"></a>React的定義與用途</h4><ul>
+<li><strong>React是用來打造使用者介面(UI)的JS函式庫。</strong></li>
+<li><strong>React是由組件(Component)所組成。</strong></li>
+</ul>
+<p>讀者可能會想說不是有HTML、CSS、JS就可以打造UI了嗎? 為什麼要大費周章去學習一項新的技術? 其實一項新的技術的產生，都是因為舊有的東西的缺點存在，才會促使新的科技、技術的發展。好比人類覺得走路太久才能到達目的地，所以研究出動力機械，這些道理都是一樣的。可想而知，React產生固然是因為傳統的HTML和CSS在撰寫介面上，不管是維護還是新增介面，盡管有PUG和SCSS這些預處理器多少可以加速開發，但是卻還是有其致命的缺點。</p>
+<p>使用傳統的HTML和CSS的主要缺點:</p>
+<ul>
+<li>頁面轉跳時都需要發送GET請求到Server端後再次渲染頁面</li>
+<li>當APP變得複雜且龐大時難以維護以及管理</li>
+<li>網頁載入速度慢</li>
+</ul>
+<p>使用React的優點:</p>
+<ul>
+<li>整個Web只會在第一次開啟時發送GET請求</li>
+<li>以組件的方式開發網站</li>
+<li>網頁載入速度超快</li>
+</ul>
+<hr>
+<h4 id="React的基本概念"><a href="#React的基本概念" class="headerlink" title="React的基本概念"></a>React的基本概念</h4><p>網頁最後呈現給使用者的始終是HTML、CSS以及JS。<br>React使用宣告式方法(Declarative Approach)去執行程式，因此開發者只需要專注在程式的狀態(State)，接著React就會幫我們處理JS和DOM的程式碼，聽起來很像魔法，但其實就是我們只需要懂得駕駛React這台跑車，至於引擎是V8還是V12，不懂也沒關係。</p>
+<p>有機會我們再來深入研究宣告式(Declarative)與指令式(Imperative)程式設計!</p>
+<h5 id="React的組件-Component"><a href="#React的組件-Component" class="headerlink" title="React的組件(Component)"></a>React的組件(Component)</h5><p>React的核心概念就是組件，所謂的組件就是將HTML、CSS、JS三者合在一起，最後再由組件去建立整個使用者介面(UI)。<br>因此組件的優點有:</p>
+<ul>
+<li>可重複使用(Re-usable)</li>
+<li>可回應的(Reactive)</li>
+</ul>
+<p>React的架構大概如下:<br><img src="https://i.imgur.com/9LTFVrR.png" alt="react"></p>
+<p>大概就像圖表一樣的架構，抱歉，我沒有美術天分XDD。</p>
+<h5 id="React的兄弟JSX-JS-XML"><a href="#React的兄弟JSX-JS-XML" class="headerlink" title="React的兄弟JSX(JS-XML)"></a>React的兄弟JSX(JS-XML)</h5><p>React的程式碼如下:<br><img src="https://i.imgur.com/Gu2EQPY.jpg" alt="jsx"></p>
+<p>剛開始接觸React一定會充滿困惑，會什麼JS檔案裡面的程式碼相當奇怪? 居然包含像是HTML的標記語言，其實這是React開發團隊為了方便撰寫組件所開發的程式碼，叫做JSX(JS-XML)。在渲染畫面前，React會透過第三方函式庫將JSX轉換成瀏覽器讀得懂的方式。</p>
+<p>今日回顧:</p>
+<ul>
+<li>React是HTML、CSS、JS整合後的框架</li>
+<li>React的特殊語法JSX</li>
+<li>React組件的概念</li>
+</ul>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天只稍微了解一下React框架以及它的由來，接下來我們就會逐步進入React專案實作囉! 能夠用React實作各種大大小小的網站，用想的就覺得興奮對吧!如果重複打繁瑣的Code還不足以讓你學習它的話，那再接下來的文章你一定會愛上React。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/react/" rel="tag"># react</a>
+              <a href="/tags/component/" rel="tag"># component</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/05/%E6%97%A5%E8%AA%9E%E7%B3%BB%E5%88%97%E8%AC%9B%E8%A7%A3-%E3%81%AF%E3%81%A8%E3%81%8C%E7%9A%84%E5%8D%80%E5%88%A5/" rel="prev" title="日語系列講解-はとが的區別">
+                  <i class="fa fa-angle-left"></i> 日語系列講解-はとが的區別
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/06/React%E7%B3%BB%E5%88%97-React%E5%B0%88%E6%A1%88%E5%BB%BA%E7%AB%8B%E6%A6%82%E5%BF%B5/" rel="next" title="React系列-開始打造React專案">
+                  React系列-開始打造React專案 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Matsu Chen</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

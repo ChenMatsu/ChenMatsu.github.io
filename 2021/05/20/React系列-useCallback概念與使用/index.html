@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chenmatsu.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Hooks家族 - useCallback Beware of the man who works hard to learn something, learns it, and finds himself no wiser than before.― Kurt Vonnegut, Cat’s Cradle  來到第六篇關於Hooks的文章，不能說自己真的很懂Hooks，但多多少少，不再對Hook">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React系列-useCallback概念與使用">
+<meta property="og:url" content="https://chenmatsu.github.io/2021/05/20/React%E7%B3%BB%E5%88%97-useCallback%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Matsu">
+<meta property="og:description" content="Hooks家族 - useCallback Beware of the man who works hard to learn something, learns it, and finds himself no wiser than before.― Kurt Vonnegut, Cat’s Cradle  來到第六篇關於Hooks的文章，不能說自己真的很懂Hooks，但多多少少，不再對Hook">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/1ey45Lq.jpg">
+<meta property="article:published_time" content="2021-05-20T08:37:59.000Z">
+<meta property="article:modified_time" content="2023-08-29T09:36:53.760Z">
+<meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="react">
+<meta property="article:tag" content="component">
+<meta property="article:tag" content="usecallback">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/1ey45Lq.jpg">
+
+
+<link rel="canonical" href="https://chenmatsu.github.io/2021/05/20/React%E7%B3%BB%E5%88%97-useCallback%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://chenmatsu.github.io/2021/05/20/React%E7%B3%BB%E5%88%97-useCallback%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/","path":"2021/05/20/React系列-useCallback概念與使用/","title":"React系列-useCallback概念與使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React系列-useCallback概念與使用 | Matsu</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Matsu</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Nothing more than curiosity</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hooks%E5%AE%B6%E6%97%8F-useCallback"><span class="nav-number">1.</span> <span class="nav-text">Hooks家族 - useCallback</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#useCallback"><span class="nav-number">1.1.</span> <span class="nav-text">useCallback</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#useCallback%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">useCallback使用方式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.2.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Matsu Chen</p>
+  <div class="site-description" itemprop="description">Nothing more than curiosity</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://chenmatsu.github.io/2021/05/20/React%E7%B3%BB%E5%88%97-useCallback%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu">
+      <meta itemprop="description" content="Nothing more than curiosity">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="React系列-useCallback概念與使用 | Matsu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React系列-useCallback概念與使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2021-05-20 16:37:59" itemprop="dateCreated datePublished" datetime="2021-05-20T16:37:59+08:00">2021-05-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2023-08-29 17:36:53" itemprop="dateModified" datetime="2023-08-29T17:36:53+08:00">2023-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="Hooks家族-useCallback"><a href="#Hooks家族-useCallback" class="headerlink" title="Hooks家族 - useCallback"></a>Hooks家族 - useCallback</h3><blockquote>
+<p><em>Beware of the man who works hard to learn something, learns it, and finds himself no wiser than before.</em><br><em>― Kurt Vonnegut, Cat’s Cradle</em></p>
+</blockquote>
+<p>來到第六篇關於Hooks的文章，不能說自己真的很懂Hooks，但多多少少，不再對Hooks感到陌生。今天要來聊聊關於useCallback這個Hooks，光是在JS就可以常常看見回呼函數的使用，那麼這個useCallback又與平常我們認知的有什麼不同? 趕緊來看看。</p>
+<ul>
+<li>useCallback<ul>
+<li>useCallback使用方法</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="useCallback"><a href="#useCallback" class="headerlink" title="useCallback"></a>useCallback</h4><p>官方精闢解析<br><strong>useCallback: Returns a memoized callback.</strong><br>useCallback會回傳記憶化的回乎函數，這邊要注意<strong>Memoization</strong>不等同於<strong>Memorization</strong>。有機會我們再來詳細探討這兩者間的區別。</p>
+<p>所謂的記憶化(Memoization)是一種用於提升電腦程式速度的<strong>優化技巧</strong>，主要的概念是<strong>儲存複雜函數結果</strong>並且當相同結果出現時透過<strong>快取</strong>(Cache)存取。講白就是犧牲儲存空間，去提升電腦性能。</p>
+<p>我們實際來看如何使用useCallback於React中。</p>
+<h5 id="useCallback使用方式"><a href="#useCallback使用方式" class="headerlink" title="useCallback使用方式"></a>useCallback使用方式</h5><p>useCallback定義如下:<br><code>const memoizedCallback = useCallback(() =&gt; &#123; memoizedFn(a, b)&#125;,  [a, b])</code><br>透過useCallback這一個Hook，可以直接將要記憶化結果的函數存取在memoizedCallback中，並且只有在a, b會影響memoizedFn函數的時候才會重新執行。</p>
+<p>我們實際看看例子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import &#123;useState, useEffect, useCallback&#125; from &#x27;react&#x27;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  const [isLoading, setIsLoading] = useState(false);</span><br><span class="line"></span><br><span class="line">  const fetchHandler = useCallback(() =&gt; &#123;</span><br><span class="line">    setIsLoading(true);</span><br><span class="line">    fetch(&#x27;http://dabaseFetch&#x27;).then(res =&gt; console.log(res));</span><br><span class="line">  &#125;, []);</span><br><span class="line"></span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    fetchHandler();</span><br><span class="line">  &#125;, [fetchHandler]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default App;</span><br></pre></td></tr></table></figure>
+<p>首先看到App中的程式碼，我們總共引入三個Hooks，其中兩個先前都是有討論過的Hooks。在這一段程式碼當中，我主要想要去抓到某些<strong>資料</strong>，可以看到fetchHandler函數裡面有個JS內建的<strong>fetch</strong>方法(API)，fetch就是拿來操作HTTP的各種請求，<strong>預設</strong>的情況下會是HTTP請求的<strong>GET</strong>。因此當fetchHandler執行時就會發送一個GET請求給伺服器，伺服器則會回傳某特定格式，而fetch這個API回傳的一定是Promise。</p>
+<p>回到主題上，我們透過useEffect去更新fetchHandler，每當App渲染時，useEffect就會執行一次，接著再根據fetchHandler去執行，但是這邊就有一個很大的問題點是源自於React本身。</p>
+<p>對於React來說，每當<strong>重新渲染</strong>時，所有的組件<strong>都會是全新的組件</strong>，不一樣的組件。什麼意思? 當我們實際執行React專案時，在我們重新載入的那一剎那，所有的組件都是新的組件，不同於先前所渲染的組件。換句話說，以我們fetchHandler來說，即便執行的名稱與內容都完全相同，React也會視這兩個fetchHandler為不一樣的函數，這一切都是源自於JS物件Call by Reference的本質而延伸出來。</p>
+<p>因此當我們沒有透過useCallback去記憶化fetchHandler這個函數，就會發生不斷發出GET請求的慘劇。假如我們將程式碼改成如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import &#123;useState, useEffect, useCallback&#125; from &#x27;react&#x27;;</span><br><span class="line"></span><br><span class="line">function App() &#123;</span><br><span class="line">  const [isLoading, setIsLoading] = useState(false);</span><br><span class="line"></span><br><span class="line">  const fetchHandler = () =&gt; &#123;</span><br><span class="line">    setIsLoading(true);</span><br><span class="line">    fetch(&#x27;http://dabaseFetch&#x27;).then(res =&gt; console.log(res));</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  useEffect(() =&gt; &#123;</span><br><span class="line">    fetchHandler();</span><br><span class="line">  &#125;, [fetchHandler]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default App;</span><br></pre></td></tr></table></figure>
+<p>也就是將fetchHandler的useCallback刪去後，實際執行相似的程式碼就會得到類似於下方的結果:</p>
+<p><img src="https://i.imgur.com/1ey45Lq.jpg" alt="infi"></p>
+<p>可以在開發者工具發現fetch會不斷的發送請求到伺服器，這是非常嚴重的問題。但這個嚴重的問題，可以簡單地透過useCallback去解決。我們再度回到fetchHandler這個函數。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const fetchHandler = useCallback(() =&gt; &#123;</span><br><span class="line">  setIsLoading(true);</span><br><span class="line">  fetch(&#x27;http://dabaseFetch&#x27;).then(res =&gt; console.log(res));</span><br><span class="line">&#125;, []);</span><br></pre></td></tr></table></figure>
+<p>概念和useEffect一樣，[]代表組件渲染完成後會執行一次。useCallback則會將箭頭函數後的所有函數都記下來指派給fetchHandler。這時候，每當有任何組件重新渲染，fetchHandler不會重新被渲染一次，因為已經透過Hooks將fetchHandler記憶化，因此不會出現fetchHandler不斷重新執行的問題，因為對於React來說，現在的fetchHandler都是同一個函數。</p>
+<p>最後我們只需要確保useEffect在處理fetchHandler時所產生的副作用，而副作用就是當資料更新時，必須重新將資料庫添加進去的資料再度透過GET方法去獲得資料就結束這一連串的動作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() =&gt; &#123;</span><br><span class="line">  fetchHandler();</span><br><span class="line">&#125;, [fetchHandler]);</span><br></pre></td></tr></table></figure>
+<p>特別注意到useEffect的依賴只需要指向fetchHandler函數而不需要()，如果加上()代表要立刻在這一行執行，這又是另外一齣慘劇了…</p>
+<hr>
+<p>-重點回顧-</p>
+<ul>
+<li>React每次渲染都會是不一樣的程式碼，即便長得一模一樣</li>
+<li>useCallback用於記憶化函數</li>
+</ul>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天簡單說一下useCallback，我想概念上還算挺好理解。不過如何正確使用就又是另外一門學問，不過先搞清楚它們各自的目的才不會摔的滿頭包。</p>
+<p>這幾天心情一直很糟，不論是學習上還是生活上，真的可以說諸事不順，也不清楚要怎麼說出來比較好，只好像現在一樣打成文章，或是寫在日記上。但即便如此，好像還是悶在心裡一樣，可能是因為自己能力太差吧，覺得自己什麼都做不好，而現在又因為急於能夠找到一個落腳處，而更加心急如焚。現在都會回想大學不好好學習才會落的這個下場也算是自作自受，也有可能只是我一直往死裡鑽吧。</p>
+<p>其實我還是不清楚程式是不是自己想走的一條路，我覺得我自己沒有天分，可是仔細一想，自己到目前為止，也不過一個月不中斷地在練習Coding，但是昨晚看完龍櫻2，卻又覺得自己都沒有好好思考<strong>ものごと</strong>的本質，慚愧不已。說真的，別人都在進步，為什麼我好像一直在原地踏步。心好累。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/react/" rel="tag"># react</a>
+              <a href="/tags/component/" rel="tag"># component</a>
+              <a href="/tags/usecallback/" rel="tag"># usecallback</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/20/%E5%90%A6%E5%AE%9A/" rel="prev" title="否定">
+                  <i class="fa fa-angle-left"></i> 否定
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/21/Leetcode-20-Valid-Parentheses-C/" rel="next" title="Leetcode-20.Valid Parentheses(C)">
+                  Leetcode-20.Valid Parentheses(C) <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Matsu Chen</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

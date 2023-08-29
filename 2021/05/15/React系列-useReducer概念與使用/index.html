@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chenmatsu.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Hooks家族 - useReducer Don&#39;t be pushed around by the fears in your mind. Be led by the dreams in your heart.― Roy T. Bennett  上一次講述useContext的性質主要是管理變數。今天則是要來介紹useState的強化版，useReducer!最近這幾天在學習使用Hook">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React系列-useReducer概念與使用">
+<meta property="og:url" content="https://chenmatsu.github.io/2021/05/15/React%E7%B3%BB%E5%88%97-useReducer%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Matsu">
+<meta property="og:description" content="Hooks家族 - useReducer Don&#39;t be pushed around by the fears in your mind. Be led by the dreams in your heart.― Roy T. Bennett  上一次講述useContext的性質主要是管理變數。今天則是要來介紹useState的強化版，useReducer!最近這幾天在學習使用Hook">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/rlvovbM.jpg">
+<meta property="article:published_time" content="2021-05-15T02:32:54.000Z">
+<meta property="article:modified_time" content="2023-08-29T09:36:53.761Z">
+<meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="react">
+<meta property="article:tag" content="component">
+<meta property="article:tag" content="usereducer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/rlvovbM.jpg">
+
+
+<link rel="canonical" href="https://chenmatsu.github.io/2021/05/15/React%E7%B3%BB%E5%88%97-useReducer%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://chenmatsu.github.io/2021/05/15/React%E7%B3%BB%E5%88%97-useReducer%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/","path":"2021/05/15/React系列-useReducer概念與使用/","title":"React系列-useReducer概念與使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React系列-useReducer概念與使用 | Matsu</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Matsu</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Nothing more than curiosity</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hooks%E5%AE%B6%E6%97%8F-useReducer"><span class="nav-number">1.</span> <span class="nav-text">Hooks家族 - useReducer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#useReducer"><span class="nav-number">1.1.</span> <span class="nav-text">useReducer</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#useReducer%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">useReducer使用方式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.2.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Matsu Chen</p>
+  <div class="site-description" itemprop="description">Nothing more than curiosity</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://chenmatsu.github.io/2021/05/15/React%E7%B3%BB%E5%88%97-useReducer%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu">
+      <meta itemprop="description" content="Nothing more than curiosity">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="React系列-useReducer概念與使用 | Matsu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React系列-useReducer概念與使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2021-05-15 10:32:54" itemprop="dateCreated datePublished" datetime="2021-05-15T10:32:54+08:00">2021-05-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2023-08-29 17:36:53" itemprop="dateModified" datetime="2023-08-29T17:36:53+08:00">2023-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="Hooks家族-useReducer"><a href="#Hooks家族-useReducer" class="headerlink" title="Hooks家族 - useReducer"></a>Hooks家族 - useReducer</h3><blockquote>
+<p><em>Don&#39;t be pushed around by the fears in your mind. Be led by the dreams in your heart.</em><br><em>― Roy T. Bennett</em></p>
+</blockquote>
+<p>上一次講述useContext的性質主要是管理變數。今天則是要來介紹useState的強化版，<strong>useReducer</strong>!最近這幾天在學習使用Hooks，雖然我還是沒有開竅，但卻對於Hooks所帶來的改變深深著迷，像是useRef、useCallback，甚至是客製化useHooks，我都覺得相當有趣。好的，廢話不多說，我們馬上來認識useReducer吧!</p>
+<ul>
+<li>useReducer<ul>
+<li>useReducer使用方式</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="useReducer"><a href="#useReducer" class="headerlink" title="useReducer"></a>useReducer</h4><p>為什麼我會說useReducer是useState的強化版? 我們來看一段官方文件所述的話:<br><strong>useReducer is usually preferable to useState when you have complex state logic that involves multiple sub-values or when the next state depends on the previous one.</strong><br>大致上的意思是說當我們有複雜的狀態邏輯或者是狀態依賴先前的狀態時，我們就可以考慮使用useReducer，這句話聽起來就像是useState的強化版。我們一般處理狀態時會為各自的狀態寫一個useState:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">const Counter = () =&gt; &#123;</span><br><span class="line">  const [count, setCount] = useState(0);</span><br><span class="line">  const [addText, setAddText] = useState(&#x27;&#x27;);</span><br><span class="line">  const [minusText, setMinusText] = useState(&#x27;&#x27;);</span><br><span class="line">  </span><br><span class="line">  const addCountHandler = () =&gt; &#123;</span><br><span class="line">    setCount(count+1);</span><br><span class="line">    setAddText(&quot;I am adding!&quot;)</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  const minusCountHandler = () =&gt; &#123;</span><br><span class="line">    setCount(count-1);</span><br><span class="line">    setMinusText(&quot;I am minusing!&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;counter&quot;&gt;</span><br><span class="line">      &lt;button onClick=&#123;addCountHandler&#125;&gt;Add&lt;/button&gt;</span><br><span class="line">      &lt;p&gt;&#123;addText&#125; to &#123;count&#125; &lt;/p&gt;</span><br><span class="line">      &lt;button onClick=&#123;minusCountHandler&#125;&gt;Minus&lt;/button&gt;</span><br><span class="line">      &lt;p&gt;&#123;minusText&#125; to &#123;count&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其實這邊寫得相當的繁瑣，有點不符合實際情況。不過沒關係，這邊只是單純展示使用useReducer的時機。從上述程式碼，我們可以看見當我們要設定增減按鈕時，需要為增減的行為設定一個useState，若我們想再加上文字的變更，必須再多新增文字各自的狀態。透過useState，已經減輕不少工作，但，礙於人類的天性，我們還是覺得這樣過於繁瑣。</p>
+<p>這時候useReducer的就派上用場了!<br>useReducer往往會搭配useContext使用，但我們這邊先專注在useReducer本身。</p>
+<h5 id="useReducer使用方式"><a href="#useReducer使用方式" class="headerlink" title="useReducer使用方式"></a>useReducer使用方式</h5><p>useReducer是useState的一種替換寫法。它的長相大概如下所示:<br><code>const [state, dispatch] = useReducer(reducer, initialArg)</code></p>
+<p>主要的概念是透過useReducer將<strong>reducer</strong>這個<strong>函數</strong>串接進來，reducer則會根據dispatch去決定要執行的動作。state會根據initialArg去決定型態，若initialArg是物件，則state也會是物件。同樣地，dispatch也會是物件的型態，裡頭會儲存各種方法，以這邊的例子來說，就是增減的方法。我們來實際看看如何改寫上述的計時器:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">const defaultCountState = &#123;</span><br><span class="line">   count: 0,</span><br><span class="line">   text: &quot;&quot;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const countReducer = (state, action) =&gt; &#123;</span><br><span class="line">  switch(action.type)&#123;</span><br><span class="line">    case &#x27;ADD&#x27;:</span><br><span class="line">      return &#123; </span><br><span class="line">        count: state.count + 1,</span><br><span class="line">        text: &quot;I am adding.&quot;</span><br><span class="line">      &#125;;</span><br><span class="line">    case &#x27;MINUS&#x27;:</span><br><span class="line">      return &#123; </span><br><span class="line">        count: state.count - 1&#125;</span><br><span class="line">        text: &quot;I am minusing.&quot;</span><br><span class="line">      &#125;;</span><br><span class="line">    default:</span><br><span class="line">      throw new Error();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const Counter = () =&gt; &#123;</span><br><span class="line">  const [countState, dispatchCount] = useReducer(countReducer, defaultCountState);</span><br><span class="line">  </span><br><span class="line">  const addCountHandler = () =&gt; &#123;</span><br><span class="line">    dispatchCount(&#123;type: &#x27;ADD&#x27;&#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  const minusCountHandler = () =&gt; &#123;</span><br><span class="line">    dispatchCount(&#123;type: &#x27;MINUS&#x27;&#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">    &lt;div className=&quot;counter&quot;&gt;</span><br><span class="line">      &lt;p&gt;Count: &#123;countState.text&#125; &#123;countState.count&#125;  &lt;/p&gt;</span><br><span class="line">      &lt;button onClick=&#123;addCountHandler&#125;&gt;Add&lt;/button&gt;</span><br><span class="line">      &lt;button onClick=&#123;minusCountHandler&#125;&gt;Minus&lt;/button&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>寫好count的reducer，裡面包含增減對應的方法，接著再透過useReducer將方法以及我們預設的變數傳入Counter組件。最後當我們實際執行上述的程式碼的時候，就可以發現，透過useReducer，我們成功同時控制文字與數字的狀態。好像有點小興奮!沒錯，這就是我們useReducer的Power所在!<br><img src="https://i.imgur.com/rlvovbM.jpg" alt="count"></p>
+<p>-重點回顧-</p>
+<ul>
+<li>useReducer可以控管複雜的狀態<ul>
+<li>reducer是一組函數</li>
+<li>state、dispatch一般都是物件</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天簡單講解useReducer這個Hook，熟悉Redux的各位大大一定不陌生這個Hook，但心中可能會有疑惑為何有Redux又需要useReducer呢? 這就因人而異，只要能達到目的，我想用哪種方法都沒有對錯的分別，全取決於個人。在這篇章，我們還沒提到global變數的概念，一般來說useReducer都會搭配useContext的使用去處理資料，接下來的篇章也許會討論這塊也說不定。</p>
+<p>useReducer並不是要完全取代useState，它只有當狀態變得複雜時才適合使用，換句話說在處理簡單的狀態時，就不需要去使用它，畢竟殺雞焉用牛刀是吧?</p>
+<p>題外話: 今天一直在想要怎麼去寫useReducer，最後坐在馬桶上還是覺得簡單用Count去解釋好了，原先考慮用自己實作的訂餐網站來講解，但似乎不適合當作介紹篇章的範例。</p>
+<p>最後，謝謝各位大大看到最後!</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/react/" rel="tag"># react</a>
+              <a href="/tags/component/" rel="tag"># component</a>
+              <a href="/tags/usereducer/" rel="tag"># usereducer</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/13/React%E7%B3%BB%E5%88%97-useContext%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" rel="prev" title="React系列-useContext概念與使用">
+                  <i class="fa fa-angle-left"></i> React系列-useContext概念與使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/16/React%E7%B3%BB%E5%88%97-useRef%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" rel="next" title="React系列-useRef概念與使用">
+                  React系列-useRef概念與使用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Matsu Chen</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chenmatsu.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="JS - Async &#x2F; Await入門 Be who you are and say what you feel, because those who mind don&#39;t matter, and those who matter don&#39;t mind.― Bernard M. Baruch  今天來說說關於JS的同步與非同步問題。JS本身屬於單執行緒的語言，因此指令會依照順序或">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS系列-同步與非同步入門">
+<meta property="og:url" content="https://chenmatsu.github.io/2021/05/23/JS%E7%B3%BB%E5%88%97-%E5%90%8C%E6%AD%A5%E8%88%87%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%85%A5%E9%96%80/index.html">
+<meta property="og:site_name" content="Matsu">
+<meta property="og:description" content="JS - Async &#x2F; Await入門 Be who you are and say what you feel, because those who mind don&#39;t matter, and those who matter don&#39;t mind.― Bernard M. Baruch  今天來說說關於JS的同步與非同步問題。JS本身屬於單執行緒的語言，因此指令會依照順序或">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2021-05-23T02:39:13.000Z">
+<meta property="article:modified_time" content="2023-08-29T09:36:53.759Z">
+<meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="async">
+<meta property="article:tag" content="await">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://chenmatsu.github.io/2021/05/23/JS%E7%B3%BB%E5%88%97-%E5%90%8C%E6%AD%A5%E8%88%87%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%85%A5%E9%96%80/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://chenmatsu.github.io/2021/05/23/JS%E7%B3%BB%E5%88%97-%E5%90%8C%E6%AD%A5%E8%88%87%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%85%A5%E9%96%80/","path":"2021/05/23/JS系列-同步與非同步入門/","title":"JS系列-同步與非同步入門"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JS系列-同步與非同步入門 | Matsu</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Matsu</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Nothing more than curiosity</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#JS-Async-Await%E5%85%A5%E9%96%80"><span class="nav-number">1.</span> <span class="nav-text">JS - Async &#x2F; Await入門</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%91%AA%E5%BE%B7%E8%93%AE%E8%9B%8B%E7%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">瑪德蓮蛋糕</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E8%88%87%E9%9D%9E%E5%90%8C%E6%AD%A5"><span class="nav-number">1.1.1.</span> <span class="nav-text">同步與非同步</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Callback"><span class="nav-number">1.1.2.</span> <span class="nav-text">Callback</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Promise"><span class="nav-number">1.1.3.</span> <span class="nav-text">Promise</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Async-Await"><span class="nav-number">1.1.4.</span> <span class="nav-text">Async&#x2F;Await</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.2.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Matsu Chen</p>
+  <div class="site-description" itemprop="description">Nothing more than curiosity</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://chenmatsu.github.io/2021/05/23/JS%E7%B3%BB%E5%88%97-%E5%90%8C%E6%AD%A5%E8%88%87%E9%9D%9E%E5%90%8C%E6%AD%A5%E5%85%A5%E9%96%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu">
+      <meta itemprop="description" content="Nothing more than curiosity">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JS系列-同步與非同步入門 | Matsu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JS系列-同步與非同步入門
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2021-05-23 10:39:13" itemprop="dateCreated datePublished" datetime="2021-05-23T10:39:13+08:00">2021-05-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2023-08-29 17:36:53" itemprop="dateModified" datetime="2023-08-29T17:36:53+08:00">2023-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="JS-Async-Await入門"><a href="#JS-Async-Await入門" class="headerlink" title="JS - Async / Await入門"></a>JS - Async / Await入門</h3><blockquote>
+<p><em>Be who you are and say what you feel, because those who mind don&#39;t matter, and those who matter don&#39;t mind.</em><br><em>― Bernard M. Baruch</em></p>
+</blockquote>
+<p>今天來說說關於JS的同步與非同步問題。JS本身屬於<strong>單執行緒</strong>的語言，因此指令會依照順序或者透過特殊語法來控制執行的順序，這就是要來討論的主題。</p>
+<ul>
+<li>瑪德蓮蛋糕<ul>
+<li>同步與不同步(Synchronous/Asynchronous)</li>
+<li>Callback</li>
+<li>Promise</li>
+<li>Async/Await</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="瑪德蓮蛋糕"><a href="#瑪德蓮蛋糕" class="headerlink" title="瑪德蓮蛋糕"></a>瑪德蓮蛋糕</h4><p>透過製作瑪德蓮來學習同步與非同步的概念，我想應該會相當有趣。瑪德蓮蛋糕是我偶爾會在家裡做的一種法式糕點，有興趣的朋友們也不妨嘗試做做看!<br>首先，我們先來看看瑪德蓮的製作過程:</p>
+<ul>
+<li>準備食材(食譜)<ul>
+<li>雞蛋*2</li>
+<li>牛奶20g</li>
+<li>蜂蜜30g</li>
+<li>細砂糖40g</li>
+<li>低筋麵粉100g + 泡打粉3匙</li>
+<li>無鹽奶油85g</li>
+</ul>
+</li>
+<li>攪拌全蛋</li>
+<li>加入砂糖、牛奶</li>
+<li>加入過篩的低筋麵粉、泡打粉</li>
+<li>加熱無鹽奶油</li>
+<li>加入融化奶油攪拌</li>
+<li>裝入擠花袋冷藏6小時</li>
+<li>烤箱預熱15分鐘170度</li>
+<li>擠上模具烘烤15分鐘</li>
+<li>取出完成</li>
+</ul>
+<p>大致上的製作過程如下，其中有許多步驟是需要一步一步去做，但是這裡就牽涉到不少的同步與非同步的概念。</p>
+<h5 id="同步與非同步"><a href="#同步與非同步" class="headerlink" title="同步與非同步"></a>同步與非同步</h5><p>同步(Synchronous): 同時執行動作<br>非同步(Asynchronous): 等待完成後執行下一個動作</p>
+<p>因為JS特性的關係，我們沒辦法一次執行多個動作，舉例來說: 攪拌全蛋時加熱無鹽奶油，這對於JS本身來說是不可能的。況且有些時候，同步執行不會帶來好處，只會帶來災難，舉例來說，我們如果先預熱烤箱，但是我們根本還沒將瑪德蓮裝入擠花袋並且冷藏6小時，預熱的動作就完全只是徒勞。由此可見，同步與非同步都必須視情況而定。</p>
+<p>我們嘗試將完成製作蛋糕的步驟簡單寫成JS的程式碼試試看:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">const Madeleine = () =&gt; &#123;</span><br><span class="line">  prepare_ingredient(); </span><br><span class="line">  stir_egg();</span><br><span class="line">  add_sugar_milk();</span><br><span class="line">  add_flour();</span><br><span class="line">  melt_butter();</span><br><span class="line">  add_butter();</span><br><span class="line">  put_to_bag();</span><br><span class="line">  freeze();</span><br><span class="line">  pre_heated();</span><br><span class="line">  bake();</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">// 準備食材</span><br><span class="line">const prepare_ingredient = () =&gt; &#123;&#125;;</span><br><span class="line">// 攪拌全蛋</span><br><span class="line">const stir_egg = () =&gt; &#123;&#125;;</span><br><span class="line">// 加入糖、牛奶</span><br><span class="line">const add_sugar_milk = () =&gt; &#123;&#125;;</span><br><span class="line">// 加入麵粉</span><br><span class="line">const add_flour = () =&gt; &#123;&#125;;</span><br><span class="line">// 加熱奶油</span><br><span class="line">const melt_butter = () =&gt; &#123;&#125;;</span><br><span class="line">// 加入奶油</span><br><span class="line">const add_butter = () =&gt; &#123;&#125;;</span><br><span class="line">// 裝入擠花袋</span><br><span class="line">const put_to_bag = () =&gt; &#123;&#125;;</span><br><span class="line">// 冷藏六小時</span><br><span class="line">const freeze = () =&gt; &#123;&#125;;</span><br><span class="line">// 烤箱預熱 </span><br><span class="line">const pre_heated = () =&gt; &#123;&#125;;</span><br><span class="line">// 烘烤</span><br><span class="line">const bake = () =&gt; &#123;&#125;;</span><br><span class="line"></span><br><span class="line">Madeleine();</span><br></pre></td></tr></table></figure>
+
+<p>我將一連串的動作都寫成函數，接著在最後Madeleine函數去模擬做蛋糕，可以看到我們確實依照食譜的順序去逐一執行動作，JS也會根據程式的先後順序去執行。可是這裡似乎會發生一點問題，問題在哪裡? 問題在於，每一個動作間並沒有彼此認識，舉例來說: 在準備完材料後要攪拌全蛋，但是有沒有可能材料還沒準備完，就開始攪拌全蛋，而導致沒有確認無鹽奶油準備到，而後續造成melet_butter函數執行失敗，這就是此處的問題點所在。</p>
+<h5 id="Callback"><a href="#Callback" class="headerlink" title="Callback"></a>Callback</h5><p>先來聊聊關於Callback，Callback是JS裡面有趣的函數使用方式。我們先來看一下MDN上面的解釋:<br><strong>A callback function is a function passed into another function as an argument, which is then invoked inside the outer function to complete some kind of routine or action.</strong><br>簡單來說Callback可以理解成函數執行完後要執行的函數，以上述Madeleine內的步驟來說:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">const Madeleine = () =&gt; &#123;</span><br><span class="line">  prepared_Ingredient((res) =&gt; &#123;</span><br><span class="line">    if(res === &#x27;Ingredient prepared.&#x27;)&#123;</span><br><span class="line">      stir_egg((res) =&gt; &#123;</span><br><span class="line">        if(res === &#x27;stir finished.&#x27;)&#123;</span><br><span class="line">          add_sugar_milk(...其他Callback);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">          console.log(&#x27;Not stirred yet!&#x27;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      console.log(&#x27;Ingredient not prepared yet!&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Madeleine();</span><br></pre></td></tr></table></figure>
+<p>上述的prepared_gradient在執行完成後，才呼叫stir_egg()函數，此外也可以透過Callback去處理錯誤的情況，這樣子動作就能夠認識彼此，更能夠了解彼此的優先順序，相較於先前全權交給JS執行緒處理，是不是更令人安心了? 但是這時候就出現所謂的Callback地獄，雖然Callback很方便也很好使用，但是過度使用，就會造成難維護的窘境。</p>
+<h5 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h5><p>MDN的描述:<br><strong>A Promise is an object representing the eventual completion or failure of an asynchronous operation.</strong><br>簡單來說，Promise是表達<strong>非同步執行</strong>結果的一個物件，會根據執行成功或失敗給予開發者回饋。因此，只要回傳Promise物件，我們都能夠使用Promise物件擁有的then函數和catch函數。then函數可以擁有兩個Callback代表Promise執行成功與失敗後的動作，而catch函數只擁有Promise執行失敗後的Callback。直接更改上述烘焙的程式碼如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// 假設Madeleine回傳Promise</span><br><span class="line">const Madeleine = new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">  //暫定每1s成功執行後執行下一個then()</span><br><span class="line">  setTimeout(() =&gt; &#123;</span><br><span class="line">    resolve(&#x27;Madeleine&#x27;);</span><br><span class="line">  &#125;, 1000);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Madeleine()</span><br><span class="line">  .then(prepare_ingredient(), &#123;</span><br><span class="line">    console.log(&#x27;Ingredient not prepared yet!&#x27;);</span><br><span class="line">  &#125;)</span><br><span class="line">  .then(stir_egg(), &#123;</span><br><span class="line">    console.log(&#x27;Not Stirred yet!);</span><br><span class="line">  &#125;)</span><br><span class="line">  .then(add_sugar_milk(), &#123;</span><br><span class="line">    console.log(&#x27;No milk to be added!&#x27;);</span><br><span class="line">  &#125;</span><br><span class="line">  ...其他的thenc函數</span><br><span class="line">  .catch(() =&gt; &#123;</span><br><span class="line">    console.log(&#x27;Failed to make Madeleine&#x27;);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>透過Promise的使用，我們可以更好的去控管整個製作的流程，也就是將Callback管理的更好。</p>
+<p>這邊要特別注意到new Promise這一段程式碼，這裡其實就是將Madeleine指派一個Promise的物件，而new Promise這個物件通常會有兩個參數resolve和reject，前者代表成功後要執行的行為，後者代表失敗後要執行的動作，相似於then和catch的概念，因為then和catch就是透過它們包裝而來的呀!</p>
+<h5 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async/Await"></a>Async/Await</h5><p>最後要講的是JS改版至ES7後的大明星Async和Await，因為它們的出現，我們得以從Promise Chain的枷鎖中獲得解放。實際看一下如何透過Async/Await來改寫我們在Promise的程式碼:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">const Madeleine = async() =&gt; &#123;</span><br><span class="line">  console.log(&#x27;Start making Madeleine&#x27;);</span><br><span class="line">  const ingredient = await prepared_ingredient();</span><br><span class="line">  const stirredEggs = await stir_egg(eggs);</span><br><span class="line"></span><br><span class="line">  ...其餘動作</span><br><span class="line"></span><br><span class="line">  console.log(ingredient);</span><br><span class="line">  console.log(stirredEggs);</span><br><span class="line">  ...其他結果</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const prepared_ingredient = () =&gt; &#123;</span><br><span class="line">  return new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">    if(egg &amp;&amp; milk &amp;&amp; sugar &amp;&amp; honey &amp;&amp; butter &amp;&amp; flour)&#123;</span><br><span class="line">      setTimeout(() =&gt; &#123;</span><br><span class="line">        resolve(&#x27;Ingredient is prepared.&#x27;);</span><br><span class="line">      &#125;, 3000);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      reject(&#x27;Ingredient is not prepared!&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const stir_egg = (eggs) =&gt; &#123;</span><br><span class="line">  return new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">    if(eggs === 2)&#123;</span><br><span class="line">      setTimeout(() =&gt; &#123;</span><br><span class="line">        resolve(&#x27;Eggs are stirred.&#x27;);</span><br><span class="line">      &#125;, 5000);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      reject(&#x27;No enough eggs!&#x27;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">... 其他動作的函數</span><br></pre></td></tr></table></figure>
+<p>透過async的關鍵字，我們可以告知JS要將Madeleine當作非同步的函數，此外因為其他動作函數也會是非同步，可以確定在Madeleine內執行的動作都是await等待過後，才會接續執行，而不會發生動作還沒完成就執行下一個動作的問題。</p>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>花了很多時間查看許多文章，對於Callback, Promise, Async/Await，釐清了許多問題，但是還是覺得文章打得不夠好，還不能講解的淺顯易懂，代表我自己還沒有真的很熟悉這些概念以及實作方式。期望接下來能夠對這三者有更深的見解，屆時會再來修正這篇文章。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/async/" rel="tag"># async</a>
+              <a href="/tags/await/" rel="tag"># await</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/21/%E9%96%B1%E8%AE%80-%E6%9C%80%E6%9C%89%E7%94%9F%E7%94%A2%E5%8A%9B%E7%9A%84%E4%B8%80%E5%B9%B4/" rel="prev" title="閱讀-最有生產力的一年">
+                  <i class="fa fa-angle-left"></i> 閱讀-最有生產力的一年
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/26/React%E7%B3%BB%E5%88%97-JEST%E6%B8%AC%E8%A9%A6%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" rel="next" title="React系列-JEST測試概念與使用">
+                  React系列-JEST測試概念與使用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Matsu Chen</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

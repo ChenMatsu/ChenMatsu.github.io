@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chenmatsu.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="JS - ES6快速入門 The only true wisdom is in knowing you know nothing.- Socrates  JS語法釐清今天重溫JS的基礎，徹底了解ES5與ES6間的差異，那麼廢話不多說，趕緊來看!  變數命名 let &amp; const 箭頭函數 ES6 ES5函數 ES6函數   觀念釐清 Export &amp; Import 類別與繼承 C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS系列-ES6快速入門">
+<meta property="og:url" content="https://chenmatsu.github.io/2021/05/05/JS%E7%B3%BB%E5%88%97-ES6%E5%BF%AB%E9%80%9F%E5%85%A5%E9%96%80/index.html">
+<meta property="og:site_name" content="Matsu">
+<meta property="og:description" content="JS - ES6快速入門 The only true wisdom is in knowing you know nothing.- Socrates  JS語法釐清今天重溫JS的基礎，徹底了解ES5與ES6間的差異，那麼廢話不多說，趕緊來看!  變數命名 let &amp; const 箭頭函數 ES6 ES5函數 ES6函數   觀念釐清 Export &amp; Import 類別與繼承 C">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2021-05-05T06:40:50.000Z">
+<meta property="article:modified_time" content="2023-08-29T09:36:53.759Z">
+<meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="es6">
+<meta property="article:tag" content="arrow-function">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://chenmatsu.github.io/2021/05/05/JS%E7%B3%BB%E5%88%97-ES6%E5%BF%AB%E9%80%9F%E5%85%A5%E9%96%80/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://chenmatsu.github.io/2021/05/05/JS%E7%B3%BB%E5%88%97-ES6%E5%BF%AB%E9%80%9F%E5%85%A5%E9%96%80/","path":"2021/05/05/JS系列-ES6快速入門/","title":"JS系列-ES6快速入門"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JS系列-ES6快速入門 | Matsu</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Matsu</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Nothing more than curiosity</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#JS-ES6%E5%BF%AB%E9%80%9F%E5%85%A5%E9%96%80"><span class="nav-number">1.</span> <span class="nav-text">JS - ES6快速入門</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JS%E8%AA%9E%E6%B3%95%E9%87%90%E6%B8%85"><span class="nav-number">1.1.</span> <span class="nav-text">JS語法釐清</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%8A%E6%95%B8%E5%91%BD%E5%90%8D-let-amp-const"><span class="nav-number">1.2.</span> <span class="nav-text">變數命名 let &amp; const</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%AD%E9%A0%AD%E5%87%BD%E6%95%B8-ES6"><span class="nav-number">1.3.</span> <span class="nav-text">箭頭函數 ES6</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ES5%E5%87%BD%E6%95%B8"><span class="nav-number">1.3.1.</span> <span class="nav-text">ES5函數</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ES6%E5%87%BD%E6%95%B8"><span class="nav-number">1.3.2.</span> <span class="nav-text">ES6函數</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%80%E5%BF%B5%E9%87%90%E6%B8%85-Export-amp-Import"><span class="nav-number">1.4.</span> <span class="nav-text">觀念釐清 Export &amp; Import</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A1%9E%E5%88%A5%E8%88%87%E7%B9%BC%E6%89%BF-Class"><span class="nav-number">1.5.</span> <span class="nav-text">類別與繼承 Class</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%95%E9%96%8B-%E5%85%B6%E9%A4%98%E9%81%8B%E7%AE%97%E5%AD%90-Spread-amp-Rest"><span class="nav-number">1.6.</span> <span class="nav-text">展開&#x2F;其餘運算子 Spread &amp; Rest</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%86%E8%A7%A3-Destructuring"><span class="nav-number">1.7.</span> <span class="nav-text">拆解 Destructuring</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E5%9E%8B%E6%85%8B%E5%92%8C%E5%8F%83%E7%85%A7%E5%9E%8B%E6%85%8B-Primitive-amp-Reference"><span class="nav-number">1.8.</span> <span class="nav-text">原始型態和參照型態 Primitive &amp; Reference</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.9.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Matsu Chen</p>
+  <div class="site-description" itemprop="description">Nothing more than curiosity</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://chenmatsu.github.io/2021/05/05/JS%E7%B3%BB%E5%88%97-ES6%E5%BF%AB%E9%80%9F%E5%85%A5%E9%96%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu">
+      <meta itemprop="description" content="Nothing more than curiosity">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JS系列-ES6快速入門 | Matsu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JS系列-ES6快速入門
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2021-05-05 14:40:50" itemprop="dateCreated datePublished" datetime="2021-05-05T14:40:50+08:00">2021-05-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2023-08-29 17:36:53" itemprop="dateModified" datetime="2023-08-29T17:36:53+08:00">2023-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="JS-ES6快速入門"><a href="#JS-ES6快速入門" class="headerlink" title="JS - ES6快速入門"></a>JS - ES6快速入門</h3><blockquote>
+<p><em>The only true wisdom is in knowing you know nothing.</em><br><em>- Socrates</em></p>
+</blockquote>
+<h4 id="JS語法釐清"><a href="#JS語法釐清" class="headerlink" title="JS語法釐清"></a>JS語法釐清</h4><p>今天重溫JS的基礎，徹底了解ES5與ES6間的差異，那麼廢話不多說，趕緊來看!</p>
+<ul>
+<li>變數命名 let &amp; const</li>
+<li>箭頭函數 ES6<ul>
+<li>ES5函數</li>
+<li>ES6函數</li>
+</ul>
+</li>
+<li>觀念釐清 Export &amp; Import</li>
+<li>類別與繼承 Class </li>
+<li>展開/其餘運算子 Spread &amp; Rest</li>
+<li>拆解 Destructuring</li>
+<li>原始型態和參照型態 Primitive &amp; Reference</li>
+<li>結語</li>
+</ul>
+<p>以下範例程式碼都可以在JSbin實際執行看看喔!不妨動手試試吧!<br><strong>JSbin: <a target="_blank" rel="noopener" href="https://jsbin.com/?js,console">https://jsbin.com/?js,console</a></strong></p>
+<hr>
+<h4 id="變數命名-let-amp-const"><a href="#變數命名-let-amp-const" class="headerlink" title="變數命名 let &amp; const"></a>變數命名 let &amp; const</h4><p>在ES6，var開始出現分身，就是let和const! 簡單來說，它們的功用都是用來定義變數，實際舉例:<br><code>var number = 5;</code><br><code>let number = 5;</code><br><code>const number = 5;</code><br>一般區別在於let所命名的變數是可變的，const所命名的變數則是不可變的。<br>其實還有Scope的問題，但暫且不討論那一塊。</p>
+<hr>
+<h4 id="箭頭函數-ES6"><a href="#箭頭函數-ES6" class="headerlink" title="箭頭函數 ES6"></a>箭頭函數 ES6</h4><p>接下來比較大的改變莫過於箭頭函數，若沒有事先了解，肯定出現ES5和ES6是不同程式語言的錯覺。</p>
+<h5 id="ES5函數"><a href="#ES5函數" class="headerlink" title="ES5函數"></a>ES5函數</h5><p>首先先來看看ES5的函數寫法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function say(name)&#123;</span><br><span class="line">  console.log(name + &quot; Hey! You cool!&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">say(&#x27;Johnny&#x27;);</span><br></pre></td></tr></table></figure>
+<p>在ES5撰寫函數的時候，會先寫下<strong>function</strong>這個關鍵字建立函數，接著再寫上函數的名稱，以本例來說<strong>say</strong>就是函數的名稱，往後在呼叫這個函數時則要寫上<strong>say</strong>，而括號()內則填入參數，所以呼叫時我在這裡傳入<strong>Johnny</strong>，這就是ES5典型的函數呼叫方式。<br>實際在JSbin執行過後可以得到結果是<code>&quot;Johnny Hey! You cool!&quot;</code></p>
+<h5 id="ES6函數"><a href="#ES6函數" class="headerlink" title="ES6函數"></a>ES6函數</h5><p>根據ES5的函數寫法，我們來改寫成ES6的箭頭函數:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const say = (name) =&gt; &#123;</span><br><span class="line">  console.log(name + &quot; Hey! You cool!&quot;);</span><br><span class="line">&#125;</span><br><span class="line">say(&#x27;Johnny&#x27;);</span><br></pre></td></tr></table></figure>
+<p>一般來說要將ES6寫成等同於ES5的程式碼都必須指派到某變數，同樣可以根據函數是否會更動而宣告為let或者是const。我們可以看到參數的傳遞寫在等號後方，接著才接上箭頭函數。好處在於簡潔的語法外，最重要的優點在於<strong>this</strong>關鍵字的範圍變得更加明瞭，而不會像ES5函數的this常常會超出我們所想。<br>同樣在JSbin執行過後可以得到結果也是<code>&quot;Johnny Hey! You cool!&quot;</code></p>
+<p>TIP:<br><strong>單一參數</strong>，箭頭函數可以簡化成下方寫法:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const say = name =&gt; console.log(name + &quot; Hey! You cool!&quot;);</span><br></pre></td></tr></table></figure>
+<p><strong>無參數或多參數</strong>，括號()不得省略:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const say = () =&gt; console.log(&quot;Hey! You cool!&quot;);</span><br><span class="line">const say = (fname, lname) =&gt; console.log(fname + &quot; &quot; + lname + &quot; Hey! You cool!&quot;);</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="觀念釐清-Export-amp-Import"><a href="#觀念釐清-Export-amp-Import" class="headerlink" title="觀念釐清 Export &amp; Import"></a>觀念釐清 Export &amp; Import</h4><p>在專案當中，把程式模組化是一件相當明智的選擇。<br>首先模組化的檔案必須先匯出<strong>Export</strong>，才能由其他程式匯入<strong>Import</strong>後使用。<br>匯出Export有兩種方式，我們以ES6的函數為例:<br>–預設匯出–<br><code>export default say</code></p>
+<p>–命名匯出–<br><code>export const say = (name) =&gt; console.log(&quot; Hey! You cool!&quot;)</code><br><code>export const name = &quot;Johnny&quot;</code><br>預設匯出的檔案只有一個模組，以上例來說就是只匯出say這個函數，命名匯出則是會根據名稱匯出不同的模組，以上例來說就是匯出say這個函數外，還能夠再匯出其他函數或變數。</p>
+<p>匯入Import則會根據匯出的方式對應:<br>–預設匯入–<br><code>import say from &#39;./say.js&#39;</code><br>當然say可以當成alias任意命名，如下:<br><code>import greet from &#39;./say.js&#39;</code></p>
+<p>–命名匯入–<br><code>import &#123;say&#125; from &#39;./say.js&#39;</code><br><code>import &#123;name&#125; from &#39;./say.js&#39;</code><br>可以清楚看到若是預設匯入則可以任意命名，但若是命名匯入則必須指定要匯入的函數或變數等等。<br>總結來看，一個檔案只能包含一個預設匯出及數個命名匯出，因此若檔案包含數個模組或變數等，我們也可以一次匯入所有的模組如下:<br><code>import * as all from &#39;./say.js</code><br>存取則可以透過<strong>all.say</strong>和<strong>all.name</strong>存取我們匯出的模組或變數。</p>
+<hr>
+<h4 id="類別與繼承-Class"><a href="#類別與繼承-Class" class="headerlink" title="類別與繼承 Class"></a>類別與繼承 Class</h4><p>噹噹噹，Java跟Javascript就像是Ham跟Hamburger，除了開頭三個英文字其他都不一樣，但自從ES6加入了Class後，它們的相似性又提高了一點，對，就是那麼一點。對於熟悉物件導向程式語言的各位來說，肯定是一件再熟悉不過的事情，不過我們還是來看看JS的Class吧!畢竟三大框架Angular,React,Vue幾乎可以說是完全基於它的概念而發展出來。<br>關鍵字起頭不廢話:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">class Fish &#123;</span><br><span class="line">  constructor()&#123;</span><br><span class="line">    this.species = &#x27;fish&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">  swim () &#123;</span><br><span class="line">    console.log(&quot;swims...&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const shark = new Fish();</span><br><span class="line">console.log(shark.species);</span><br><span class="line">shark.swim();</span><br></pre></td></tr></table></figure>
+<p>上方定義魚的類別，裡面有一個建構子與方法Swim。典型的類別寫法，同時也是比較<strong>舊</strong>的寫法。constructor可以理解為一開始實體化(初始化)時就具備的東西，以Fish類別來說，鯊魚剛生出來就有個名字叫做’fish’。<br>實際執行後顯示結果<code>&quot;fish&quot;</code>跟<code>&quot;swims...&quot;</code></p>
+<p>接著我們來看看繼承的範例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Shark extends Fish&#123;</span><br><span class="line">  constructor()&#123;</span><br><span class="line">    super();</span><br><span class="line">    this.name = &#x27;shark&#x27;;</span><br><span class="line">  &#125;</span><br><span class="line">  swim() &#123;</span><br><span class="line">    console.log(&quot;swims pretty fast...&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const shark = new Shark();</span><br><span class="line">console.log(shark.species);</span><br><span class="line">console.log(shark.name);</span><br><span class="line">shark.swim();</span><br></pre></td></tr></table></figure>
+<p>鯊魚這個類別繼承魚，鯊魚這次完成進化，游得非常快而且有個更酷炫的名字shark!需要特別注意的是，繼承父類別Fish必須要寫上super()才可以確保父類別屬性的建構子也經過實體化。<br>不過這樣看下來好像JS在class上沒有什麼獨到之處啊? No.No..No…<br>以上的程式碼都能改寫成更有ES6的味道:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class Fish &#123;</span><br><span class="line">  species = &#x27;fish&#x27;;</span><br><span class="line">  swim = () =&gt; &#123;</span><br><span class="line">    console.log(&quot;swims...&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Shark extends Fish &#123;</span><br><span class="line">  name = &#x27;shark&#x27;;</span><br><span class="line">  swim = () =&gt; &#123;</span><br><span class="line">    console.log(&quot;swims pretty fast...&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const shark = new Shark();</span><br><span class="line">console.log(shark.species);</span><br><span class="line">console.log(shark.name);</span><br><span class="line">shark.swim();</span><br></pre></td></tr></table></figure>
+<p>看到JS有多潮了嗎?大概就跟鯊魚一樣潮，海中霸主。可以注意到在JS裡的Class並不是純粹的Class而是經過簡化的Class，所以常常可以聽到有人說JS的Class是類Class也是有點道理在。因為ES6幫我們處理許多像是constructor跟super()，在JS這些都可以省略不寫，因此我們只需要專注在High-Level的部分，裝備穿好了，還不趕快出發嗎?</p>
+<hr>
+<h4 id="展開-其餘運算子-Spread-amp-Rest"><a href="#展開-其餘運算子-Spread-amp-Rest" class="headerlink" title="展開/其餘運算子 Spread &amp; Rest"></a>展開/其餘運算子 Spread &amp; Rest</h4><p>ES6可以與箭頭函數與之比肩的大概就非屬於展開和其餘運算子了，讓我們來了解它們的各自功能。<br><strong>展開運算子(Spread Operator): 將陣列元素或者是物件屬性分割出來</strong><br><strong>其餘運算子(Rest Operator): 將一連串的函數參數合併到陣列中</strong></p>
+<p>不需要懷疑，這兩個運算子放在一起講就是因為它們的寫法一樣都是**…**，沒錯就是點點點，想必大家看完心中也是點點點，但我們立刻來抽絲剝繭。<br>展開運算子其實相當好理解，就是將陣列分開再使用:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const oldYear = [2018, 2019, 2020];</span><br><span class="line">const newYear = [...oldYear, 2021];</span><br><span class="line">console.log(newYear);</span><br></pre></td></tr></table></figure>
+<p>我們可以了解到newYear第一個參數…oldYear會先將oldYear這個陣列本身切割開來成為單一元素，接著再建立一個新的陣列給newYear並且再加上後續的參數。<br>實際執行後顯示結果<code>[2018, 2019, 2020, 2021]</code>。<br>同樣地，我們也可以將展開運算子運用在物件上:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const fish = &#123;</span><br><span class="line">  species: &#x27;fish&#x27;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const shark = &#123;</span><br><span class="line">  ...fish,</span><br><span class="line">  name: &#x27;shark&#x27;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>實際執行後顯示結果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[object Object] &#123;</span><br><span class="line">  name: &quot;shark&quot;,</span><br><span class="line">  species: &quot;fish&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以發現fish的屬性一樣被添加到shark裡面，這就是展開運算子的功能，帶來意想不到的便捷性，尤其是在複製陣列或物件身上。</p>
+<p>接著來討論其餘運算子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const filterNums = (...args) =&gt; &#123;</span><br><span class="line">  return args.filter(el =&gt; el &gt; 5);</span><br><span class="line">&#125;</span><br><span class="line">console.log(filterNums(1,3,5,7,9,11,13,15,17));</span><br></pre></td></tr></table></figure>
+<p>我們在這個函數傳入其餘運算子(…args)，args可以任意命名，接著我們回傳args的內建函數filter。因為args在經過其餘運算子後已經轉換為陣列，因此可以套用陣列的內建方法，如:sort(), map(), slice(), splice()等等的方法。特別注意的是filterNums()並不能傳入一組陣列，會造成其餘運算子無法將陣列轉換成功而直接回傳空陣列。<br>實際執行後顯示<code>[7, 9, 11, 13, 15, 17]</code></p>
+<hr>
+<h4 id="拆解-Destructuring"><a href="#拆解-Destructuring" class="headerlink" title="拆解 Destructuring"></a>拆解 Destructuring</h4><p>藉由拆解我們可以很容易的去存取陣列或物件裡面的元素或屬性，我們實際來看點例子。<br>首先是陣列:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const breakMeUp = [2, 0, 2, 1, &quot;is&quot;, &quot;cool&quot;];</span><br><span class="line">const [a, b, , d, e] = breakMeUp;</span><br><span class="line">console.log(a);</span><br><span class="line">console.log(b);</span><br><span class="line">console.log(d);</span><br><span class="line">console.log(e);</span><br></pre></td></tr></table></figure>
+<p>透過直接拆解陣列可以對應到breakMeUp陣列裡面的元素，而不需要透過其他方式去索引。<br>實際執行後顯示<br>接著是物件:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const Shark = &#123;</span><br><span class="line">  species: &#x27;fish&#x27;,</span><br><span class="line">  name: &#x27;shark&#x27;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const &#123;species&#125; = Shark;</span><br><span class="line">console.log(species);</span><br><span class="line">console.log(name);</span><br></pre></td></tr></table></figure>
+<p>物件的拆解就像是一對一的對應，中括號{}內寫的變數能夠對應到物件的屬性，就能夠讀取，如果沒有對應的屬性則會回傳undefined.<br>實際結果:<code>&quot;fish&quot;和&quot;Undefined&quot;</code></p>
+<hr>
+<h4 id="原始型態和參照型態-Primitive-amp-Reference"><a href="#原始型態和參照型態-Primitive-amp-Reference" class="headerlink" title="原始型態和參照型態 Primitive &amp; Reference"></a>原始型態和參照型態 Primitive &amp; Reference</h4><p>終於來到本日的最後一個段落，喘口氣~茶。<br>JS最重要的概念大概在於釐清原始型態(Primitive)和參照型態(Reference)，基本上數值、字串、布林值、Null、undefined都隸屬於原始型態，至於在JS常常操作的陣列與物件則是所謂的參照型態。<br>等等，什麼型態? 難不成我還得會開二、三檔，接著伸縮機關槍嗎? 不會可能真的打不出機關槍來。<br>首先是原始型態:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">let num = 1111;</span><br><span class="line">let num2 = num;</span><br><span class="line">console.log(num);</span><br><span class="line">console.log(num2);</span><br><span class="line">num = 2222;</span><br><span class="line">console.log(num); </span><br><span class="line">console.log(num2)</span><br></pre></td></tr></table></figure>
+<p>上述程式我們可以理解到何謂原始型態，簡單來說就是<strong>參值</strong>(Call By Value)，因此num在後續變更後並不會改動num2的值。可以理解為num2模仿num蓋房子，蓋完後即便num改建，num2的房子還是長的跟num之前的房子一樣。原理就是因為num2其實擁有自己的記憶體位置0x0f03。<br>實際執行結果顯示:<code>1111 1111 2222 1111</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const fish = &#123;</span><br><span class="line">  species: &#x27;fish&#x27;</span><br><span class="line">&#125;</span><br><span class="line">const shark = fish;</span><br><span class="line">console.log(shark.species);</span><br><span class="line">fish.species = &#x27;animal&#x27;</span><br><span class="line">console.log(shark.species);</span><br><span class="line">shark.species = &#x27;fish&#x27;;</span><br><span class="line">console.log(fish.species);</span><br></pre></td></tr></table></figure>
+<p>上述程式我們理解參照型態，簡單來說就是<strong>參址</strong>(Call By Reference)，既然它們住的地方都一樣，只要有人去改動房子的，那自然它們就會彼此影響，換句話說，fish和shark都參照到同一個記憶體位址，理解這一點後，就可以理解JS不論是展開、其餘運算子還是陣列內建方法，都會產生新的陣列的原因在，一方面是要避免副作用，試想如果不小心改動陣列，卻把最一開始的值都搞混了，那還需要繼承什麼呢? 可能哪天fish的種類變成dog都不一定對吧?<br>實際執行結果顯示:<code>&quot;fish&quot;, &quot;animal&quot;, &quot;fish&quot;</code></p>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>哇! 今天一個興起就把文章打好打滿，花了不少時間。其實會突然想打這篇文章主要是因為在網路上學React的課程，剛好講師複習JS一些比較需要去注意的改動,<br>像是箭頭函數、展開運算子、類別其實都逐漸讓JS在程式語言的世界裡稱霸，當然還是有許多很好的語言，但JS的強勢卻是無庸置疑，以前或許沒人敢說，但現在肯定大家都會認同JS是很強勢的語言，即便它是弱型態語言，仔細想一想JS根本就是扮豬吃老虎，有夠過分，但大家還是對它愛不釋手，我也是。</p>
+<p>希望今天的系列文能夠快速幫助需要的人複習ES5.6間的改動，其實有些許改動牽連到ES7，有機會再拿出來討論，相信應該不會等上太久的時間。許多細節沒有講到，但我想理解基本概念，等到實務上遇到問題再去深入理解也不遲，畢竟要學的東西太多了!</p>
+<p>謝謝各位看到最後!!</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/es6/" rel="tag"># es6</a>
+              <a href="/tags/arrow-function/" rel="tag"># arrow-function</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/02/Hexo%E7%B3%BB%E5%88%97%20-%20%E9%96%8B%E5%95%9F%E6%97%85%E9%80%94/" rel="prev" title="Hexo系列-開啟旅途">
+                  <i class="fa fa-angle-left"></i> Hexo系列-開啟旅途
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/05/%E6%97%A5%E8%AA%9E%E7%B3%BB%E5%88%97%E8%AC%9B%E8%A7%A3-%E3%81%AF%E3%81%A8%E3%81%8C%E7%9A%84%E5%8D%80%E5%88%A5/" rel="next" title="日語系列講解-はとが的區別">
+                  日語系列講解-はとが的區別 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Matsu Chen</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

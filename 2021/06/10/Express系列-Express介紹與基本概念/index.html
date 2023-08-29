@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chenmatsu.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Express介紹與基本概念 I have not failed. I havve just found 10,000 ways that won&#39;t work.― Thomas A. Edison  Express是伺服器或稱作後端框架，最近才認知到Express有別於React、Angular和Vue，說起來也算是天大誤會，好在還沒弄成笑話。今天一起來看看這個框架可以給予我們什麼樣的能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Express系列-Express介紹與基本概念">
+<meta property="og:url" content="https://chenmatsu.github.io/2021/06/10/Express%E7%B3%BB%E5%88%97-Express%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="Matsu">
+<meta property="og:description" content="Express介紹與基本概念 I have not failed. I havve just found 10,000 ways that won&#39;t work.― Thomas A. Edison  Express是伺服器或稱作後端框架，最近才認知到Express有別於React、Angular和Vue，說起來也算是天大誤會，好在還沒弄成笑話。今天一起來看看這個框架可以給予我們什麼樣的能">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/WyiVozE.jpg">
+<meta property="og:image" content="https://i.imgur.com/jAz6Hf7.jpg">
+<meta property="article:published_time" content="2021-06-10T12:08:55.000Z">
+<meta property="article:modified_time" content="2023-08-29T09:36:53.758Z">
+<meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="node">
+<meta property="article:tag" content="express">
+<meta property="article:tag" content="middleware">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/WyiVozE.jpg">
+
+
+<link rel="canonical" href="https://chenmatsu.github.io/2021/06/10/Express%E7%B3%BB%E5%88%97-Express%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://chenmatsu.github.io/2021/06/10/Express%E7%B3%BB%E5%88%97-Express%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/","path":"2021/06/10/Express系列-Express介紹與基本概念/","title":"Express系列-Express介紹與基本概念"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Express系列-Express介紹與基本概念 | Matsu</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Matsu</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Nothing more than curiosity</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Express%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">Express介紹與基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Express%E4%BB%8B%E7%B4%B9"><span class="nav-number">1.1.</span> <span class="nav-text">Express介紹</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Express%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.1.</span> <span class="nav-text">Express使用</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.2.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Matsu Chen</p>
+  <div class="site-description" itemprop="description">Nothing more than curiosity</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://chenmatsu.github.io/2021/06/10/Express%E7%B3%BB%E5%88%97-Express%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu">
+      <meta itemprop="description" content="Nothing more than curiosity">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Express系列-Express介紹與基本概念 | Matsu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Express系列-Express介紹與基本概念
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2021-06-10 20:08:55" itemprop="dateCreated datePublished" datetime="2021-06-10T20:08:55+08:00">2021-06-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2023-08-29 17:36:53" itemprop="dateModified" datetime="2023-08-29T17:36:53+08:00">2023-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/Node/Express/" itemprop="url" rel="index"><span itemprop="name">Express</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="Express介紹與基本概念"><a href="#Express介紹與基本概念" class="headerlink" title="Express介紹與基本概念"></a>Express介紹與基本概念</h3><blockquote>
+<p><em>I have not failed. I havve just found 10,000 ways that won&#39;t work.</em><br><em>― Thomas A. Edison</em></p>
+</blockquote>
+<p>Express是伺服器或稱作<strong>後端框架</strong>，最近才認知到Express有別於React、Angular和Vue，說起來也算是天大誤會，好在還沒弄成笑話。今天一起來看看這個框架可以給予我們什麼樣的能力吧!</p>
+<ul>
+<li>Express介紹<ul>
+<li>Express使用</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="Express介紹"><a href="#Express介紹" class="headerlink" title="Express介紹"></a>Express介紹</h4><p>誠如先前所說，Express是伺服器框架其一 ，其餘的類似的框架有Laravel、Flask等等。Express主要的用途在於協助Node去打造Web應用程式的框架和API，大幅減輕開發的負擔。以往在Express開發前，處理API和Web應用程式，需要針對網頁的請求與回應逐一處理，但現在只需要透過Express就可以達到一樣的結果。Express扮演的角色就像是遙控器一樣，開啟電視只需要按下開機關機鍵，若沒有遙控器的話則必須直接按電視螢幕<strong>本身</strong>的開關，但結果上來看是一樣的。</p>
+<p>簡言之，Express就是Node處理網站的遙控器!</p>
+<h5 id="Express使用"><a href="#Express使用" class="headerlink" title="Express使用"></a>Express使用</h5><p>在使用Express前，我們需要先認識<strong>中介軟體</strong>(Middleware)，中介軟體本身可以想成火車，假設火車從台中北上開往台北，這一路上必須經過苗栗、新竹、桃園、新北幾個城市，而中介軟體則是城市與城市間的溝通方式，並且溝通結果會影響到接下來的行程。</p>
+<p>首先在一個資料夾內建立app.js的檔案，基本上檔案名不會影響，不過一般都會命名為app或index兩者其一。建立完成後，切換到資料夾內執行<strong>npm init</strong>設定專案檔。一路按Enter到底將專案檔設為預設即可。大致上會看起來像下方圖片的路徑。</p>
+<p><img src="https://i.imgur.com/WyiVozE.jpg" alt="pic1"></p>
+<p>接著便於開發我們分別下載<strong>nodemon</strong>套件以及必備的<strong>express</strong>框架，執行以下指令:<br><code>npm install nodemon --save-dev</code><br><code>npm install express --save</code><br>第一個套件的主要功能是用於<strong>自動重啟伺服器</strong>，而不用手動一直重新開啟伺服器，安裝完成後，將<strong>package.json</strong>檔案寫入一個新的腳本檔案，就可以無痛使用nodemon從此不再手殘，如下:</p>
+<p><img src="https://i.imgur.com/jAz6Hf7.jpg" alt="script"></p>
+<p>接著回到app.js檔案，這裡我們將Express套件引入檔案中:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 匯入Express框架套件</span><br><span class="line">const express = require(&#x27;express&#x27;);</span><br><span class="line"></span><br><span class="line">// 建立Express應用程式 -&gt; 物件具有許多Function和Settings</span><br><span class="line">const app = app.express();</span><br><span class="line"></span><br><span class="line">// 等同於</span><br><span class="line">// const server = http.createServer();</span><br><span class="line">// server.listen(3000);</span><br><span class="line">app.listen(3000);</span><br></pre></td></tr></table></figure>
+
+<p>這段程式碼當中，我們建立Express的應用程式，透過它我們可以使用Express提供的各種Middleware來處理網站，從最後一行app.listen()可以看出Express已經將http核心模組打包起來。<br><code>const server = http.createServer()</code><br><code>server.listen(3000)</code><br>↓<br><code>app.listen(3000)</code></p>
+<p>接下來我們將app.js稍微修改一下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">const express = require(&#x27;express&#x27;);</span><br><span class="line">const app = express();</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) =&gt; &#123;</span><br><span class="line">  console.log(&#x27;Set off at Taichung City!&#x27;);</span><br><span class="line">  // 告訴Middleware可以前往下一個Middleware!</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) =&gt; &#123;</span><br><span class="line">  console.log(&#x27;Mioali is passed!&#x27;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) =&gt; &#123;</span><br><span class="line">  console.log(&#x27;Hsinchu is passed!&#x27;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) =&gt; &#123;</span><br><span class="line">  console.log(&#x27;Taoyuan is passed!&#x27;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) =&gt; &#123;</span><br><span class="line">  console.log(&#x27;New-Taipei is passed!&#x27;);</span><br><span class="line">  next();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use((req, res, next) =&gt; &#123;</span><br><span class="line">  console.log(&#x27;Taipei is arrived!&#x27;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.listen(3000);</span><br></pre></td></tr></table></figure>
+
+<p>透過next()可以調動middleware不斷前往下一個middleware直到發生狀況或是抵達終點。<br>最後<strong>npm start</strong>啟動伺服器後就可以發現我們的中介軟體確實可以一路由台中抵達台北! </p>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天簡單講解Middleware的概念，其實Middleware可以細分成不同層級的Middleware，就留到下次有機會再來討論。希望不會有人再跟我一樣傻傻分不清楚前後端框架。</p>
+<p>最近真的是想到什麼就寫什麼，完全沒有規劃，不過總是想的比較多。這系列文章估計也會寫好幾篇，希望能和React結合在一起XD。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/node/" rel="tag"># node</a>
+              <a href="/tags/express/" rel="tag"># express</a>
+              <a href="/tags/middleware/" rel="tag"># middleware</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/06/08/Node%E7%B3%BB%E5%88%97-Node%E4%BB%8B%E7%B4%B9%E8%88%87%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" rel="prev" title="Node系列-Node介紹與基本概念">
+                  <i class="fa fa-angle-left"></i> Node系列-Node介紹與基本概念
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/11/Express%E7%B3%BB%E5%88%97-%E5%9F%BA%E6%9C%ACRoute%E5%92%8CMiddleware/" rel="next" title="Express系列-基本Route和Middleware">
+                  Express系列-基本Route和Middleware <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Matsu Chen</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

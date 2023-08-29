@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"chenmatsu.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.18.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜尋...","empty":"我們無法找到任何有關 ${query} 的搜索結果","hits_time":"${hits} 找到 ${time} 個結果","hits":"找到 ${hits} 個結果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Hooks家族 - useContext Believe in yourself. You are braver than you think, more talented than you know, and capable of more than you imagine.-Roy T. Bennett  昨晚聊聊關於useEffect的使用方式，今天要來介紹管理變數的問題。React發展得相">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React系列-useContext概念與使用">
+<meta property="og:url" content="https://chenmatsu.github.io/2021/05/13/React%E7%B3%BB%E5%88%97-useContext%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Matsu">
+<meta property="og:description" content="Hooks家族 - useContext Believe in yourself. You are braver than you think, more talented than you know, and capable of more than you imagine.-Roy T. Bennett  昨晚聊聊關於useEffect的使用方式，今天要來介紹管理變數的問題。React發展得相">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/AaPZaie.jpg">
+<meta property="og:image" content="https://i.imgur.com/gFoP6zy.jpg">
+<meta property="og:image" content="https://i.imgur.com/x6Dm2gV.jpg">
+<meta property="article:published_time" content="2021-05-13T05:45:45.000Z">
+<meta property="article:modified_time" content="2023-08-29T09:36:53.760Z">
+<meta property="article:author" content="Matsu Chen">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="react">
+<meta property="article:tag" content="component">
+<meta property="article:tag" content="usecontext">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/AaPZaie.jpg">
+
+
+<link rel="canonical" href="https://chenmatsu.github.io/2021/05/13/React%E7%B3%BB%E5%88%97-useContext%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-TW","comments":true,"permalink":"https://chenmatsu.github.io/2021/05/13/React%E7%B3%BB%E5%88%97-useContext%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/","path":"2021/05/13/React系列-useContext概念與使用/","title":"React系列-useContext概念與使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React系列-useContext概念與使用 | Matsu</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切換導航欄" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Matsu</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Nothing more than curiosity</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜尋" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目錄
+        </li>
+        <li class="sidebar-nav-overview">
+          本站概要
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hooks%E5%AE%B6%E6%97%8F-useContext"><span class="nav-number">1.</span> <span class="nav-text">Hooks家族 - useContext</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#useContext"><span class="nav-number">1.1.</span> <span class="nav-text">useContext</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#useContext%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">useContext使用方式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.2.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Matsu Chen</p>
+  <div class="site-description" itemprop="description">Nothing more than curiosity</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">文章</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分類</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">38</span>
+        <span class="site-state-item-name">標籤</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-TW">
+    <link itemprop="mainEntityOfPage" href="https://chenmatsu.github.io/2021/05/13/React%E7%B3%BB%E5%88%97-useContext%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Matsu Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Matsu">
+      <meta itemprop="description" content="Nothing more than curiosity">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="React系列-useContext概念與使用 | Matsu">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React系列-useContext概念與使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">發表於</span>
+
+      <time title="創建時間：2021-05-13 13:45:45" itemprop="dateCreated datePublished" datetime="2021-05-13T13:45:45+08:00">2021-05-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新於</span>
+      <time title="修改時間：2023-08-29 17:36:53" itemprop="dateModified" datetime="2023-08-29T17:36:53+08:00">2023-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分類於</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/" itemprop="url" rel="index"><span itemprop="name">Programming</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Programming/Javascript/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="Hooks家族-useContext"><a href="#Hooks家族-useContext" class="headerlink" title="Hooks家族 - useContext"></a>Hooks家族 - useContext</h3><blockquote>
+<p><em>Believe in yourself. You are braver than you think, more talented than you know, and capable of more than you imagine.</em><br><em>-Roy T. Bennett</em></p>
+</blockquote>
+<p>昨晚聊聊關於useEffect的使用方式，今天要來介紹管理變數的問題。React發展得相當迅速，常常會看到不同的寫法，卻能達到一樣的結果。對於初學者的我來說，其實會常常搞混，反倒有點困擾，但是一想到當自己完全釐清各種不同寫法，能夠在適當的時機，選擇最適當的方式去處理同樣的問題就覺得很有意思，就好像身懷各種武藝。那，我們開始吧!</p>
+<ul>
+<li>useContext<ul>
+<li>useContext使用方式</li>
+</ul>
+</li>
+<li>結語</li>
+</ul>
+<hr>
+<h4 id="useContext"><a href="#useContext" class="headerlink" title="useContext"></a>useContext</h4><p>我們都對於React的運作方式有一定程度的理解，對於props的傳遞，我們更是了解。我們不僅可以將props往子組件傳遞，甚至能夠從子組件傳遞到父組件當中。什麼意思? 請看下圖:<br><img src="https://i.imgur.com/AaPZaie.jpg" alt="app"></p>
+<p>假設一個購物網站，App分別有兩個子組件，一個是Login，另外一個則是Cart。當我們想要將使用者的購物資訊與清單分別傳遞到Cart，再由Cart將資料傳遞給Cartlist，最簡單的作法就是將User的資料一步步往上prop到App，再由App一步步往下Prop到Cartlist，如下圖所示:<br><img src="https://i.imgur.com/gFoP6zy.jpg" alt="app2"></p>
+<p>沒錯，這是最有React風範的方式，也是官方文件最先告訴我們的實作方式。甚至我們可以利用<strong>提升狀態</strong>(Lifting the state up)的方式去將我們想要傳遞的資料，放置在子組件共有的父組件上，在範例中，就是放置在App身上。</p>
+<p>乍看下，這的確是解決方式其二，但是仔細想想，有可能我們的App不會用到User的任何資料，甚至若是我們的組件變得更多，中間有其餘的組件是不需要使用到User的資料，那這樣不是很難管理資料嗎? 我們現在希望的是有個方式可以直接將User的資料指向Cart，如同下圖的概念:<br><img src="https://i.imgur.com/x6Dm2gV.jpg" alt="app3"></p>
+<p>這個時候useContext就會跳出來說: 選我!選我!選我! 我們先來看看useContext的定義與概念。</p>
+<h5 id="useContext使用方式"><a href="#useContext使用方式" class="headerlink" title="useContext使用方式"></a>useContext使用方式</h5><p>useContext的定義大致上官方定義是: 接收一個Context Object(React.createContext回傳的值)並回傳。是不是有點難懂? 我也這麼認為，對於直接下手Hooks來說，其實不太好理解，因為底層包覆的東西有點多，但我們還是試著努力看看!</p>
+<p>useContext的長相大概如下所示:<br><code>const context = useContext(AuthUser)</code><br>我們設立一個context的變數用於儲存useContext回傳的值，在useContext裡面則寫入一個<strong>內文物件</strong>(context object)。<br>這個內文物件在我們的範例包含AuthUser的值，換句話說，我們會透過React.createContext建立AuthUser這個內文物件，看看下方:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- In AuthContext.js --&gt;</span><br><span class="line">import React from &#x27;react&#x27;;</span><br><span class="line"></span><br><span class="line">const AuthUser = React.createContext(&#123;</span><br><span class="line">  isLoggedIn: false,</span><br><span class="line">  onLogin: (email, password) =&gt; &#123;&#125;,</span><br><span class="line">  onLogout: () =&gt; &#123;&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>要使用createContext函數必須匯入React，這邊應該沒有太大問題。我們可以看到說AuthUser是一個內文物件，一般來說，我們會在source的資料夾下建立一個store的資料夾負責統一管理資料，盡量讓資料和組件邏輯隔離開來，但當然，我們也可以直接在AuthContext檔案裡面直接更改Provider寫入共用的方法，讓AuthUser變得更完整:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- In AuthContext.js --&gt;</span><br><span class="line">...上方的程式碼...</span><br><span class="line"></span><br><span class="line">export const AuthContextProvider = props =&gt; &#123;</span><br><span class="line">  const [isLogged, setIsLogged] = useState(false);</span><br><span class="line"></span><br><span class="line">  const loginHandler = () =&gt; &#123;</span><br><span class="line">    setIsLogged(true);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  const logoutHandler = () =&gt; &#123;</span><br><span class="line">    setIsLogged(false);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return </span><br><span class="line">    &lt;AuthContext.Provider </span><br><span class="line">      value=</span><br><span class="line">      &#123;&#123;</span><br><span class="line">        isLogged, </span><br><span class="line">        onLogin: loginHandler, </span><br><span class="line">        onLogout: logoutHandler</span><br><span class="line">      &#125;&#125;&gt;</span><br><span class="line">        &#123;props.children&#125;</span><br><span class="line">    &lt;/AuthContext.Provider&gt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default AuthUser;</span><br></pre></td></tr></table></figure>
+
+<p>在AuthUser內文物件中，改寫加入是否登入的狀態。<br>我們要注意到createContext本身會有兩個子組件分別是</p>
+<ul>
+<li>Provider組件: 傳遞內文物件的資料</li>
+<li>Consumer組件: 接收內文物件的資料</li>
+</ul>
+<p>這也是為何我們會看到在AuthUser出現Provider，因為在這邊我透過props一次傳入內文物件的物件，物件包含isLogged的狀態以及登入登出的方法。可以注意到Provider中間有props.children，還記得我們提到children的那篇文章嗎? 透過這一點，我們可以知道Provider包覆的組件都可以接收剛才透過props的資料。</p>
+<p>回到圖表，我們要在User和Cart使用到關於User的資訊和方法，現在我們可以統一在App處理，如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- In App.js --&gt;</span><br><span class="line">import &#123;useContext&#125; from &#x27;react&#x27;;</span><br><span class="line">import AuthContext from &#x27;./components/store/AuthContext&#x27;;</span><br><span class="line">import Login from &#x27;./components/User/Login&#x27;;</span><br><span class="line">import Cart from &#x27;./components/Cart/Cart&#x27;;</span><br><span class="line"></span><br><span class="line">const App = () =&gt; &#123;</span><br><span class="line">  const ctx = useContext(AuthUser);</span><br><span class="line">  </span><br><span class="line">  return (</span><br><span class="line">    &lt;&gt;</span><br><span class="line">      &#123;!ctx &amp;&amp; &lt;Login /&gt;&#125;</span><br><span class="line">      &#123;ctx &amp;&amp;＜Cart /&gt;&#125;</span><br><span class="line">    &lt;/&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default App;</span><br></pre></td></tr></table></figure>
+<p>因為User是在Login下方，所以我們此處匯入Login，接著再透過Login傳遞到User。這邊在顯示組件會先檢驗是否已經登入，如果已經登入就會顯示Cart的組件，若沒有登入則會顯示Login的組件。透過這樣的方法，我們同時有把<strong>提升狀態</strong>也有將<strong>資料隔離</strong>開來的感覺，而不需要一層一層傳遞，像洋蔥一樣撥開我們的組件。</p>
+<p>我們到目前為止，檢視如何使用useContext的方法。我們在使用useContext先前必須建立內文物件才能夠使用這個Hook，目前還沒能直接看到Cart使用User的感覺，但其實我們已經朝向這一步邁進。</p>
+<p>在以往沒有useContext這個Hook的情況下，我們在建立React.createContext後，必須在每一個需要使用到某個內文物件的組件裡面，去接收(Consumer)這些資料，換句話說，我們沒辦法直接透過指令變數去將資料傳遞到組件，程式碼大概會像下方這樣:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- In Cart.js --&gt;</span><br><span class="line">import AuthContext from &#x27;../../store/AuthContext&#x27;;</span><br><span class="line">import CardList from &#x27;./CardList&#x27;;</span><br><span class="line"></span><br><span class="line">const Cart = props =&gt; &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;AuthContext.Consumer&gt;</span><br><span class="line">      &#123;(context) =&gt; &#123;</span><br><span class="line">        &lt;CardList /&gt;</span><br><span class="line">        &lt;Button onLogout=&#123;onLogout&#125;&gt;</span><br><span class="line">      &#125;&#125;</span><br><span class="line">    &lt;/AuthContext.Consumer&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export default Cart;</span><br></pre></td></tr></table></figure>
+<p>大致上會像上方這樣的寫法，需要多寫Consumer這一段語法糖，去將組件包裹起來。在沒有Hook的出現確實是一件再正常不過的事情，但是現在有了useContext，實在是沒有理由將程式碼寫的過於繁瑣，畢竟React是屬於宣告式，若能減輕開發網站的負擔，沒有理由堅持使用上方的寫法。但，寫程式沒有對錯，這些都是非常棒的方法!</p>
+<p>-重點整理-</p>
+<ul>
+<li>useContext接收內文物件<ul>
+<li>React.createContext建立內文物件<ul>
+<li>Provider子組件傳遞資料</li>
+<li>Consumer子組件接收資料</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>今天主要講述useContext的使用方式，算是非常粗淺的概念。要在這裡像各位讀者說一聲抱歉，希望未來我能夠對React更加熟稔，蠻擔心自己寫的不夠清楚或者是寫錯，但即便如此還是想要挑戰自己試試看，以教學的角度，來檢視自己學習的成效。若有誤，請不吝於糾正。</p>
+<p>最後，謝謝看到結束的各位。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/react/" rel="tag"># react</a>
+              <a href="/tags/component/" rel="tag"># component</a>
+              <a href="/tags/usecontext/" rel="tag"># usecontext</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/12/React%E7%B3%BB%E5%88%97-useEffect%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" rel="prev" title="React系列-useEffect概念與使用">
+                  <i class="fa fa-angle-left"></i> React系列-useEffect概念與使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/15/React%E7%B3%BB%E5%88%97-useReducer%E6%A6%82%E5%BF%B5%E8%88%87%E4%BD%BF%E7%94%A8/" rel="next" title="React系列-useReducer概念與使用">
+                  React系列-useReducer概念與使用 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Matsu Chen</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 強力驅動
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="回到頂端">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
